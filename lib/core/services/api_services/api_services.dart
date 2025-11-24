@@ -1,3 +1,4 @@
+import 'package:depi_graduation_project/core/errors/app_exception.dart';
 import 'package:dio/dio.dart';
 
 class ApiServices {
@@ -8,11 +9,20 @@ class ApiServices {
     required double lat,
     required double long,
   }) async {
-    final response = await dio.get(
-      "categories=$catagory&filter=circle:$long,$lat,5000&bias=proximity:$long,$lat&limit=80&apiKey=${EndPoints.apiKey}",
-    );
+    Response<dynamic>? response;
+    try {
+       response = await dio.get(
+        "categories=$catagory&filter=circle:$long,$lat,5000&bias=proximity:$long,$lat&limit=80&apiKey=${EndPoints.apiKey}",
+      );
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.badResponse) {
+        throw AppException(
+          msg: " error ${e.response!.statusCode} please try again leter",
+        );
+      }
+    }
 
-    return response.data["features"];
+    return response?.data["features"];
   }
 
   Future<List<dynamic>> getPlaces({
@@ -21,11 +31,20 @@ class ApiServices {
   }) async {
     String catPram =
         '${EndPoints.commercial},${EndPoints.catering},${EndPoints.emergency},${EndPoints.childcare},${EndPoints.entertainment},${EndPoints.healthcare},${EndPoints.tourism},${EndPoints.nationalPark}';
+    Response<dynamic>? response;
 
-    final response = await dio.get(
-      "categories=$catPram&filter=circle:$long,$lat,5000&bias=proximity:$long,$lat&limit=80&apiKey=${EndPoints.apiKey}",
-    );
-    return response.data["features"];
+    try {
+   response = await dio.get(
+    "categories=$catPram&filter=circle:$long,$lat,5000&bias=proximity:$long,$lat&limit=80&apiKey=${EndPoints.apiKey}",
+  );
+   } on DioException catch (e) {
+      if (e.type == DioExceptionType.badResponse) {
+        throw AppException(
+          msg: " error ${e.response!.statusCode} please try again leter",
+        );
+      }
+    }
+    return response?.data["features"];
   }
 }
 
