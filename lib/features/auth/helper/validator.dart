@@ -1,128 +1,68 @@
-import 'package:depi_graduation_project/core/utilities/app_colors.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-
 abstract class Validator {
-  static Widget buildUserNameField(
-    TextEditingController controller,
-    String mass,
-  ) {
-    return TextFormField(
-      validator: (value) {
-        if (value == null || value.trim().isEmpty) {
-          return '$mass cannot be empty';
-        }
-        return null;
-      },
-      style: const TextStyle(color: AppColors.main),
-      controller: controller,
-      decoration: InputDecoration(
-        hintText: mass,
-        hintStyle: const TextStyle(color: AppColors.main),
-        fillColor: Colors.grey.shade200,
-        filled: true,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide.none,
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide.none,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: AppColors.main, width: 2.5),
-        ),
-      ),
-    );
+  static bool _isEmail(String? email) {
+    const pattern =
+        r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z]{2,})+$";
+    final regExp = RegExp(pattern);
+    return regExp.hasMatch(email ?? "");
   }
 
-  static Widget buildPasswordField(
-    TextEditingController controller,
-    String mass,
-    RxBool see,
-  ) {
-    return Obx(() {
-      return TextFormField(
-        validator: (value) {
-          if (value == null || value.trim().isEmpty) {
-            return '$mass cannot be empty';
-          }
-          if (value.length < 8) {
-            return 'Password must be at least 8 characters';
-          }
-          if (!RegExp(r'^(?=.*[A-Z])').hasMatch(value)) {
-            return 'Password must contain at least one uppercase letter';
-          }
-          if (!RegExp(r'^(?=.*\d)').hasMatch(value)) {
-            return 'Password must contain at least one number';
-          }
-          return null;
-        },
-        style: const TextStyle(color: AppColors.main),
-        obscureText: see.value,
-        controller: controller,
-        decoration: InputDecoration(
-          suffixIcon: IconButton(
-            onPressed: () {
-              see.toggle();
-            },
-            icon: see.value
-                ? const Icon(Icons.visibility, color: AppColors.main)
-                : const Icon(Icons.visibility_off, color: AppColors.main),
-          ),
-          hintText: mass,
-          hintStyle: const TextStyle(color: AppColors.main),
-          fillColor: Colors.grey.shade200,
-          filled: true,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide.none,
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide.none,
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(color: AppColors.main, width: 2.5),
-          ),
-        ),
-      );
-    });
+  static String? Function(String? value) emailValidator() {
+    return (String? email) {
+      final trimmedEmail = email?.trim();
+      if (trimmedEmail == null || trimmedEmail.isEmpty) {
+        return "please Enter Your Email";
+      } else if (!_isEmail(trimmedEmail)) {
+        return "Please Enter an Email";
+      }
+      return null;
+    };
   }
 
-  static Widget buildGmailField(TextEditingController controller, String mass) {
-    return TextFormField(
-      validator: (value) {
-        if (value == null || value.trim().isEmpty) {
-          return '$mass cannot be empty';
-        }
-        if (!GetUtils.isEmail(value.trim())) {
-          return 'Enter a valid email';
-        }
-        return null;
-      },
-      style: const TextStyle(color: AppColors.main),
-      controller: controller,
-      decoration: InputDecoration(
-        hintText: mass,
-        hintStyle: const TextStyle(color: AppColors.main),
-        fillColor: Colors.grey.shade200,
-        filled: true,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide.none,
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide.none,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: Colors.grey, width: 2.5),
-        ),
-      ),
-    );
+  static String? Function(String? value) signupPasswordValidator() {
+    return (String? password) {
+      final trimmedPassword = password?.trim();
+      if (trimmedPassword == null || trimmedPassword.isEmpty) {
+        return "please Enter Your Password";
+      } else if (password!.length < 8) {
+        return "Too Short";
+      }
+      return null;
+    };
+  }
+
+  static String? Function(String? v) confirmPasswordValidator({
+    required String? Function() orgPasswordGetter,
+  }) {
+    return (password) {
+      final trimmedPassword = password?.trim();
+      final trimmedOrgPassword = orgPasswordGetter()?.trim();
+      if (trimmedPassword != trimmedOrgPassword) {
+        return "Make sure from your password";
+      }
+      return null;
+    };
+  }
+
+  static String? Function(String? v) signupNameValidator() {
+    return (String? name) {
+      final trimmedName = name?.trim();
+      if (trimmedName == null || trimmedName.isEmpty) {
+        return "please Enter Your Name";
+      }
+      if (name!.length < 8) {
+        return "Too Short";
+      }
+      return null;
+    };
+  }
+
+  static String? Function(String? v) loginPasswordValidator() {
+    return (password) {
+      final trimmedPassword = password?.trim();
+      if (trimmedPassword == null || trimmedPassword.isEmpty) {
+        return "please Enter Your Password";
+      }
+      return null;
+    };
   }
 }

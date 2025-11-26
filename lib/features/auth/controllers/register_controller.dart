@@ -15,5 +15,4 @@ class RegisterController extends GetxController{
 
   final formKey=GlobalKey<FormState>();
 
-
 }

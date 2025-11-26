@@ -3,13 +3,13 @@ import 'package:depi_graduation_project/features/auth/controllers/login_controll
 import 'package:depi_graduation_project/features/auth/presentation/views/login_view.dart';
 import 'package:depi_graduation_project/features/auth/controllers/register_controller.dart';
 import 'package:depi_graduation_project/features/auth/presentation/views/register_view.dart';
-import 'package:depi_graduation_project/features/auth/home/presentation/views/home_view.dart';
+import 'package:depi_graduation_project/features/home/presentation/views/home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 
-import 'features/auth/home/controllers/home_controller.dart';
+import 'features/home/controllers/home_controller.dart';
 
 void main() {
   runApp(const MyApp());
@@ -27,20 +27,32 @@ class MyApp extends StatelessWidget {
       builder: (_, child) {
         return GetMaterialApp(
           debugShowCheckedModeBanner: false,
-          initialRoute: '/home',
-          initialBinding: BindingsBuilder((){
-            Get.lazyPut(()=>ApiServices());
+          initialRoute: '/login',
+          initialBinding: BindingsBuilder(() {
+            Get.lazyPut(() => ApiServices());
           }),
           getPages: [
-            GetPage(name: '/home', page: ()=>const HomePage(),binding:BindingsBuilder((){
-              Get.lazyPut(()=>HomeController());
-            })),
-            GetPage(name: '/login', page:()=>const LoginView(),binding: BindingsBuilder((){
-              Get.lazyPut(()=>LoginController());
-            })),
-            GetPage(name: '/register', page: ()=>const RegisterView(),binding: BindingsBuilder((){
-              Get.lazyPut(()=>RegisterController());
-            }))
+            GetPage(
+              name: '/home',
+              page: () => const HomePage(),
+              binding: BindingsBuilder(() {
+                Get.lazyPut(() => HomeController());
+              }),
+            ),
+            GetPage(
+              name: '/login',
+              page: () => const LoginView(),
+              binding: BindingsBuilder(() {
+                Get.lazyPut(() => LoginController());
+              }),
+            ),
+            GetPage(
+              name: '/register',
+              page: () => const RegisterView(),
+              binding: BindingsBuilder(() {
+                Get.lazyPut(() => RegisterController());
+              }),
+            ),
           ],
         );
       },

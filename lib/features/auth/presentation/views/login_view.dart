@@ -1,6 +1,9 @@
 import 'package:depi_graduation_project/core/utilities/app_colors.dart';
 import 'package:depi_graduation_project/core/utilities/app_text_style.dart';
+import 'package:depi_graduation_project/core/widgets/app_button.dart';
 import 'package:depi_graduation_project/features/auth/controllers/login_controller.dart';
+import 'package:depi_graduation_project/features/auth/presentation/widgets/app_textFormField.dart';
+import 'package:depi_graduation_project/features/auth/presentation/widgets/password_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -18,37 +21,25 @@ class LoginView extends GetView<LoginController> {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: double.infinity,
-                height: 250,
-                child: Column(
-                  children: [
-                    const Gap(110),
-                    SvgPicture.asset(
-                      Assets.imagesAppIcon,
-                      width: 50.w,
-                      height: 60.h,
-                    ),
-                    const Gap(10),
-                    Text(
-                      'Welcome Back!',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 30.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const Gap(10),
-                  ],
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Gap(70.h),
+                SvgPicture.asset(Assets.imagesAppIcon, height: 90.h),
+                const Gap(10),
+                Text(
+                  'Welcome Back!',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 30.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              Form(
-                key: controller.formKey,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
+                const Gap(50),
+                Form(
+                  key: controller.formKey,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -59,11 +50,13 @@ class LoginView extends GetView<LoginController> {
                           fontSize: 17.sp,
                         ),
                       ),
-                      Validator.buildUserNameField(
-                        controller.nameController,
-                        'Enter your username',
+                      const Gap(4),
+                      AppTextFormField(
+                        hintText: 'Enter your username',
+                        controller: controller.nameController,
+                        validator: Validator.signupNameValidator(),
                       ),
-                      const Gap(20),
+                      const Gap(15),
                       Text(
                         'Password',
                         style: TextStyle(
@@ -71,82 +64,61 @@ class LoginView extends GetView<LoginController> {
                           fontSize: 17.sp,
                         ),
                       ),
-                      Validator.buildPasswordField(
-                        controller.passwordController,
-                        'Enter your password',
-                        controller.see,
+                      const Gap(4),
+
+                      PasswordTextField(
+                        hintText: 'Enter your password',
+                        controller: controller.passwordController,
+                        validator: Validator.loginPasswordValidator(),
                       ),
+
                       const Gap(10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          TextButton(
-                            onPressed: () {},
-                            child: const Text(
-                              'Forget Password?',
-                              style: TextStyle(
-                                color: AppColors.main,
-                                fontSize: 16,
-                              ),
-                            ),
-                          ),
-                        ],
+                      TextButton(
+                        onPressed: () {},
+                        child: const Text(
+                          'Forget Password?',
+                          style: TextStyle(color: AppColors.main, fontSize: 16),
+                        ),
                       ),
-                      Center(
-                        child: SizedBox(
-                          height: 48,
-                          width: 450,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              if (controller.formKey.currentState!.validate()) {
-                                // code Auth
-                              }
-                            },
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              backgroundColor: AppColors.main,
-                            ),
-                            child: Text(
-                              'Login',
-                              style: TextStyle(
-                                fontSize: 20.sp,
-                                color: Colors.white,
-                              ),
-                            ),
+                      AppButton(
+                        onPressed: () {
+                          if (controller.formKey.currentState!.validate()) {
+                            // code Auth
+                          }
+                        },
+
+                        child: Text(
+                          'Login',
+                          style: TextStyle(
+                            fontSize: 20.sp,
+                            color: Colors.white,
                           ),
                         ),
                       ),
                       const Gap(20),
-                      SizedBox(
-                        height: 48,
-                        width: 450,
-                        child: OutlinedButton(
-                          onPressed: () {
-                            Get.offNamed('/register');
-                          },
-                          style: OutlinedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
+
+                      AppButton(
+                        onPressed: () {
+                          Get.offNamed('/register');
+                        },
+
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: AppColors.main,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadiusGeometry.circular(10),
                             side: const BorderSide(
                               color: AppColors.main,
                               width: 2.5,
                             ),
-                            foregroundColor: AppColors.main,
-                          ),
-                          child: Text(
-                            'Register',
-                            style: AppTextStyle.regular20,
                           ),
                         ),
+                        child: Text('Register', style: AppTextStyle.regular20),
                       ),
                     ],
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

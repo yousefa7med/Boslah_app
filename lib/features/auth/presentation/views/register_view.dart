@@ -1,6 +1,9 @@
 import 'package:depi_graduation_project/core/utilities/app_colors.dart';
 import 'package:depi_graduation_project/core/utilities/app_text_style.dart';
+import 'package:depi_graduation_project/core/widgets/app_button.dart';
 import 'package:depi_graduation_project/features/auth/controllers/register_controller.dart';
+import 'package:depi_graduation_project/features/auth/presentation/widgets/app_textFormField.dart';
+import 'package:depi_graduation_project/features/auth/presentation/widgets/password_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -18,37 +21,25 @@ class RegisterView extends GetView<RegisterController> {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: double.infinity,
-                height: 250.h,
-                child: Column(
-                  children: [
-                    const Gap(110),
-                    SvgPicture.asset(
-                      Assets.imagesAppIcon,
-                      width: 50,
-                      height: 60,
-                    ),
-                    const Gap(10),
-                    Text(
-                      'Create an Account!',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 30.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const Gap(10),
-                  ],
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Gap(70.h),
+                SvgPicture.asset(Assets.imagesAppIcon, height: 90.h),
+                const Gap(10),
+                Text(
+                  'Create an Account!',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 30.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              Form(
-                key: controller.formKey,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
+                Gap(50.h),
+                Form(
+                  key: controller.formKey,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -59,9 +50,12 @@ class RegisterView extends GetView<RegisterController> {
                           fontSize: 17.sp,
                         ),
                       ),
-                      Validator.buildUserNameField(
-                        controller.nameController,
-                        'Enter your username',
+                      const Gap(4),
+
+                      AppTextFormField(
+                        controller: controller.nameController,
+                        hintText: 'Enter your username',
+                        validator: Validator.signupNameValidator(),
                       ),
                       const Gap(20),
                       Text(
@@ -71,9 +65,12 @@ class RegisterView extends GetView<RegisterController> {
                           fontSize: 17.sp,
                         ),
                       ),
-                      Validator.buildGmailField(
-                        controller.gmailController,
-                        'Enter your email',
+                      const Gap(4),
+
+                      AppTextFormField(
+                        controller: controller.gmailController,
+                        hintText: 'Enter your email',
+                        validator: Validator.emailValidator(),
                       ),
                       const Gap(20),
                       Text(
@@ -83,35 +80,26 @@ class RegisterView extends GetView<RegisterController> {
                           fontSize: 17.sp,
                         ),
                       ),
-                      Validator.buildPasswordField(
-                        controller.passwordController,
-                        'Enter your password',
-                        controller.see,
+                      const Gap(4),
+
+                      PasswordTextField(
+                        controller: controller.passwordController,
+                        hintText: 'Enter your password',
+                        validator: Validator.signupPasswordValidator(),
                       ),
                       const Gap(30),
-                      Center(
-                        child: SizedBox(
-                          height: 48,
-                          width: 450,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              if (controller.formKey.currentState!.validate()) {
-                                // code Auth
-                              }
-                            },
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              backgroundColor: AppColors.main,
-                            ),
-                            child: Text(
-                              'Register',
-                              style: TextStyle(
-                                fontSize: 20.sp,
-                                color: Colors.white,
-                              ),
-                            ),
+                      AppButton(
+                        onPressed: () {
+                          if (controller.formKey.currentState!.validate()) {
+                            // code Auth
+                          }
+                        },
+
+                        child: Text(
+                          'Register',
+                          style: TextStyle(
+                            fontSize: 20.sp,
+                            color: Colors.white,
                           ),
                         ),
                       ),
@@ -127,7 +115,7 @@ class RegisterView extends GetView<RegisterController> {
                             onPressed: () {
                               Get.offNamed('/login');
                             },
-                            child:  Text(
+                            child: Text(
                               'Login',
                               style: TextStyle(
                                 fontSize: 16.sp,
@@ -140,8 +128,8 @@ class RegisterView extends GetView<RegisterController> {
                     ],
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

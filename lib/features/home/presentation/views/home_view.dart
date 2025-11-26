@@ -1,10 +1,10 @@
-import 'package:depi_graduation_project/features/auth/home/controllers/home_controller.dart';
+import 'package:depi_graduation_project/features/home/controllers/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
-import '../../../../../core/utilities/app_colors.dart';
+import '../../../../core/utilities/app_colors.dart';
 
 class HomePage extends GetView<HomeController> {
   const HomePage({super.key});
