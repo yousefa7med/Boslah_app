@@ -29,12 +29,12 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   cupertino_icons: ^1.0.8
-  dartx: ^1.2.0
   dio: ^5.9.0
   flutter:
     sdk: flutter
   flutter_screenutil: ^5.9.3
   gap: ^3.0.1
+  supabase_flutter: ^2.10.3
   geolocator: ^14.0.2
   get: ^4.7.3
   flutter_svg: ^2.1.1

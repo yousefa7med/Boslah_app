@@ -1,3 +1,4 @@
+import 'package:depi_graduation_project/core/services/supabase_services/auth_service.dart';
 import 'package:depi_graduation_project/core/utilities/app_colors.dart';
 import 'package:depi_graduation_project/core/utilities/app_text_style.dart';
 import 'package:depi_graduation_project/core/widgets/app_button.dart';
@@ -44,7 +45,7 @@ class LoginView extends GetView<LoginController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'UserName',
+                        'Email',
                         style: TextStyle(
                           color: Colors.black87,
                           fontSize: 17.sp,
@@ -52,8 +53,8 @@ class LoginView extends GetView<LoginController> {
                       ),
                       const Gap(4),
                       AppTextFormField(
-                        hintText: 'Enter your username',
-                        controller: controller.nameController,
+                        hintText: 'Enter your email',
+                        controller: controller.emailController,
                         validator: Validator.signupNameValidator(),
                       ),
                       const Gap(15),
@@ -83,7 +84,11 @@ class LoginView extends GetView<LoginController> {
                       AppButton(
                         onPressed: () {
                           if (controller.formKey.currentState!.validate()) {
-                            //! code Auth
+                            controller.loginUser(
+                              controller.emailController.text,
+                              controller.passwordController.text,
+                              context,
+                            );
                           }
                         },
 
