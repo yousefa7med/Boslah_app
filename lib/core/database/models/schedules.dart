@@ -16,7 +16,7 @@ class Schedule {
 
   final int created_at;
 
-  final int? user_id;
+  final String? user_id;
 
   Schedule({
     this.schedule_id,

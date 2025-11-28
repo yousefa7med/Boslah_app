@@ -4,15 +4,15 @@ import 'package:floor/floor.dart';
   tableName: 'profile',
 )
 class Profile {
-  @PrimaryKey(autoGenerate: true)
-  final int? user_id;
+  @PrimaryKey(autoGenerate: false)
+  final String user_id;
 
   final String? username;
   final String? gmail;
   final String? image;
 
   Profile({
-    this.user_id,
+    required this.user_id,
     this.username,
     this.gmail,
     this.image,

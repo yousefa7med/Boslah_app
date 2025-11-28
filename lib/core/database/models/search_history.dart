@@ -8,7 +8,7 @@ class SearchHistory {
   final String query;
   final int timestamp;
 
-  final int? user_id;
+  final String? user_id;
 
   SearchHistory({
     this.seachId,

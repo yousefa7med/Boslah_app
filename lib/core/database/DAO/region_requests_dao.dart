@@ -6,10 +6,10 @@ import 'package:floor/floor.dart';
 abstract class RegionRequestDao{
 
   @Query('SELECT * FROM region_requests WHERE user_id = :uid ORDER BY timestamp DESC LIMIT 1')
-  Future<RegionRequest?> selectLastRequest(int uid);
+  Future<RegionRequest?> selectLastRequest(String uid);
 
-  @Query('SELECT * FROM region_requests WHERE user_id = :uid ORDER BY region_id DESC')
-  Stream<List<RegionRequest>> selectRequests(int uid);
+  @Query('SELECT * FROM region_requests ORDER BY region_id DESC')
+  Future<List<RegionRequest>> selectRequests();
 
 
   @Insert(onConflict: OnConflictStrategy.replace)

@@ -6,7 +6,7 @@ import 'package:floor/floor.dart';
 @dao
 abstract class ScheduleDao{
   @Query('SELECT * FROM schedules WHERE user_id = :uid ORDER BY scheduled_at ASC')
-  Stream<List<Schedule>> selectSchedules(int uid);
+  Future<List<Schedule>> selectSchedules(String uid);
 
   @Query('SELECT * FROM schedules WHERE schedule_id = :id')
   Future<Schedule?> selectScheduleById(int id);
@@ -21,6 +21,6 @@ abstract class ScheduleDao{
   Future<int> deleteSchedule(Schedule schedule);
 
   @Query('DELETE FROM schedules WHERE user_id = :uid')
-  Future<void> deleteAllSchedules(int uid);
+  Future<void> deleteAllSchedules(String uid);
 
 }

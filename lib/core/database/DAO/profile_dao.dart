@@ -5,7 +5,7 @@ import 'package:floor/floor.dart';
 abstract class ProfileDao{
 
   @Query('SELECT * FROM profile WHERE user_id = :id')
-  Future<Profile?> selectProfileById(int id);
+  Future<Profile?> selectProfileById(String id);
 
   @Insert(onConflict: OnConflictStrategy.replace)
   Future<int> insertUser(Profile user);
