@@ -56,18 +56,16 @@ class HomeController extends GetxController {
         }).toList() ??
         [];
 
-    await database.regionrequestdao.insertRegionRequest(
+
+    final regionId = await database.regionrequestdao.insertRegionRequest(
       RegionRequest(lat: 29.979235, lng: 31.134202),
     );
-    final regionId = await database.regionrequestdao.selectRegionId(
-      29.979235,
-      31.134202,
-    );
+
     List<RegionPlace> list = [];
     for (var element in data!) {
       list.add(
         RegionPlace(
-          region_id: regionId!,
+          region_id: regionId,
           place_id: element.pageid.toString(),
           lat: element.coordinates![0].lat,
           lng: element.coordinates![0].lon,
@@ -77,3 +75,4 @@ class HomeController extends GetxController {
     await database.regionplacedao.insertRespPlaces(list);
   }
 }
+
