@@ -13,69 +13,69 @@ class FavouritesView extends GetView<FavouritesController> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: ListView.builder(
-          itemCount: controller.allFavourits.length,
-          itemBuilder: (ctx, index) {
-            print(controller.allFavourits[index].image!);
+        child: Obx(() {
+          final list = controller.allFavourits;
+          if (list.isEmpty) {
+            return const Center(child: Text('No favorites yet'));
+          }
 
-            return SizedBox(
-              height: 130,
-              child: Card(
-                elevation: 4,
-                color: Colors.white,
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    left: 8,
-                    top: 8,
-                    bottom: 8,
-                    right: 22,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        width: 80.w,
-                        height: 80.h,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          image: DecorationImage(
-                            image: NetworkImage(
-                              controller.allFavourits[index].image!,
+          return ListView.builder(
+            itemCount: list.length,
+            itemBuilder: (ctx, index) {
+              final fav = list[index];
+
+              return SizedBox(
+                height: 130,
+                child: Card(
+                  elevation: 4,
+                  color: Colors.white,
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      left: 8,
+                      top: 8,
+                      bottom: 8,
+                      right: 22,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          width: 80.w,
+                          height: 80.h,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            image: DecorationImage(
+                              image: NetworkImage(fav.image ?? ''),
+                              fit: BoxFit.cover,
                             ),
-                            fit: BoxFit.cover,
                           ),
                         ),
-                      ),
-
-                      Text(
-                        controller.allFavourits[index].name!,
-                        style: AppTextStyle.bold20,
-                      ),
-                      Obx(() {
-                        return IconButton(
-                          onPressed: () {
-                            controller.isFavourite[index].toggle();
-                          },
-                          icon: controller.isFavourite[index].value
-                              ? const Icon(
-                                  Icons.favorite,
-                                  color: AppColors.main,
-                                  size: 32,
-                                )
-                              : const Icon(
-                                  Icons.favorite_border,
-                                  color: AppColors.main,
-                                  size: 32,
-                                ),
-                        );
-                      }),
-                    ],
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            child: Text(
+                              fav.name ?? '',
+                              style: AppTextStyle.bold20,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () => controller.removeFavorite(index),
+                          icon: const Icon(
+                            Icons.favorite,
+                            color: AppColors.main,
+                            size: 32,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            );
-          },
-        ),
+              );
+            },
+          );
+        }),
       ),
     );
   }

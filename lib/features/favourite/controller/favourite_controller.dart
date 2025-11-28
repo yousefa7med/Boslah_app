@@ -1,25 +1,32 @@
 import 'package:depi_graduation_project/main.dart';
 import 'package:get/get.dart';
-
 import '../../../core/database/models/favorites.dart';
 
 class FavouritesController extends GetxController {
   final allFavourits = <Favorite>[].obs;
-  final isFavourite = <RxBool>[].obs;
 
   @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
     loadData();
   }
 
   Future<void> loadData() async {
-    allFavourits.value = await database.favoritedao.selectFavorites(
+    final list = await database.favoritedao.selectFavorites(
       cloud.auth.currentUser!.id,
     );
-    if (allFavourits.isNotEmpty) {
-      isFavourite.addAll(List.generate(allFavourits.length, (_) => true.obs));
-    }
+    // replace whole list so Obx detects change
+    allFavourits.value = list;
+  }
+
+  Future<void> removeFavorite(int index) async {
+    if (index < 0 || index >= allFavourits.length) return;
+
+    final fav = allFavourits[index];
+    await database.favoritedao.deleteFavorite(
+      fav.user_id!,
+      fav.place_id!,
+    );
+    allFavourits.removeAt(index);
   }
 }
