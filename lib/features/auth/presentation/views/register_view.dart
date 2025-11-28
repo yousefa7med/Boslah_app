@@ -1,4 +1,4 @@
-import 'package:depi_graduation_project/core/services/supabase_services/auth_service.dart';
+import 'package:depi_graduation_project/features/auth/supabase_services/auth_service.dart';
 import 'package:depi_graduation_project/core/utilities/app_colors.dart';
 import 'package:depi_graduation_project/core/utilities/app_text_style.dart';
 import 'package:depi_graduation_project/core/widgets/app_button.dart';
