@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
       builder: (_, child) {
         return GetMaterialApp(
           debugShowCheckedModeBanner: false,
-          initialRoute: Routes.main,
+          initialRoute: Routes.login,
           initialBinding: BindingsBuilder(() {
             Get.lazyPut(() => ApiServices());
             Get.lazyPut(() => HomeController(), fenix: true); // <- سجّله هنا
