@@ -1,7 +1,7 @@
 import 'package:depi_graduation_project/core/errors/app_exception.dart';
 import 'package:dio/dio.dart';
 
-class ApiServices {
+class ApiServices1 {
   static Dio dio = Dio()..options.baseUrl = EndPoints.baseUrl;
 
   Future<List<dynamic>> getPlacesByCatagory({

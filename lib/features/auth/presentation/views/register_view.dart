@@ -1,3 +1,4 @@
+import 'package:depi_graduation_project/core/services/supabase_services/auth_service.dart';
 import 'package:depi_graduation_project/core/utilities/app_colors.dart';
 import 'package:depi_graduation_project/core/utilities/app_text_style.dart';
 import 'package:depi_graduation_project/core/widgets/app_button.dart';
@@ -10,6 +11,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
+import '../../../../core/functions/snack_bar.dart';
 import '../../../../core/utilities/assets.dart';
 import '../../helper/validator.dart';
 
@@ -89,9 +91,14 @@ class RegisterView extends GetView<RegisterController> {
                       ),
                       const Gap(30),
                       AppButton(
-                        onPressed: () {
+                        onPressed: () async {
                           if (controller.formKey.currentState!.validate()) {
-                            // code Auth
+                            controller.registerUser(
+                              controller.nameController.text,
+                              controller.gmailController.text,
+                              controller.passwordController.text,
+                              context,
+                            );
                           }
                         },
 
