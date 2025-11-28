@@ -1,4 +1,3 @@
-import 'package:depi_graduation_project/features/auth/supabase_services/auth_service.dart';
 import 'package:depi_graduation_project/core/utilities/app_colors.dart';
 import 'package:depi_graduation_project/core/utilities/app_text_style.dart';
 import 'package:depi_graduation_project/core/widgets/app_button.dart';
@@ -11,7 +10,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
-import '../../../../core/functions/snack_bar.dart';
 import '../../../../core/utilities/assets.dart';
 import '../../helper/validator.dart';
 

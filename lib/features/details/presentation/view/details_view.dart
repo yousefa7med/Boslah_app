@@ -5,6 +5,7 @@ import 'package:flutter/material.dart' hide Page;
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:depi_graduation_project/core/services/api_services/place_details_response.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DetailsView extends GetView<DetailsController> {
   DetailsView({super.key});
@@ -14,8 +15,9 @@ class DetailsView extends GetView<DetailsController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-          padding: const EdgeInsets.only(right: 4, left: 4, top: 24, bottom: 8),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.only(right: 4, left: 4, bottom: 8),
           child: Card(
             elevation: 4,
             shape: RoundedRectangleBorder(
@@ -32,18 +34,21 @@ class DetailsView extends GetView<DetailsController> {
                         borderRadius: BorderRadius.circular(12),
                         child: page.thumbnail != null
                             ? Image.network(
-                          page.thumbnail!.source,
-                          width: double.infinity,
-                          height: 350,
-                          fit: BoxFit.fill,
-                        )
+                                page.thumbnail!.source,
+                                width: double.infinity,
+                                height: 350,
+                                fit: BoxFit.cover,
+                              )
                             : Container(
-                          width: double.infinity,
-                          height: 300,
-                          color: Colors.grey[300],
-                          child: const Icon(Icons.image_not_supported, size: 50,
-                              color: Colors.grey),
-                        ),
+                                width: double.infinity,
+                                height: 300,
+                                color: Colors.grey[300],
+                                child: const Icon(
+                                  Icons.image_not_supported,
+                                  size: 50,
+                                  color: Colors.grey,
+                                ),
+                              ),
                       ),
                       Positioned(
                         bottom: 8,
@@ -52,30 +57,30 @@ class DetailsView extends GetView<DetailsController> {
                           width: 70,
                           height: 70,
                           decoration: const BoxDecoration(
-                              color: Colors.white,
-                              shape: BoxShape.circle
+                            color: Colors.white,
+                            shape: BoxShape.circle,
                           ),
                           child: Obx(() {
                             return IconButton(
                               onPressed: () {
                                 controller.favorite.toggle();
-                                //Saving Code here 
+                                //Saving Code here
                               },
-                              icon: controller.favorite.value ?
-                              const Icon(
-                                Icons.favorite_border,
-                                color: Colors.red,
-                                size: 30,
-                              ):
-                              const Icon(
-                                Icons.favorite,
-                                color: Colors.red,
-                                size: 30,
-                              ),
+                              icon: controller.favorite.value
+                                  ? const Icon(
+                                      Icons.favorite_border,
+                                      color: Colors.red,
+                                      size: 30,
+                                    )
+                                  : const Icon(
+                                      Icons.favorite,
+                                      color: Colors.red,
+                                      size: 30,
+                                    ),
                             );
                           }),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -85,19 +90,32 @@ class DetailsView extends GetView<DetailsController> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(page.title,style: AppTextStyle.bold26.copyWith(fontSize: 30),)
-                      ,const Gap(20),
-                      page.description !=null?
-                      Text('" ${page.description}. "',
-                          style: AppTextStyle.semiBold22.copyWith(color: Colors.grey)):SizedBox.shrink(),
+                      Text(
+                        page.title,
+                        style: AppTextStyle.bold26.copyWith(fontSize: 30),
+                      ),
+                      const Gap(20),
+                      page.description != null
+                          ? Text(
+                              '" ${page.description}. "',
+                              style: AppTextStyle.semiBold22.copyWith(
+                                color: Colors.grey,
+                              ),
+                            )
+                          : const SizedBox.shrink(),
                       const Gap(20),
                       const Divider(),
                       const Gap(20),
                       Row(
                         children: [
-                          Text('OpeningHours',style: AppTextStyle.regular20.copyWith(color: AppColors.main)),
-                          const SizedBox(width: 20,),
-                          Text('9:00AM-11:00PM',style: AppTextStyle.regular18),
+                          Text(
+                            'OpeningHours',
+                            style: AppTextStyle.regular20.copyWith(
+                              color: AppColors.main,
+                            ),
+                          ),
+                          const SizedBox(width: 20),
+                          Text('9:00AM-11:00PM', style: AppTextStyle.regular18),
                         ],
                       ),
                       const Gap(18),
@@ -107,25 +125,37 @@ class DetailsView extends GetView<DetailsController> {
                         child: SizedBox(
                           height: 50,
                           width: 250,
-                          child: ElevatedButton(onPressed: (){
-                            //opening map code
-                          },
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              await launchUrl(
+                                mode: LaunchMode.externalApplication,
+                                Uri.parse(
+                                  "https://www.google.com/maps/search/?api=1&query=${page.coordinates![0].lat},${page.coordinates![0].lon}",
+                                ),
+                              );
+                            },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppColors.main,
                               shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8)
-                              )
-                            )
-                            ,child: Text('Open Location',style:AppTextStyle.regular18.copyWith(color: Colors.white),)),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            child: Text(
+                              'Open Location',
+                              style: AppTextStyle.regular18.copyWith(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
                         ),
-                      )
+                      ),
                     ],
                   ),
-                )
+                ),
               ],
             ),
-          )
-
+          ),
+        ),
       ),
     );
   }

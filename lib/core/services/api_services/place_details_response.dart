@@ -2,7 +2,6 @@
 //
 //     final placeDetailsResponse = placeDetailsResponseFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 PlaceDetailsResponse placeDetailsResponseFromJson(String str) => PlaceDetailsResponse.fromJson(json.decode(str));
