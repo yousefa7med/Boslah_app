@@ -71,76 +71,24 @@ class HomeView extends GetView<HomeController> {
               ),
               const Gap(20),
               Align(
-                  alignment: const Alignment(-0.9, 1)
-                  ,
-                  child: Text('Nearby Attractions', style: AppTextStyle.bold26,)
+                alignment: const Alignment(-0.9, 1),
+                child: Text('Nearby Attractions', style: AppTextStyle.bold26),
               ),
               const Gap(10),
               Obx(() {
                 return Expanded(
                   child: ListView.builder(
-                      itemCount: controller.places.length,
-                      itemBuilder: (ctx, index) =>
-                          Column(
-                            children: [
-                              InkWell(
-                                onTap:() {
-                                  Get.toNamed('/details',arguments: controller.places[index]);
-                                }
-                                ,child: Card(
-                                  elevation: 3,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:CrossAxisAlignment.start,
-                                    children: [
-                                      ClipRRect(
-                                        borderRadius: const BorderRadius.only(
-                                          topLeft: Radius.circular(12),
-                                          topRight: Radius.circular(12),
-                                        ),
-                                        child: controller.places[index].thumbnail != null
-                                            ? Image.network(
-                                          controller.places[index].thumbnail!.source,
-                                          width: double.infinity,
-                                          height: 180,
-                                          fit: BoxFit.fill,
-                                        )
-                                            : Container(
-                                          width: double.infinity,
-                                          height: 180,
-                                          color: Colors.grey[300],
-                                          child: const Icon(Icons.image_not_supported, size: 50, color: Colors.grey),
-                                        ),
-                                      ),
-                                      const Gap(10),
-                                      Padding(
-                                        padding: const EdgeInsets.only(left: 8,right: 8,bottom: 5),
-                                        child: Text(controller.places[index].title,style: AppTextStyle.semiBold24,),
-                                      ),
-                                      controller.places[index].description!=null?Padding(
-                                        padding: const EdgeInsets.only(left: 8,right: 8,bottom: 8),
-                                        child: Text('${controller.places[index].description}'
-                                          ,style: AppTextStyle.semiBold18.copyWith(color: Colors.grey),),
-                                      ):const Gap(5),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              const Gap(15)
-                            ],
-                          ),
+                    itemCount: controller.places.length,
+                    itemBuilder: (ctx, index) => PlaceCard(index),
                   ),
                 );
-              })
+              }),
             ],
           ),
         ),
       ),
     );
   }
-
 
   Widget buildSearch() {
     return TextField(
@@ -180,13 +128,13 @@ class HomeView extends GetView<HomeController> {
   Widget buildCardFilttring(int index, String label, {IconData}) {
     return Obx(() {
       bool isSelected = controller.selectedCard.value == index;
-      return InkWell(
-        onTap: () {
-          controller.selectedCard.value = index;
-          // calling the api
-        },
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        child: GestureDetector(
+          onTap: () {
+            controller.selectedCard.value = index;
+            // calling the api
+          },
           child: Card(
             elevation: 3,
             shape: RoundedRectangleBorder(
@@ -202,14 +150,14 @@ class HomeView extends GetView<HomeController> {
                 children: [
                   IconData != null
                       ? Row(
-                    children: [
-                      Icon(
-                        IconData,
-                        color: isSelected ? Colors.white : Colors.black,
-                      ),
-                      const Gap(10),
-                    ],
-                  )
+                          children: [
+                            Icon(
+                              IconData,
+                              color: isSelected ? Colors.white : Colors.black,
+                            ),
+                            const Gap(10),
+                          ],
+                        )
                       : const SizedBox.shrink(),
                   Text(
                     label,
@@ -226,16 +174,72 @@ class HomeView extends GetView<HomeController> {
       );
     });
   }
-
-
 }
 
-
-class PlaceCard extends StatelessWidget {
-  const PlaceCard({super.key});
-
+class PlaceCard extends GetView<HomeController> {
+  const PlaceCard(this.index, {super.key});
+  final int index;
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return InkWell(
+      onTap: () {
+        Get.toNamed('/details', arguments: controller.places[index]);
+      },
+      child: Card(
+        elevation: 3,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(12),
+                topRight: Radius.circular(12),
+              ),
+              child: controller.places[index].thumbnail != null
+                  ? Image.network(
+                      controller.places[index].thumbnail!.source,
+                      width: double.infinity,
+                      height: 180,
+                      fit: BoxFit.fill,
+                    )
+                  : Container(
+                      width: double.infinity,
+                      height: 180,
+                      color: Colors.grey[300],
+                      child: const Icon(
+                        Icons.image_not_supported,
+                        size: 50,
+                        color: Colors.grey,
+                      ),
+                    ),
+            ),
+            const Gap(10),
+            Padding(
+              padding: const EdgeInsets.only(left: 8, right: 8, bottom: 5),
+              child: Text(
+                controller.places[index].title,
+                style: AppTextStyle.semiBold24,
+              ),
+            ),
+            controller.places[index].description != null
+                ? Padding(
+                    padding: const EdgeInsets.only(
+                      left: 8,
+                      right: 8,
+                      bottom: 8,
+                    ),
+                    child: Text(
+                      '${controller.places[index].description}',
+                      style: AppTextStyle.semiBold18.copyWith(
+                        color: Colors.grey,
+                      ),
+                    ),
+                  )
+                : const Gap(5),
+          ],
+        ),
+      ),
+    );
   }
 }

@@ -1,5 +1,5 @@
 import 'package:depi_graduation_project/core/functions/snack_bar.dart';
-import 'package:depi_graduation_project/features/auth/supabase_services/auth_service.dart';
+import 'package:depi_graduation_project/core/services/supabase_services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
