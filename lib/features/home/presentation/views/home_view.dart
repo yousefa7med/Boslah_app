@@ -229,3 +229,13 @@ class HomeView extends GetView<HomeController> {
 
 
 }
+
+
+class PlaceCard extends StatelessWidget {
+  const PlaceCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
+  }
+}

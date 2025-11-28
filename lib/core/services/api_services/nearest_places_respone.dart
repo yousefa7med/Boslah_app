@@ -2,7 +2,6 @@
 //
 //     final nearestPlacesResponse = nearestPlacesResponseFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 NearestPlacesResponse nearestPlacesResponseFromJson(String str) => NearestPlacesResponse.fromJson(json.decode(str));

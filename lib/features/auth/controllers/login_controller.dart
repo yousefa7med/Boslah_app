@@ -23,7 +23,7 @@ class LoginController extends GetxController {
       showSnackBar(context, error);
     } else {
       showSnackBar(context, "Logged in successfully!");
-      Get.offNamed(Routes.home);
+      Get.offNamed(Routes.main);
     }
   }
 }

@@ -1,5 +1,4 @@
 import 'package:depi_graduation_project/core/services/api_services/place_details_response.dart';
-import 'package:depi_graduation_project/location.dart';
 import 'package:flutter/cupertino.dart' hide Page;
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
