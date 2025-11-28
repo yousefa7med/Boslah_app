@@ -5,5 +5,6 @@ class Assets {
   /// Assets for imagesAppIcon
   /// assets/images/appIcon.svg
   static const String imagesAppIcon = "assets/images/appIcon.svg";
+  static const String databaseAsset = "assets/database/tourAppDB.db";
 }
 
