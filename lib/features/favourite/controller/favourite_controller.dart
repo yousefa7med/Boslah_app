@@ -3,11 +3,9 @@ import 'package:get/get.dart';
 
 import '../../../core/database/models/favorites.dart';
 
-class FavouritesController extends GetxController{
-
-  final allFavourits=<Favorite>[].obs;
+class FavouritesController extends GetxController {
+  final allFavourits = <Favorite>[].obs;
   final isFavourite = <RxBool>[].obs;
-
 
   @override
   void onInit() {
@@ -17,10 +15,11 @@ class FavouritesController extends GetxController{
   }
 
   Future<void> loadData() async {
-    allFavourits.value= await database.favoritedao.selectFavorites(cloud.auth.currentUser as String);
-    if(allFavourits.isNotEmpty){
+    allFavourits.value = await database.favoritedao.selectFavorites(
+      cloud.auth.currentUser!.id,
+    );
+    if (allFavourits.isNotEmpty) {
       isFavourite.addAll(List.generate(allFavourits.length, (_) => true.obs));
     }
   }
-
 }

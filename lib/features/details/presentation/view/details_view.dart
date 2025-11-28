@@ -4,16 +4,15 @@ import 'package:depi_graduation_project/features/details/controllers/details_con
 import 'package:flutter/material.dart' hide Page;
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:depi_graduation_project/core/services/api_services/place_details_response.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DetailsView extends GetView<DetailsController> {
-  DetailsView({super.key});
-
+  const DetailsView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    controller.place=Get.arguments;
+    controller.place = Get.arguments;
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -32,9 +31,9 @@ class DetailsView extends GetView<DetailsController> {
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(12),
-                        child:  controller.place!.thumbnail != null
+                        child: controller.place.thumbnail != null
                             ? Image.network(
-                          controller.place!.thumbnail!.source,
+                                controller.place.thumbnail!.source,
                                 width: double.infinity,
                                 height: 350,
                                 fit: BoxFit.cover,
@@ -63,21 +62,21 @@ class DetailsView extends GetView<DetailsController> {
                           child: Obx(() {
                             return IconButton(
                               onPressed: () {
-                                if(controller.favorite.value){
+                                if (controller.favorite.value) {
                                   controller.removeFromFav();
-                                }else{
+                                } else {
                                   controller.addToFav();
                                 }
                                 controller.favorite.toggle();
                               },
                               icon: controller.favorite.value
                                   ? const Icon(
-                                      Icons.favorite_border,
+                                      Icons.favorite,
                                       color: Colors.red,
                                       size: 30,
                                     )
                                   : const Icon(
-                                      Icons.favorite,
+                                      Icons.favorite_border,
                                       color: Colors.red,
                                       size: 30,
                                     ),
@@ -95,13 +94,13 @@ class DetailsView extends GetView<DetailsController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        controller.place!.title,
+                        controller.place.title,
                         style: AppTextStyle.bold26.copyWith(fontSize: 30),
                       ),
                       const Gap(20),
-                      controller.place!.description != null
+                      controller.place.description != null
                           ? Text(
-                              '" ${ controller.place!.description}. "',
+                              '" ${controller.place.description}. "',
                               style: AppTextStyle.semiBold22.copyWith(
                                 color: Colors.grey,
                               ),
@@ -134,7 +133,7 @@ class DetailsView extends GetView<DetailsController> {
                               await launchUrl(
                                 mode: LaunchMode.externalApplication,
                                 Uri.parse(
-                                  "https://www.google.com/maps/search/?api=1&query=${ controller.place!.coordinates![0].lat},${ controller.place!.coordinates![0].lon}",
+                                  "https://www.google.com/maps/search/?api=1&query=${controller.place.coordinates![0].lat},${controller.place.coordinates![0].lon}",
                                 ),
                               );
                             },

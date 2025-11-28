@@ -1,5 +1,6 @@
 import 'package:depi_graduation_project/core/utilities/app_text_style.dart';
 import 'package:depi_graduation_project/features/home/controllers/home_controller.dart';
+import 'package:depi_graduation_project/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
@@ -184,6 +185,7 @@ class PlaceCard extends GetView<HomeController> {
     return InkWell(
       onTap: () {
         Get.toNamed('/details', arguments: controller.places[index]);
+        print(cloud.auth.currentUser!.id);
       },
       child: Card(
         elevation: 3,

@@ -91,7 +91,7 @@ class RegisterView extends GetView<RegisterController> {
                       AppButton(
                         onPressed: () async {
                           if (controller.formKey.currentState!.validate()) {
-                            controller.registerUser(
+                            await controller.registerUser(
                               controller.nameController.text,
                               controller.gmailController.text,
                               controller.passwordController.text,

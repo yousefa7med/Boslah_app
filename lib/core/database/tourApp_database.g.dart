@@ -106,7 +106,7 @@ class _$tourDatabase extends tourDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `region_requests` (`region_id` INTEGER PRIMARY KEY AUTOINCREMENT, `lat` REAL NOT NULL, `lng` REAL NOT NULL, `timestamp` INTEGER NOT NULL)');
+            'CREATE TABLE IF NOT EXISTS `region_requests` (`region_id` INTEGER PRIMARY KEY AUTOINCREMENT, `lat` REAL NOT NULL, `lng` REAL NOT NULL, `timestamp` INTEGER)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `region_places` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `region_id` INTEGER NOT NULL, `place_id` TEXT NOT NULL, `name` TEXT, `lat` REAL NOT NULL, `lng` REAL NOT NULL, `desc` TEXT, `isFav` INTEGER, `category` TEXT, `image` TEXT, `googleLink` TEXT)');
         await database.execute(
@@ -185,7 +185,7 @@ class _$RegionRequestDao extends RegionRequestDao {
   Future<RegionRequest?> selectLastRequest(String uid) async {
     return _queryAdapter.query(
         'SELECT * FROM region_requests WHERE user_id = ?1 ORDER BY timestamp DESC LIMIT 1',
-        mapper: (Map<String, Object?> row) => RegionRequest(region_id: row['region_id'] as int?, lat: row['lat'] as double, lng: row['lng'] as double, timestamp: row['timestamp'] as int),
+        mapper: (Map<String, Object?> row) => RegionRequest(region_id: row['region_id'] as int?, lat: row['lat'] as double, lng: row['lng'] as double, timestamp: row['timestamp'] as int?),
         arguments: [uid]);
   }
 
@@ -197,7 +197,18 @@ class _$RegionRequestDao extends RegionRequestDao {
             region_id: row['region_id'] as int?,
             lat: row['lat'] as double,
             lng: row['lng'] as double,
-            timestamp: row['timestamp'] as int));
+            timestamp: row['timestamp'] as int?));
+  }
+
+  @override
+  Future<int?> selectRegionId(
+    double lat,
+    double lng,
+  ) async {
+    return _queryAdapter.query(
+        'Select region_id from region_requests where lat = ?1 and lng = ?2',
+        mapper: (Map<String, Object?> row) => row.values.first as int,
+        arguments: [lat, lng]);
   }
 
   @override
@@ -339,11 +350,11 @@ class _$FavoriteDao extends FavoriteDao {
 
   @override
   Future<Favorite?> selectOneFavPlace(
-    String placeId,
     String uid,
+    String placeId,
   ) async {
     return _queryAdapter.query(
-        'select * from favorites WHERE user_id = ?2 AND place_id = ?1',
+        'select * from favorites WHERE user_id = ?1 AND place_id = ?2',
         mapper: (Map<String, Object?> row) => Favorite(
             fav_id: row['fav_id'] as int?,
             place_id: row['place_id'] as String?,
@@ -353,7 +364,7 @@ class _$FavoriteDao extends FavoriteDao {
             lng: row['lng'] as double?,
             added_at: row['added_at'] as int?,
             image: row['image'] as String?),
-        arguments: [placeId, uid]);
+        arguments: [uid, placeId]);
   }
 
   @override

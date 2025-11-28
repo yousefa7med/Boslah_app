@@ -14,6 +14,8 @@ abstract class RegionRequestDao{
 
   @Insert(onConflict: OnConflictStrategy.replace)
   Future<int> insertRegionRequest(RegionRequest rr);
-
+  
+@Query('Select region_id from region_requests where lat = :lat and lng = :lng')
+  Future<int?> selectRegionId(double lat, double lng);
 
 }

@@ -4,37 +4,39 @@ import 'package:get/get.dart';
 
 import '../../../core/services/api_services/place_details_response.dart';
 
-class DetailsController extends GetxController{
+class DetailsController extends GetxController {
+  RxBool favorite = true.obs; // initialize here
+  late Page place;
 
-    RxBool favorite = true.obs; // initialize here
-    Page? place=null;
+  @override
+  Future<void> onInit() async {
+    place = Get.arguments;
+    favorite.value = await isFavorite();
+    super.onInit();
+  }
 
-    @override
-    Future<void> onInit() async {
-        // TODO: implement onInit
-        favorite.value=await isFavorite();
-        super.onInit();
-    }
+  Future<void> addToFav() async {
+    final addFavorite = Favorite(
+      place_id: place.pageid.toString(),
+      user_id: cloud.auth.currentUser!.id,
+      image: place.thumbnail!.source,
+      name: place.title,
+    );
+    await database.favoritedao.insertFavorite(addFavorite);
+  }
 
-    Future<void> addToFav() async {
-        final addFavorite=Favorite(place_id: place!.pageid.toString(),
-            user_id: cloud.auth.currentUser.toString(),image: place!.thumbnail.toString(),name: place!.title);
-        await database.favoritedao.insertFavorite(addFavorite);
-    }
+  Future<void> removeFromFav() async {
+    await database.favoritedao.deleteFavorite(
+      cloud.auth.currentUser!.id,
+      place.pageid.toString(),
+    );
+  }
 
-    Future<void> removeFromFav() async {
-
-        await database.favoritedao.deleteFavorite(cloud.auth.currentUser.toString(),
-            place!.pageid.toString());
-    }
-
-    Future<bool> isFavorite() async {
-       final result= await database.favoritedao.selectOneFavPlace(place!.pageid.toString(),cloud.auth.currentUser.toString());
-        return result!=null;
-    }
-
-
-
+  Future<bool> isFavorite() async {
+    final result = await database.favoritedao.selectOneFavPlace(
+      cloud.auth.currentUser!.id,
+      place.pageid.toString(),
+    );
+    return result != null;
+  }
 }
-
-

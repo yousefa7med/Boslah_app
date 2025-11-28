@@ -1,9 +1,11 @@
+import 'package:depi_graduation_project/core/database/models/profile.dart';
 import 'package:depi_graduation_project/core/utilities/app_colors.dart';
 import 'package:depi_graduation_project/core/utilities/app_text_style.dart';
 import 'package:depi_graduation_project/core/widgets/app_button.dart';
 import 'package:depi_graduation_project/features/auth/controllers/login_controller.dart';
 import 'package:depi_graduation_project/features/auth/presentation/widgets/app_textFormField.dart';
 import 'package:depi_graduation_project/features/auth/presentation/widgets/password_text_field.dart';
+import 'package:depi_graduation_project/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -81,12 +83,15 @@ class LoginView extends GetView<LoginController> {
                         ),
                       ),
                       AppButton(
-                        onPressed: () {
+                        onPressed: () async {
                           if (controller.formKey.currentState!.validate()) {
-                            controller.loginUser(
+                            await controller.loginUser(
                               controller.emailController.text,
                               controller.passwordController.text,
                               context,
+                            );
+                            await database.profiledao.insertUser(
+                              Profile(user_id: cloud.auth.currentUser!.id),
                             );
                           }
                         },

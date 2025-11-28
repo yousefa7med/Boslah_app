@@ -1,17 +1,13 @@
-
 import 'package:depi_graduation_project/core/database/models/favorites.dart';
 import 'package:floor/floor.dart';
 
 @dao
-abstract class FavoriteDao{
-
+abstract class FavoriteDao {
   @Query('SELECT * FROM favorites WHERE user_id = :userId')
   Future<List<Favorite>> selectFavorites(String userId);
 
-
   @Query('select * from favorites WHERE user_id = :uid AND place_id = :placeId')
-  Future<Favorite?> selectOneFavPlace(String placeId,String uid);
-
+  Future<Favorite?> selectOneFavPlace(String uid, String placeId);
 
   @Insert(onConflict: OnConflictStrategy.replace)
   Future<int> insertFavorite(Favorite favPlace);
@@ -22,8 +18,6 @@ abstract class FavoriteDao{
   @Query('DELETE FROM favorites WHERE user_id = :uid AND place_id = :placeId')
   Future<void> deleteFavorite(String uid, String placeId);
 
-
   @Query('DELETE FROM favorites WHERE user_id = :uid')
   Future<void> deleteAllFavoritesByUser(String uid);
-
 }

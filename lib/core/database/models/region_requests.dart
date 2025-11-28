@@ -7,12 +7,12 @@ class RegionRequest {
 
   final double lat;
   final double lng;
-  final int timestamp;
+  final int? timestamp;
 
   RegionRequest({
     this.region_id,
     required this.lat,
     required this.lng,
-    required this.timestamp,
+     this.timestamp,
   });
 }

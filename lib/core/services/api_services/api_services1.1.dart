@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
 
 import 'package:depi_graduation_project/core/services/api_services/nearest_places_respone.dart';
 import 'package:depi_graduation_project/core/services/api_services/place_details_response.dart';
