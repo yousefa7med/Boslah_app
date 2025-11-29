@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:depi_graduation_project/core/database/models/favorites.dart';
 import 'package:depi_graduation_project/main.dart';
 import 'package:get/get.dart';
@@ -12,7 +14,12 @@ class DetailsController extends GetxController {
   @override
   Future<void> onInit() async {
     place = Get.arguments;
-    favorite.value = await isFavorite();
+    if (pendingFavorite != null) {
+      favorite.value = pendingFavorite!;
+    } else {
+      // غير كده، جيب القيمة الحقيقية من الداتا بيز
+      favorite.value = await isFavorite();
+    }
     super.onInit();
   }
 
@@ -51,6 +58,30 @@ class DetailsController extends GetxController {
     );
     return result != null;
 
+  }
 
+
+  Timer? t;
+  bool? pendingFavorite; // القيمة المنتظرة
+
+  void onFavPressed(bool isFav) {
+    // احفظ القيمة المؤقتة
+    pendingFavorite = isFav;
+
+    // غيّر UI فورًا
+    favorite.value = isFav;
+
+    // الغي أي تايمر شغال
+    t?.cancel();
+
+    // عمل تايمر جديد
+    t = Timer(Duration(seconds: 1), () async {
+      if (pendingFavorite == true) {
+        await addToFav();
+      } else {
+        await removeFromFav();
+      }
+      pendingFavorite = null;
+    });
   }
 }
