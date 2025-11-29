@@ -61,13 +61,10 @@ class DetailsView extends GetView<DetailsController> {
                           ),
                           child: Obx(() {
                             return IconButton(
-                              onPressed: () {
-                                if (controller.favorite.value) {
-                                  controller.removeFromFav();
-                                } else {
-                                  controller.addToFav();
-                                }
-                                controller.favorite.toggle();
+                              onPressed: () async {
+                                bool newValue = !controller.favorite.value;   // القيمة الجديدة
+                                controller.favorite.value = newValue;         // غيّر شكل القلب فوراً
+                                controller.onFavPressed(newValue);// سيب الكنترولر ينتظر 3 ثواني
                               },
                               icon: controller.favorite.value
                                   ? const Icon(

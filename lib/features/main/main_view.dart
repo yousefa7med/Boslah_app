@@ -42,15 +42,7 @@ List<PersistentTabConfig> _tabs() => [
   //     inactiveForegroundColor: Colors.grey,
   //   ),
   // ),
-  PersistentTabConfig(
-    screen: const ProfileView(),
-    item: ItemConfig(
-      icon: const Icon(Icons.person),
-      title: 'Profile',
-      activeForegroundColor: AppColors.main,
-      inactiveForegroundColor: Colors.grey,
-    ),
-  ),
+
   PersistentTabConfig(
     screen: Builder(
       builder: (_) {
@@ -64,6 +56,15 @@ List<PersistentTabConfig> _tabs() => [
     item: ItemConfig(
       icon: const Icon(Icons.favorite_border),
       title: 'Favourites',
+      activeForegroundColor: AppColors.main,
+      inactiveForegroundColor: Colors.grey,
+    ),
+  ),
+  PersistentTabConfig(
+    screen: const ProfileView(),
+    item: ItemConfig(
+      icon: const Icon(Icons.person),
+      title: 'Profile',
       activeForegroundColor: AppColors.main,
       inactiveForegroundColor: Colors.grey,
     ),

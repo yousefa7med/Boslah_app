@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:depi_graduation_project/main.dart';
 import 'package:get/get.dart';
 import '../../../core/database/models/favorites.dart';
