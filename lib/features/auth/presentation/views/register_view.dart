@@ -1,3 +1,5 @@
+import 'package:depi_graduation_project/core/errors/app_exception.dart';
+import 'package:depi_graduation_project/core/functions/snack_bar.dart';
 import 'package:depi_graduation_project/core/utilities/app_colors.dart';
 import 'package:depi_graduation_project/core/utilities/app_text_style.dart';
 import 'package:depi_graduation_project/core/widgets/app_button.dart';
@@ -87,16 +89,41 @@ class RegisterView extends GetView<RegisterController> {
                         hintText: 'Enter your password',
                         validator: Validator.signupPasswordValidator(),
                       ),
+                      const Gap(20),
+                      Text(
+                        'Password',
+                        style: TextStyle(
+                          color: Colors.black87,
+                          fontSize: 17.sp,
+                        ),
+                      ),
+                      const Gap(4),
+
+                      PasswordTextField(
+                        controller: controller.confirmPasswordController,
+                        hintText: 'Confirm your password',
+                        validator: Validator.confirmPasswordValidator(
+                          orgPasswordGetter: () =>
+                              controller.passwordController.text,
+                        ),
+                      ),
                       const Gap(30),
                       AppButton(
                         onPressed: () async {
                           if (controller.formKey.currentState!.validate()) {
-                            await controller.registerUser(
-                              controller.nameController.text,
-                              controller.gmailController.text,
-                              controller.passwordController.text,
-                              context,
-                            );
+                            try {
+                              await controller.registerUser(
+                                fullName: controller.nameController.text,
+                                email: controller.gmailController.text,
+                                password: controller.passwordController.text,
+                              );
+                              showSnackBar(
+                                context,
+                                "Account created successfully!",
+                              );
+                            } on AppException catch (e) {
+                              showSnackBar(context, e.msg);
+                            }
                           }
                         },
 

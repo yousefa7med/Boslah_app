@@ -1,38 +1,10 @@
+import 'package:depi_graduation_project/core/errors/app_exception.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../main.dart';
 
 class AuthService {
-  // Future<bool> register(String fullName, String email, String password) async {
-  //   try {
-  //     final response = await cloud.auth.signUp(
-  //       password: password,
-  //       email: email,
-  //     );
-  //     final user = response.user;
-  //
-  //     if (user != null) {
-  //       await cloud.from('profiles').insert({
-  //         'id': user.id,
-  //         'full_name': fullName,
-  //       });
-  //     }
-  //
-  //     return true;
-  //   } catch (e) {
-  //     if (e.toString().contains("User already registered") ||
-  //         e.toString().contains("User already exists")) {
-  //       throw Exception("This email is already registered");
-  //     }
-  //
-  //     throw Exception("Registration failed, please try again");
-  //   }
-  // }
-  Future<String?> register(
-    String fullName,
-    String email,
-    String password,
-  ) async {
+  Future<void> register(String fullName, String email, String password) async {
     try {
       final response = await cloud.auth.signUp(
         password: password,
@@ -46,35 +18,26 @@ class AuthService {
           'full_name': fullName,
         });
       }
-
-      return null;
-    } on AuthException catch (e) {
-      return e.message;
-    } on PostgrestException catch (e) {
-      return e.message;
     } catch (e) {
-      return "Registration failed, please try again";
+      throw AppException(msg: "Registration failed, please try again");
     }
   }
 
-  Future<String?> login(String email, String password) async {
+  Future<void> login(String email, String password) async {
     try {
       await cloud.auth.signInWithPassword(email: email, password: password);
-
-      return null;
     } on AuthException catch (e) {
-      return e.message;
+      throw AppException(msg: e.message);
     } catch (e) {
-      return "Login failed, please try again";
+      throw AppException(msg: "Login failed, please try again");
     }
   }
 
-  Future<String?> logout() async {
+  Future<void> logout() async {
     try {
       await cloud.auth.signOut();
-      return null; // done
     } catch (e) {
-      return "Logout failed, please try again";
+      throw AppException(msg: "Logout failed, please try again");
     }
   }
 

@@ -1,4 +1,6 @@
 import 'package:depi_graduation_project/core/database/models/profile.dart';
+import 'package:depi_graduation_project/core/errors/app_exception.dart';
+import 'package:depi_graduation_project/core/functions/snack_bar.dart';
 import 'package:depi_graduation_project/core/utilities/app_colors.dart';
 import 'package:depi_graduation_project/core/utilities/app_text_style.dart';
 import 'package:depi_graduation_project/core/widgets/app_button.dart';
@@ -85,14 +87,19 @@ class LoginView extends GetView<LoginController> {
                       AppButton(
                         onPressed: () async {
                           if (controller.formKey.currentState!.validate()) {
-                            await controller.loginUser(
-                              controller.emailController.text,
-                              controller.passwordController.text,
-                              context,
-                            );
+                            try {
+                              await controller.loginUser(
+                                email: controller.emailController.text,
+                                password: controller.passwordController.text,
+                              );
+                              showSnackBar(context, "Logged in successfully!");
+                            } on AppException catch (e) {
+                              showSnackBar(context, e.msg);
+                            }
                             await database.profiledao.insertUser(
                               Profile(user_id: cloud.auth.currentUser!.id),
                             );
+                            print(cloud.auth.currentUser);
                           }
                         },
 

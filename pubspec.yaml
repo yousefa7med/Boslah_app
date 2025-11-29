@@ -28,20 +28,21 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  connectivity_plus: ^7.0.0
   cupertino_icons: ^1.0.8
   dio: ^5.9.0
+  floor: ^1.5.0
   flutter:
     sdk: flutter
   flutter_screenutil: ^5.9.3
+  flutter_svg: ^2.1.1
   gap: ^3.0.1
-  supabase_flutter: ^2.10.3
   geolocator: ^14.0.2
   get: ^4.7.3
-  flutter_svg: ^2.1.1
-  floor: ^1.5.0
   path_provider: ^2.1.5
-  shared_preferences: ^2.5.3
   persistent_bottom_nav_bar_v2: ^6.2.0
+  shared_preferences: ^2.5.3
+  supabase_flutter: ^2.10.3
   url_launcher: ^6.3.2
 
 dev_dependencies:
@@ -62,9 +63,8 @@ flutter:
   uses-material-design: true
   # To add assets to your application, add an assets section, like this:
   assets:
-   - assets/images/
-   - assets/database/
-
+    - assets/images/
+    - assets/database/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
   # For details regarding adding assets from package dependencies, see
