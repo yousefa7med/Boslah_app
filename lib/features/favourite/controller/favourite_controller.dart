@@ -21,14 +21,22 @@ class FavouritesController extends GetxController {
     allFavourits.value = list;
   }
 
-  Future<void> removeFavorite(int index) async {
-    if (index < 0 || index >= allFavourits.length) return;
-
-    final fav = allFavourits[index];
+  // Future<void> removeFavorite(int index) async {
+  //   if (index < 0 || index >= allFavourits.length) return;
+  //
+  //   final fav = allFavourits[index];
+  //   await database.favoritedao.deleteFavorite(
+  //     fav.user_id!,
+  //     fav.place_id!,
+  //   );
+  //   allFavourits.removeAt(index);
+  // }
+  Future<void> removeFavorite(int placeId) async {
     await database.favoritedao.deleteFavorite(
-      fav.user_id!,
-      fav.place_id!,
+      cloud.auth.currentUser!.id,
+      placeId,
     );
-    allFavourits.removeAt(index);
+
+    allFavourits.removeWhere((f) => f.place_id == placeId);
   }
 }
