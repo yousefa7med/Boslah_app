@@ -13,22 +13,17 @@ class DetailsController extends GetxController {
 
   @override
   Future<void> onInit() async {
-    place = Get.arguments;
-    if (pendingFavorite != null) {
-      favorite.value = pendingFavorite!;
-    } else {
-      // غير كده، جيب القيمة الحقيقية من الداتا بيز
-      favorite.value = await isFavorite();
-    }
     super.onInit();
+    place = Get.arguments;
+    favorite.value = await isFavorite();
   }
 
   Future<void> addToFav() async {
     final addFavorite = Favorite(
-      place_id: place.pageid.toString(),
+      place_id: place.pageid,
       user_id: cloud.auth.currentUser!.id,
       image: place.thumbnail?.source,
-      name: place.title,
+      name: place.title, desc: '',
     );
     await database.favoritedao.insertFavorite(addFavorite);
 
@@ -42,7 +37,7 @@ class DetailsController extends GetxController {
   Future<void> removeFromFav() async {
     await database.favoritedao.deleteFavorite(
       cloud.auth.currentUser!.id,
-      place.pageid.toString(),
+      place.pageid,
     );
 
     try {
@@ -54,34 +49,10 @@ class DetailsController extends GetxController {
   Future<bool> isFavorite() async {
     final result = await database.favoritedao.selectOneFavPlace(
       cloud.auth.currentUser!.id,
-      place.pageid.toString(),
+      place.pageid,
     );
     return result != null;
 
   }
 
-
-  Timer? t;
-  bool? pendingFavorite; // القيمة المنتظرة
-
-  void onFavPressed(bool isFav) {
-    // احفظ القيمة المؤقتة
-    pendingFavorite = isFav;
-
-    // غيّر UI فورًا
-    favorite.value = isFav;
-
-    // الغي أي تايمر شغال
-    t?.cancel();
-
-    // عمل تايمر جديد
-    t = Timer(Duration(seconds: 1), () async {
-      if (pendingFavorite == true) {
-        await addToFav();
-      } else {
-        await removeFromFav();
-      }
-      pendingFavorite = null;
-    });
-  }
 }

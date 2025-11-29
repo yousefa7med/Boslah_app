@@ -108,9 +108,9 @@ class _$tourDatabase extends tourDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `region_requests` (`region_id` INTEGER PRIMARY KEY AUTOINCREMENT, `lat` REAL NOT NULL, `lng` REAL NOT NULL, `timestamp` INTEGER)');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `region_places` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `region_id` INTEGER NOT NULL, `place_id` TEXT NOT NULL, `name` TEXT, `lat` REAL NOT NULL, `lng` REAL NOT NULL, `desc` TEXT, `isFav` INTEGER, `category` TEXT, `image` TEXT, `googleLink` TEXT)');
+            'CREATE TABLE IF NOT EXISTS `region_places` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `region_id` INTEGER NOT NULL, `search_id` INTEGER, `place_id` TEXT NOT NULL, `name` TEXT, `desc` TEXT, `category` TEXT, `image` TEXT, `lat` REAL NOT NULL, `lng` REAL NOT NULL)');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `favorites` (`fav_id` INTEGER PRIMARY KEY AUTOINCREMENT, `user_id` TEXT, `place_id` TEXT, `name` TEXT, `lat` REAL, `lng` REAL, `added_at` INTEGER, `image` TEXT)');
+            'CREATE TABLE IF NOT EXISTS `favorites` (`fav_id` INTEGER PRIMARY KEY AUTOINCREMENT, `place_id` INTEGER, `added_at` INTEGER, `user_id` TEXT NOT NULL, `name` TEXT NOT NULL, `image` TEXT, `desc` TEXT, `category` TEXT, `lat` REAL, `lng` REAL)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `schedules` (`schedule_id` INTEGER PRIMARY KEY AUTOINCREMENT, `place_id` TEXT, `scheduled_at` TEXT NOT NULL, `note` TEXT, `isDone` INTEGER, `created_at` INTEGER NOT NULL, `user_id` TEXT)');
         await database.execute(
@@ -229,15 +229,14 @@ class _$RegionPlacesDao extends RegionPlacesDao {
             (RegionPlace item) => <String, Object?>{
                   'id': item.id,
                   'region_id': item.region_id,
+                  'search_id': item.search_id,
                   'place_id': item.place_id,
                   'name': item.name,
-                  'lat': item.lat,
-                  'lng': item.lng,
                   'desc': item.desc,
-                  'isFav': item.isFav == null ? null : (item.isFav! ? 1 : 0),
                   'category': item.category,
                   'image': item.image,
-                  'googleLink': item.googleLink
+                  'lat': item.lat,
+                  'lng': item.lng
                 });
 
   final sqflite.DatabaseExecutor database;
@@ -260,15 +259,14 @@ class _$RegionPlacesDao extends RegionPlacesDao {
             lat: row['lat'] as double,
             lng: row['lng'] as double,
             desc: row['desc'] as String?,
-            isFav: row['isFav'] == null ? null : (row['isFav'] as int) != 0,
             category: row['category'] as String?,
             image: row['image'] as String?,
-            googleLink: row['googleLink'] as String?),
+            search_id: row['search_id'] as int?),
         arguments: [regionId]);
   }
 
   @override
-  Future<RegionPlace?> selectPlaceById(String placeId) async {
+  Future<RegionPlace?> selectPlaceById(int placeId) async {
     return _queryAdapter.query(
         'SELECT * FROM region_places WHERE place_id = ?1',
         mapper: (Map<String, Object?> row) => RegionPlace(
@@ -279,10 +277,9 @@ class _$RegionPlacesDao extends RegionPlacesDao {
             lat: row['lat'] as double,
             lng: row['lng'] as double,
             desc: row['desc'] as String?,
-            isFav: row['isFav'] == null ? null : (row['isFav'] as int) != 0,
             category: row['category'] as String?,
             image: row['image'] as String?,
-            googleLink: row['googleLink'] as String?),
+            search_id: row['search_id'] as int?),
         arguments: [placeId]);
   }
 
@@ -316,13 +313,15 @@ class _$FavoriteDao extends FavoriteDao {
             'favorites',
             (Favorite item) => <String, Object?>{
                   'fav_id': item.fav_id,
-                  'user_id': item.user_id,
                   'place_id': item.place_id,
-                  'name': item.name,
-                  'lat': item.lat,
-                  'lng': item.lng,
                   'added_at': item.added_at,
-                  'image': item.image
+                  'user_id': item.user_id,
+                  'name': item.name,
+                  'image': item.image,
+                  'desc': item.desc,
+                  'category': item.category,
+                  'lat': item.lat,
+                  'lng': item.lng
                 });
 
   final sqflite.DatabaseExecutor database;
@@ -338,39 +337,43 @@ class _$FavoriteDao extends FavoriteDao {
     return _queryAdapter.queryList('SELECT * FROM favorites WHERE user_id = ?1',
         mapper: (Map<String, Object?> row) => Favorite(
             fav_id: row['fav_id'] as int?,
-            place_id: row['place_id'] as String?,
-            name: row['name'] as String?,
-            user_id: row['user_id'] as String?,
-            lat: row['lat'] as double?,
-            lng: row['lng'] as double?,
+            place_id: row['place_id'] as int?,
             added_at: row['added_at'] as int?,
-            image: row['image'] as String?),
+            name: row['name'] as String,
+            user_id: row['user_id'] as String,
+            desc: row['desc'] as String?,
+            image: row['image'] as String?,
+            category: row['category'] as String?,
+            lat: row['lat'] as double?,
+            lng: row['lng'] as double?),
         arguments: [userId]);
   }
 
   @override
   Future<Favorite?> selectOneFavPlace(
     String uid,
-    String placeId,
+    int placeId,
   ) async {
     return _queryAdapter.query(
         'select * from favorites WHERE user_id = ?1 AND place_id = ?2',
         mapper: (Map<String, Object?> row) => Favorite(
             fav_id: row['fav_id'] as int?,
-            place_id: row['place_id'] as String?,
-            name: row['name'] as String?,
-            user_id: row['user_id'] as String?,
-            lat: row['lat'] as double?,
-            lng: row['lng'] as double?,
+            place_id: row['place_id'] as int?,
             added_at: row['added_at'] as int?,
-            image: row['image'] as String?),
+            name: row['name'] as String,
+            user_id: row['user_id'] as String,
+            desc: row['desc'] as String?,
+            image: row['image'] as String?,
+            category: row['category'] as String?,
+            lat: row['lat'] as double?,
+            lng: row['lng'] as double?),
         arguments: [uid, placeId]);
   }
 
   @override
   Future<void> deleteFavorite(
     String uid,
-    String placeId,
+    int placeId,
   ) async {
     await _queryAdapter.queryNoReturn(
         'DELETE FROM favorites WHERE user_id = ?1 AND place_id = ?2',

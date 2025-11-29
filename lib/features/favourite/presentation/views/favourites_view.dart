@@ -54,14 +54,14 @@ class FavouritesView extends GetView<FavouritesController> {
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                             child: Text(
-                              fav.name ?? '',
+                              fav.name,
                               style: AppTextStyle.bold20,
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
                         ),
                         IconButton(
-                          onPressed: () => controller.removeFavorite(index),
+                          onPressed: () => controller.removeFavorite(fav.place_id!),
                           icon: const Icon(
                             Icons.favorite,
                             color: AppColors.main,
