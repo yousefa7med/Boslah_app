@@ -4,7 +4,6 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../main.dart';
 import '../../../models/favorite_supabase.dart';
-import '../../database/models/favorites.dart';
 
 class FavoritesService {
   Future<String?> addFavorite(FavoriteSupabase fav) async {

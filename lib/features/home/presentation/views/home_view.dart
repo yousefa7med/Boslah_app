@@ -200,7 +200,7 @@ class PlaceCard extends GetView<HomeController> {
               ),
               child: controller.places[index].thumbnail != null
                   ? Image.network(
-                      controller.places[index].thumbnail!.source,
+                      controller.places[index].thumbnail!,
                       width: double.infinity,
                       height: 180,
                       fit: BoxFit.fill,

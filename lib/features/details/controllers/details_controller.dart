@@ -6,12 +6,12 @@ import 'package:depi_graduation_project/main.dart';
 import 'package:depi_graduation_project/models/favorite_supabase.dart';
 import 'package:get/get.dart';
 
-import '../../../core/services/api_services/place_details_response.dart';
+import '../../../models/place_model.dart';
 import '../../favourite/controller/favourite_controller.dart';
 
 class DetailsController extends GetxController {
   RxBool favorite = false.obs; // initialize here
-  late Page place;
+  late PlaceModel place;
 
   @override
   Future<void> onInit() async {
@@ -22,18 +22,18 @@ class DetailsController extends GetxController {
 
   Future<void> addToFav() async {
     final addFavorite = Favorite(
-      place_id: place.pageid,
+      place_id: place.placeId,
       user_id: cloud.auth.currentUser!.id,
-      image: place.thumbnail?.source,
+      image: place.thumbnail,
       name: place.title,
       desc: place.description,
     );
     final favoriteSupa = FavoriteSupabase(
       userId: cloud.auth.currentUser!.id,
-      placeId: place.pageid,
+      placeId: place.placeId,
       name: place.title,
       desc: place.description,
-      image: place.thumbnail?.source,
+      image: place.thumbnail,
       lat: place.coordinates?[0].lat,
       lng: place.coordinates?[0].lon,
     );
@@ -48,12 +48,12 @@ class DetailsController extends GetxController {
 
   Future<void> removeFromFav() async {
     await FavoritesService().removeFavoriteByPlaceId(
-      place.pageid,
+      place.placeId,
       cloud.auth.currentUser!.id,
     );
     await database.favoritedao.deleteFavorite(
       cloud.auth.currentUser!.id,
-      place.pageid,
+      place.placeId,
     );
 
     try {
@@ -75,7 +75,7 @@ class DetailsController extends GetxController {
     // 1) دور في قاعدة البيانات المحلية (Floor)
     final localResult = await database.favoritedao.selectOneFavPlace(
       userId,
-      place.pageid,
+      place.placeId,
     );
 
     if (localResult != null) {
@@ -84,7 +84,7 @@ class DetailsController extends GetxController {
 
     // 2) لو مش موجودة محليًا → دور في Supabase
     final supabaseResult = await FavoritesService().getFavoriteByPlaceId(
-      place.pageid,
+      place.placeId,
       userId,
     );
 

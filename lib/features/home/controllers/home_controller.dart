@@ -1,6 +1,6 @@
 import 'package:depi_graduation_project/core/database/models/region_places.dart';
 import 'package:depi_graduation_project/core/database/models/region_requests.dart';
-import 'package:depi_graduation_project/core/services/api_services/place_details_response.dart';
+import 'package:depi_graduation_project/models/place_model.dart';
 import 'package:depi_graduation_project/main.dart';
 import 'package:flutter/cupertino.dart' hide Page;
 import 'package:geolocator/geolocator.dart';
@@ -13,9 +13,9 @@ class HomeController extends GetxController {
   final selectedCard = 1.obs;
   final position = Rxn<Position>();
 
-  final places = <Page>[].obs;
-  final museums = <Page>[].obs;
-  final restaurant = <Page>[].obs;
+  final places = <PlaceModel>[].obs;
+  final museums = <PlaceModel>[].obs;
+  final restaurant = <PlaceModel>[].obs;
   final keywords = [
     "mosque",
     "museum",
@@ -56,7 +56,6 @@ class HomeController extends GetxController {
         }).toList() ??
         [];
 
-
     final regionId = await database.regionrequestdao.insertRegionRequest(
       RegionRequest(lat: 29.979235, lng: 31.134202),
     );
@@ -66,7 +65,7 @@ class HomeController extends GetxController {
       list.add(
         RegionPlace(
           region_id: regionId,
-          place_id: element.pageid.toString(),
+          place_id: element.placeId.toString(),
           lat: element.coordinates![0].lat,
           lng: element.coordinates![0].lon,
         ),
@@ -75,4 +74,3 @@ class HomeController extends GetxController {
     await database.regionplacedao.insertRespPlaces(list);
   }
 }
-

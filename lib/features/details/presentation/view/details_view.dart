@@ -32,7 +32,7 @@ class DetailsView extends GetView<DetailsController> {
                         borderRadius: BorderRadius.circular(12),
                         child: controller.place.thumbnail != null
                             ? Image.network(
-                                controller.place.thumbnail!.source,
+                                controller.place.thumbnail!,
                                 width: double.infinity,
                                 height: 350,
                                 fit: BoxFit.cover,

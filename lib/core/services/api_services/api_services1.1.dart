@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:depi_graduation_project/core/errors/app_exception.dart';
 import 'package:depi_graduation_project/core/functions/has_internet.dart';
 import 'package:depi_graduation_project/core/services/api_services/nearest_places_respone.dart';
-import 'package:depi_graduation_project/core/services/api_services/place_details_response.dart';
+import 'package:depi_graduation_project/models/place_model.dart';
 import 'package:dio/dio.dart';
 
 class ApiServices {
@@ -36,20 +36,20 @@ class ApiServices {
     }
   }
 
-  Future<PlaceDetailsResponse?> getSummary(String title) async {
-    if (await hasInternet()) {
-      final response = await dio.get(rest + Uri.encodeComponent(title));
-      if (response.statusCode == 200) {
-        final result = placeDetailsResponseFromJson(json.encode(response.data));
-        return result;
-      }
-      return null;
-    } else {
-      throw AppException(msg: "Please Check your internet connection");
-    }
-  }
+  // Future<PlaceDetailsResponse?> getSummary(String title) async {
+  //   if (await hasInternet()) {
+  //     final response = await dio.get(rest + Uri.encodeComponent(title));
+  //     if (response.statusCode == 200) {
+  //       final result = placeDetailsResponseFromJson(json.encode(response.data));
+  //       return result;
+  //     }
+  //     return null;
+  //   } else {
+  //     throw AppException(msg: "Please Check your internet connection");
+  //   }
+  // }
 
-  Future<List<Page>?> getPlacesWithDetails({
+  Future<List<PlaceModel>?> getPlacesWithDetails({
     required double lat,
     required double long,
   }) async {
@@ -73,7 +73,9 @@ class ApiServices {
 
       if (response.statusCode == 200 && response.data['query'] != null) {
         final pages = response.data['query']['pages'] as Map<String, dynamic>;
-        return pages.values.map((pageJson) => Page.fromJson(pageJson)).toList();
+        return pages.values
+            .map((pageJson) => PlaceModel.fromJson(pageJson))
+            .toList();
       }
       return null;
     } else {
