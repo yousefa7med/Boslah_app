@@ -15,8 +15,8 @@ class RegionPlace {
   final String? image;
 
 
-  final double lat;
-  final double lng;
+  final double? lat;
+  final double? lng;
 
 
 

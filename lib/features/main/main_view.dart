@@ -3,6 +3,7 @@ import 'package:depi_graduation_project/features/favourite/presentation/views/fa
 import 'package:depi_graduation_project/features/home/controllers/home_controller.dart';
 import 'package:depi_graduation_project/features/home/presentation/views/home_view.dart';
 import 'package:depi_graduation_project/features/main/controller/main_controller.dart';
+import 'package:depi_graduation_project/features/profile/controllers/profile_controller.dart';
 import 'package:depi_graduation_project/features/profile/presentation/views/profile_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -86,7 +87,15 @@ class MainView extends GetView<MainController> {
           ),
         ),
         PersistentTabConfig(
-          screen: const ProfileView(),
+          screen: Builder(
+            builder: (_) {
+              // Ensure the controller is initialized
+              if (!Get.isRegistered<ProfileController>()) {
+                Get.put(ProfileController());
+              }
+              return const ProfileView();
+            },
+          ),
           item: ItemConfig(
             icon: const Icon(Icons.person),
             title: 'Profile',

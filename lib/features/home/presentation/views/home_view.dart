@@ -7,6 +7,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 import '../../../../core/utilities/app_colors.dart';
+import '../../../../core/utilities/routes.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
@@ -30,30 +31,40 @@ class HomeView extends GetView<HomeController> {
                       fontSize: 30.sp,
                     ),
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.black, width: 3),
-                    ),
-                    child: IconButton(
-                      onPressed: () {
-                        // profile code
-                      },
-                      icon: const Icon(
-                        Icons.person_outline,
-                        size: 32,
-                        color: Colors.black,
-                      ),
+                  IconButton(
+                    onPressed: () {
+                      Get.toNamed('/search');
+                    },
+                    icon: Icon(
+                      Icons.search,
+                      color: AppColors.main.withAlpha(200),
+                      size: 35,
                     ),
                   ),
+                  // Container(
+                  //   decoration: BoxDecoration(
+                  //     shape: BoxShape.circle,
+                  //     border: Border.all(color: Colors.black, width: 3),
+                  //   ),
+                  //   child: IconButton(
+                  //     onPressed: () {
+                  //       Get.toNamed('/profile');
+                  //     },
+                  //     icon: const Icon(
+                  //       Icons.person_outline,
+                  //       size: 32,
+                  //       color: Colors.black,
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
               const Gap(20),
-              Card(
-                elevation: 1,
-                shadowColor: Colors.white,
-                child: buildSearch(),
-              ),
+              // Card(
+              //   elevation: 1,
+              //   shadowColor: Colors.white,
+              //   child: buildSearch(),
+              // ),
               const Gap(15),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -98,7 +109,7 @@ class HomeView extends GetView<HomeController> {
       decoration: InputDecoration(
         prefixIcon: IconButton(
           onPressed: () {
-            //search code
+            Get.toNamed('/search',arguments: controller.searchController.text);
           },
           icon: Icon(
             Icons.search,

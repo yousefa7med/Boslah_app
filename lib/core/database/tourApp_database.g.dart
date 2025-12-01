@@ -108,7 +108,7 @@ class _$tourDatabase extends tourDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `region_requests` (`region_id` INTEGER PRIMARY KEY AUTOINCREMENT, `lat` REAL NOT NULL, `lng` REAL NOT NULL, `timestamp` INTEGER)');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `region_places` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `region_id` INTEGER NOT NULL, `search_id` INTEGER, `place_id` TEXT NOT NULL, `name` TEXT, `desc` TEXT, `category` TEXT, `image` TEXT, `lat` REAL NOT NULL, `lng` REAL NOT NULL)');
+            'CREATE TABLE IF NOT EXISTS `region_places` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `region_id` INTEGER NOT NULL, `search_id` INTEGER, `place_id` TEXT NOT NULL, `name` TEXT, `desc` TEXT, `category` TEXT, `image` TEXT, `lat` REAL, `lng` REAL)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `favorites` (`favId` INTEGER PRIMARY KEY AUTOINCREMENT, `addedAt` INTEGER, `userId` TEXT NOT NULL, `category` TEXT, `placeId` INTEGER NOT NULL, `name` TEXT NOT NULL, `desc` TEXT, `image` TEXT, `lat` REAL, `lng` REAL)');
         await database.execute(
@@ -256,8 +256,8 @@ class _$RegionPlacesDao extends RegionPlacesDao {
             region_id: row['region_id'] as int,
             place_id: row['place_id'] as String,
             name: row['name'] as String?,
-            lat: row['lat'] as double,
-            lng: row['lng'] as double,
+            lat: row['lat'] as double?,
+            lng: row['lng'] as double?,
             desc: row['desc'] as String?,
             category: row['category'] as String?,
             image: row['image'] as String?,
@@ -274,8 +274,8 @@ class _$RegionPlacesDao extends RegionPlacesDao {
             region_id: row['region_id'] as int,
             place_id: row['place_id'] as String,
             name: row['name'] as String?,
-            lat: row['lat'] as double,
-            lng: row['lng'] as double,
+            lat: row['lat'] as double?,
+            lng: row['lng'] as double?,
             desc: row['desc'] as String?,
             category: row['category'] as String?,
             image: row['image'] as String?,
