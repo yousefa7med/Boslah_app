@@ -1,31 +1,37 @@
+import 'package:depi_graduation_project/models/place_model.dart';
 import 'package:floor/floor.dart';
 
 @Entity(tableName: 'favorites')
-class Favorite {
+class Favorite extends PlaceModel {
   @PrimaryKey(autoGenerate: true)
-  final int? fav_id;
-  final int? place_id;
-  final int? added_at;
+  final int? favId;
 
-  final String user_id;
-  final String name;
-  final String? image;
-  final String? desc;
+  final int? addedAt;
+
+  final String userId;
+
   final String? category;
 
-  final double? lat;
-  final double? lng;
-
   Favorite({
-    this.fav_id,
-    this.place_id,
-    this.added_at,
-    required this.name,
-    required this.user_id,
-    this.desc,
-    this.image,
+    this.favId,
+    this.addedAt,
+    required this.userId,
     this.category,
-    this.lat,
-    this.lng,
+    required super.placeId,
+    required super.name,
+    super. desc,
+   super.  image,
+   super.  lat,
+ super.  lng,
   });
+  Map<String, dynamic> toJson() => {
+    'user_id': userId,
+    'place_id': placeId,
+    'name': name,
+    'lat': lat,
+    'lng': lng,
+    'added_at': addedAt,
+    'image': image,
+    'desc': desc,
+  };
 }

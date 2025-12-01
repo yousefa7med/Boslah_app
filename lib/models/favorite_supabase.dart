@@ -1,22 +1,20 @@
-class FavoriteSupabase {
-  final String userId;
-  final int? placeId;
-  final String? name;
-  final double? lat;
-  final double? lng;
-  final int? addedAt;
-  final String? image;
-  final String? desc;
+import 'package:depi_graduation_project/models/place_model.dart';
 
+class FavoriteSupabase extends PlaceModel {
+  final String userId;
+
+  final int? addedAt;
+  @override
   FavoriteSupabase({
     required this.userId,
-    this.placeId,
-    this.name,
-    this.lat,
-    this.lng,
+
     this.addedAt,
-    this.image,
-    this.desc,
+    required super.placeId,
+    required super.name,
+    super.lat,
+    super.lng,
+    super.image,
+    super.desc,
   });
 
   factory FavoriteSupabase.fromJson(Map<String, dynamic> json) {

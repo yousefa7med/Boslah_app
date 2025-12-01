@@ -47,8 +47,8 @@ class HomeController extends GetxController {
     );
     places.value =
         data?.where((p) {
-          final title = p.title.toLowerCase();
-          final desc = p.description?.toLowerCase() ?? "";
+          final title = p.name.toLowerCase();
+          final desc = p.desc?.toLowerCase() ?? "";
           return keywords.any((k) {
             final key = k.toLowerCase();
             return title.contains(key) || desc.contains(key);
@@ -66,8 +66,8 @@ class HomeController extends GetxController {
         RegionPlace(
           region_id: regionId,
           place_id: element.placeId.toString(),
-          lat: element.coordinates![0].lat,
-          lng: element.coordinates![0].lon,
+          lat: element.lat!,
+          lng: element.lng!,
         ),
       );
     }

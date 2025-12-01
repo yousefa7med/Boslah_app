@@ -198,9 +198,9 @@ class PlaceCard extends GetView<HomeController> {
                 topLeft: Radius.circular(12),
                 topRight: Radius.circular(12),
               ),
-              child: controller.places[index].thumbnail != null
+              child: controller.places[index].image != null
                   ? Image.network(
-                      controller.places[index].thumbnail!,
+                      controller.places[index].image!,
                       width: double.infinity,
                       height: 180,
                       fit: BoxFit.fill,
@@ -220,11 +220,11 @@ class PlaceCard extends GetView<HomeController> {
             Padding(
               padding: const EdgeInsets.only(left: 8, right: 8, bottom: 5),
               child: Text(
-                controller.places[index].title,
+                controller.places[index].name,
                 style: AppTextStyle.semiBold24,
               ),
             ),
-            controller.places[index].description != null
+            controller.places[index].desc != null
                 ? Padding(
                     padding: const EdgeInsets.only(
                       left: 8,
@@ -232,7 +232,7 @@ class PlaceCard extends GetView<HomeController> {
                       bottom: 8,
                     ),
                     child: Text(
-                      '${controller.places[index].description}',
+                      '${controller.places[index].desc}',
                       style: AppTextStyle.semiBold18.copyWith(
                         color: Colors.grey,
                       ),

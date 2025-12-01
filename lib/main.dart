@@ -9,10 +9,9 @@ import 'package:depi_graduation_project/features/auth/presentation/views/login_v
 import 'package:depi_graduation_project/features/auth/presentation/views/register_view.dart';
 import 'package:depi_graduation_project/features/details/controllers/details_controller.dart';
 import 'package:depi_graduation_project/features/details/presentation/view/details_view.dart';
-import 'package:depi_graduation_project/features/favourite/controller/favourite_controller.dart';
-import 'package:depi_graduation_project/features/favourite/presentation/views/favourites_view.dart';
 import 'package:depi_graduation_project/features/home/controllers/home_controller.dart';
 import 'package:depi_graduation_project/features/home/presentation/views/home_view.dart';
+import 'package:depi_graduation_project/features/main/controller/main_controller.dart';
 import 'package:depi_graduation_project/features/main/main_view.dart';
 import 'package:depi_graduation_project/features/profile/presentation/views/profile_view.dart';
 import 'package:flutter/material.dart';
@@ -87,7 +86,6 @@ class MyApp extends StatelessWidget {
           initialRoute: AuthService().isLogin() ? Routes.main : Routes.login,
           initialBinding: BindingsBuilder(() {
             Get.lazyPut(() => ApiServices());
-            Get.lazyPut(() => HomeController(), fenix: true); // <- سجّله هنا
           }),
           getPages: [
             GetPage(
@@ -113,18 +111,17 @@ class MyApp extends StatelessWidget {
             ),
             GetPage(
               name: Routes.details,
-              page: () => DetailsView(),
+              page: () => const DetailsView(),
               binding: BindingsBuilder(() {
                 Get.lazyPut(() => DetailsController());
               }),
             ),
             GetPage(name: Routes.profile, page: () => const ProfileView()),
-            GetPage(name: Routes.main, page: () => const MainView()),
             GetPage(
-              name: Routes.favourites,
-              page: () => const FavouritesView(),
+              name: Routes.main,
+              page: () => const MainView(),
               binding: BindingsBuilder(() {
-                Get.lazyPut(() => FavouritesController());
+                Get.lazyPut(() => MainController());
               }),
             ),
           ],
