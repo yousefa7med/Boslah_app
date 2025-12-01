@@ -1,41 +1,39 @@
-
 class PlaceModel {
   final int placeId;
-  final String title;
-  final List<Coordinate>? coordinates; 
-  final String? description;
-  final String? thumbnail; 
+  final String name;
+  final String? desc;
+  final String? image;
+  final double? lat;
+  final double? lng;
 
   PlaceModel({
+    this.lat,
+    this.lng,
     required this.placeId,
-    required this.title,
-    this.coordinates,
-    this.thumbnail,
-    this.description,
+    required this.name,
+    this.image,
+    this.desc,
   });
 
-  factory PlaceModel.fromJson(Map<String, dynamic> json) => PlaceModel(
-    placeId: json["pageid"],
-    title: json["title"],
-    coordinates: json["coordinates"] != null
-        ? List<Coordinate>.from(
-            json["coordinates"].map((x) => Coordinate.fromJson(x)),
-          )
-        : null,
-    thumbnail: json["thumbnail"]['source'],
+  factory PlaceModel.fromJson(Map<String, dynamic> json) {
+    print(json);
+    print(
+      '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++',
+    );
+    return PlaceModel(
+      placeId: json["pageid"],
+      name: json["title"],
 
-    description: json["description"],
-  );
-}
+      lat: json["coordinates"] != null
+          ? json["coordinates"][0]["lat"]?.toDouble()
+          : null,
+      lng: json["coordinates"] != null
+          ? json["coordinates"][0]["lon"]?.toDouble()
+          : null,
 
-class Coordinate {
-  final double lat;
-  final double lon;
+      image: json["thumbnail"] != null ? json["thumbnail"]['source'] : null,
 
-  Coordinate({required this.lat, required this.lon});
-
-  factory Coordinate.fromJson(Map<String, dynamic> json) =>
-      Coordinate(lat: json["lat"]?.toDouble(), lon: json["lon"]?.toDouble());
-
-  Map<String, dynamic> toJson() => {"lat": lat, "lon": lon};
+      desc: json["description"],
+    );
+  }
 }

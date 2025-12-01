@@ -1,5 +1,6 @@
 import 'package:depi_graduation_project/core/functions/snack_bar.dart';
 import 'package:depi_graduation_project/core/utilities/app_text_style.dart';
+import 'package:depi_graduation_project/core/utilities/routes.dart';
 import 'package:depi_graduation_project/features/favourite/controller/favourite_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,62 +22,87 @@ class FavouritesView extends GetView<FavouritesController> {
     return Scaffold(
       body: SafeArea(
         child: Obx(() {
-          final list = controller.allFavourits;
-          if (list.isEmpty) {
+          final allFav = controller.allFavourits;
+          if (allFav.isEmpty) {
             return const Center(child: Text('No favorites yet'));
           }
 
           return ListView.builder(
-            itemCount: list.length,
+            itemCount: allFav.length,
             itemBuilder: (ctx, index) {
-              final fav = list[index];
+              final fav = allFav[index];
 
               return SizedBox(
                 height: 130,
-                child: Card(
-                  elevation: 4,
-                  color: Colors.white,
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      left: 8,
-                      top: 8,
-                      bottom: 8,
-                      right: 22,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          width: 80.w,
-                          height: 80.h,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            image: DecorationImage(
-                              image: NetworkImage(fav.image ?? ''),
-                              fit: BoxFit.cover,
+                child: InkWell(
+                  onTap: () {
+                    Get.toNamed(Routes.details, arguments: allFav[index]);
+                  },
+                  child: Card(
+                    elevation: 4,
+                    color: Colors.white,
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        left: 8,
+                        top: 8,
+                        bottom: 8,
+                        right: 22,
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 80.w,
+                            height: 80.h,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              image: DecorationImage(
+                                image: NetworkImage(fav.image ?? ''),
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 12),
-                            child: Text(
-                              fav.name,
-                              style: AppTextStyle.bold20,
-                              overflow: TextOverflow.ellipsis,
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                              ),
+                              child: Text(
+                                fav.name,
+                                style: AppTextStyle.bold20,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
                           ),
-                        ),
-                        IconButton(
-                          onPressed: () =>
-                              controller.removeFavorite(fav.place_id!),
-                          icon: const Icon(
-                            Icons.favorite,
-                            color: AppColors.main,
-                            size: 32,
+                          Obx(
+                            () => IconButton(
+                              onPressed: () {
+                                if (controller.isFav[index].value) {
+                                  controller.addToDeletedList(
+                                    allFav[index].placeId,
+                                  );
+                                } else {
+                                  controller.removeFromDeletedList(
+                                    allFav[index].placeId,
+                                  );
+                                }
+                                controller.isFav[index].toggle();
+                                print(controller.deleted);
+                              },
+                              icon: controller.isFav[index].value
+                                  ? const Icon(
+                                      Icons.favorite,
+                                      color: AppColors.main,
+                                      size: 32,
+                                    )
+                                  : const Icon(
+                                      Icons.favorite_border_outlined,
+                                      color: AppColors.main,
+                                      size: 32,
+                                    ),
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),

@@ -16,20 +16,22 @@ class HomeController extends GetxController {
   final places = <PlaceModel>[].obs;
   final museums = <PlaceModel>[].obs;
   final restaurant = <PlaceModel>[].obs;
-  final keywords = [
-    "mosque",
-    "museum",
-    "park",
-    "temple",
-    "pyramid",
-    "fort",
-    "castle",
-    "citadel",
-    "historical",
-    "archaeological",
-    "landmark",
-    "tourist",
-  ];
+  // final keywords = [
+  //   "sphinx"
+  //   "ancient"
+  //   "mosque",
+  //   "museum",
+  //   "park",
+  //   "temple",
+  //   "pyramid",
+  //   "fort",
+  //   "castle",
+  //   "citadel",
+  //   "historical",
+  //   "archaeological",
+  //   "landmark",
+  //   "tourist",
+  // ];
 
   final api = Get.find<ApiServices>();
   @override
@@ -47,12 +49,17 @@ class HomeController extends GetxController {
     );
     places.value =
         data?.where((p) {
-          final title = p.title.toLowerCase();
-          final desc = p.description?.toLowerCase() ?? "";
-          return keywords.any((k) {
-            final key = k.toLowerCase();
-            return title.contains(key) || desc.contains(key);
-          });
+          if (p.desc == null || p.desc!.trim().isEmpty) {
+            return false;
+          }
+
+          return true;
+          // final title = p.title.toLowerCase();
+          // final desc = p.description!.toLowerCase();
+          // return keywords.any((k) {
+          //   final key = k.toLowerCase();
+          //   return title.toLowerCase().contains(key) || desc.toLowerCase().contains(key);
+          // });
         }).toList() ??
         [];
 
@@ -66,8 +73,8 @@ class HomeController extends GetxController {
         RegionPlace(
           region_id: regionId,
           place_id: element.placeId.toString(),
-          lat: element.coordinates![0].lat,
-          lng: element.coordinates![0].lon,
+          lat: element.lat,
+          lng: element.lng,
         ),
       );
     }
