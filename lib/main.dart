@@ -7,7 +7,6 @@ import 'package:depi_graduation_project/features/auth/controllers/login_controll
 import 'package:depi_graduation_project/features/auth/controllers/register_controller.dart';
 import 'package:depi_graduation_project/features/auth/presentation/views/login_view.dart';
 import 'package:depi_graduation_project/features/auth/presentation/views/register_view.dart';
-import 'package:depi_graduation_project/features/auth/supabase_services/auth_service.dart';
 import 'package:depi_graduation_project/features/details/controllers/details_controller.dart';
 import 'package:depi_graduation_project/features/details/presentation/view/details_view.dart';
 import 'package:depi_graduation_project/features/favourite/controller/favourite_controller.dart';
@@ -23,6 +22,7 @@ import 'package:get/get.dart';
 import 'package:path/path.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:sqflite/sqflite.dart';
+import 'core/services/supabase_services/auth_service.dart';
 import 'core/utilities/routes.dart';
 
 Future<void> main() async {

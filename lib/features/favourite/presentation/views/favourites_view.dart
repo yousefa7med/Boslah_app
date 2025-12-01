@@ -1,3 +1,4 @@
+import 'package:depi_graduation_project/core/functions/snack_bar.dart';
 import 'package:depi_graduation_project/core/utilities/app_text_style.dart';
 import 'package:depi_graduation_project/features/favourite/controller/favourite_controller.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,12 @@ class FavouritesView extends GetView<FavouritesController> {
 
   @override
   Widget build(BuildContext context) {
+    ever(controller.error, (msg) {
+      if (msg != null) {
+        showSnackBar(context, msg);
+      }
+    });
+
     return Scaffold(
       body: SafeArea(
         child: Obx(() {
@@ -54,14 +61,15 @@ class FavouritesView extends GetView<FavouritesController> {
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                             child: Text(
-                              fav.name ?? '',
+                              fav.name,
                               style: AppTextStyle.bold20,
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
                         ),
                         IconButton(
-                          onPressed: () => controller.removeFavorite(index),
+                          onPressed: () =>
+                              controller.removeFavorite(fav.place_id!),
                           icon: const Icon(
                             Icons.favorite,
                             color: AppColors.main,

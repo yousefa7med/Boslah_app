@@ -8,7 +8,7 @@ abstract class RegionPlacesDao{
   Future<List<RegionPlace>> selectRegionPlaces(int regionId);
 
   @Query('SELECT * FROM region_places WHERE place_id = :placeId')
-  Future<RegionPlace?> selectPlaceById(String placeId);
+  Future<RegionPlace?> selectPlaceById(int placeId);
 
   @Insert(onConflict: OnConflictStrategy.replace)
   Future<int> insertPlace(RegionPlace place);

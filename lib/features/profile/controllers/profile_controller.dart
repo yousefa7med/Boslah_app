@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
-import '../../auth/supabase_services/auth_service.dart';
+
+import '../../../core/services/supabase_services/auth_service.dart';
 
 class ProfileController extends GetxController {
   final AuthService _authService = AuthService();

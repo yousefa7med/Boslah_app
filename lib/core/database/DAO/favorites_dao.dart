@@ -7,7 +7,7 @@ abstract class FavoriteDao {
   Future<List<Favorite>> selectFavorites(String userId);
 
   @Query('select * from favorites WHERE user_id = :uid AND place_id = :placeId')
-  Future<Favorite?> selectOneFavPlace(String uid, String placeId);
+  Future<Favorite?> selectOneFavPlace(String uid, int placeId);
 
   @Insert(onConflict: OnConflictStrategy.replace)
   Future<int> insertFavorite(Favorite favPlace);
@@ -16,7 +16,7 @@ abstract class FavoriteDao {
   Future<List<int>> insertManyFavorite(List<Favorite> favPlace);
 
   @Query('DELETE FROM favorites WHERE user_id = :uid AND place_id = :placeId')
-  Future<void> deleteFavorite(String uid, String placeId);
+  Future<void> deleteFavorite(String uid, int placeId);
 
   @Query('DELETE FROM favorites WHERE user_id = :uid')
   Future<void> deleteAllFavoritesByUser(String uid);
