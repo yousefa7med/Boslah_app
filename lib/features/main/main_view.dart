@@ -24,7 +24,7 @@ class MainView extends GetView<MainController> {
       onTabChanged: (value) {
         if (value == 1) {
           controller.isFavPage = true;
-          controller.rr();
+          controller.removeFavFromDB();
         } else {
           controller.isFavPage = false;
           controller.favControoller.isFav.clear();
