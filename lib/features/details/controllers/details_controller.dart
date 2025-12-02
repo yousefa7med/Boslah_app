@@ -13,6 +13,7 @@ class DetailsController extends GetxController {
   RxBool favorite = false.obs; // initialize here
   late PlaceModel place;
 
+
   @override
   Future<void> onInit() async {
     super.onInit();

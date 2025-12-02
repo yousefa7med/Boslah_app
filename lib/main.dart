@@ -9,6 +9,7 @@ import 'package:depi_graduation_project/features/auth/presentation/views/login_v
 import 'package:depi_graduation_project/features/auth/presentation/views/register_view.dart';
 import 'package:depi_graduation_project/features/details/controllers/details_controller.dart';
 import 'package:depi_graduation_project/features/details/presentation/view/details_view.dart';
+import 'package:depi_graduation_project/features/details/presentation/view/schedule_bottom_sheet.dart';
 import 'package:depi_graduation_project/features/favourite/controller/favourite_controller.dart';
 import 'package:depi_graduation_project/features/favourite/presentation/views/favourites_view.dart';
 import 'package:depi_graduation_project/features/home/controllers/home_controller.dart';
@@ -17,6 +18,8 @@ import 'package:depi_graduation_project/features/main/controller/main_controller
 import 'package:depi_graduation_project/features/main/main_view.dart';
 import 'package:depi_graduation_project/features/profile/controllers/profile_controller.dart';
 import 'package:depi_graduation_project/features/profile/presentation/views/profile_view.dart';
+import 'package:depi_graduation_project/features/schedule/controllers/schedule_controller.dart';
+import 'package:depi_graduation_project/features/schedule/presentation/view/schedule_view.dart';
 import 'package:depi_graduation_project/features/search/presentation/search_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -88,7 +91,8 @@ class MyApp extends StatelessWidget {
       builder: (_, child) {
         return GetMaterialApp(
           debugShowCheckedModeBanner: false,
-          initialRoute: AuthService().isLogin() ? Routes.main : Routes.login,
+          // initialRoute: AuthService().isLogin() ? Routes.main : Routes.login,
+          initialRoute: Routes.schedule,
           initialBinding: BindingsBuilder(() {
             Get.lazyPut(() => ApiServices());
           }),
@@ -150,10 +154,10 @@ class MyApp extends StatelessWidget {
               }),
             ),
             GetPage(
-              name: Routes.search,
-              page: () => const SearchView(),
+              name: Routes.schedule,
+              page: () => const ScheduleView(),
               binding: BindingsBuilder(() {
-                Get.lazyPut(() => searchController());
+                Get.lazyPut(() => ScheduleController());
               }),
             ),
           ],
