@@ -3,8 +3,10 @@ import 'package:depi_graduation_project/features/schedule/controllers/schedule_c
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get_rx/src/rx_workers/rx_workers.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 
+import '../../../../core/functions/snack_bar.dart';
 import '../../../../core/utilities/app_colors.dart';
 
 
@@ -13,61 +15,70 @@ class ScheduleView extends GetView<ScheduleController> {
 
   @override
   Widget build(BuildContext context) {
+    ever(controller.error, (msg) {
+      if (msg != null) {
+        showSnackBar(context, msg);
+      }
+    });
     return Scaffold(
 
       body: SafeArea(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.only(top: 10, bottom: 12),
-            child: const Column(
-              children: [
-                Text(
-                  "Your Schedule",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
+      child: Obx(() {
+          final allsched = controller.allSchedules;
+          if(allsched.isEmpty){
+            return const Center(child: Text('No schedules yet'));
+          }
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.only(top: 10, bottom: 12),
+                child: const Column(
+                  children: [
+                    Text(
+                      "Your Schedule",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                    SizedBox(height: 4),
+                    Text(
+                      "See your upcoming tours",
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Colors.black54,
+                      ),
+                    ),
+                  ],
                 ),
-                SizedBox(height: 4),
-                Text(
-                  "See your upcoming tours",
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: Colors.black54,
-                  ),
-                ),
-              ],
-            ),
-          ),
+              ),
 
 
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                buildCardFilttring(1, 'All'),
-                buildCardFilttring(2, 'Upcoming', IconData: Icons.pending_outlined),
-                buildCardFilttring(
-                  3,
-                  'Completed',
-                  IconData: Icons.done_all,
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    buildCardFilttring(1, 'All'),
+                    buildCardFilttring(2, 'Upcoming', IconData: Icons.pending_outlined),
+                    buildCardFilttring(
+                      3,
+                      'Completed',
+                      IconData: Icons.done_all,
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-          const Gap(20),
-          Expanded(
-            child: ListView.builder(itemCount: 4,itemBuilder: (_,index){
-              return const TourCard();
-            }),
-          )
-        ],
-      )
+              ),
+              const Gap(20),
+              Expanded(
+                child: ListView.builder(itemCount: controller.allSchedules.length,itemBuilder: (_,index) =>TourCard(index)),
+              )
+            ],
+          );
+      })
       
       ),
     );
@@ -126,8 +137,8 @@ Widget buildCardFilttring(int index, String label, {IconData}) {
 }
 
 class TourCard extends GetView<ScheduleController> {
-  const TourCard({super.key});
-
+  const TourCard(this.index,{super.key});
+final int index;
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -155,12 +166,24 @@ class TourCard extends GetView<ScheduleController> {
                   borderRadius: const BorderRadius.vertical(
                     top: Radius.circular(16),
                   ),
-                  child: Image.network(
-                    "https://picsum.photos/800/400", // الصورة
+                  child: controller.allSchedules[index].image != null
+                    ?
+                  Image.network(
+                    controller.allSchedules[index].image, // الصورة
                     height: 150,
                     width: double.infinity,
                     fit: BoxFit.cover,
-                  ),
+                  ) : Container(
+                          width: double.infinity,
+                          height: 180,
+                          color: Colors.grey[300],
+                          child: const Icon(
+                          Icons.image_not_supported,
+                              size: 50,
+                              color: Colors.grey,
+                          ),
+                          ),
+
                 ),
 
                 // badge left
@@ -212,11 +235,11 @@ class TourCard extends GetView<ScheduleController> {
             ),
 
             // -------------------- TITLE --------------------
-            const Padding(
-              padding: EdgeInsets.all(12.0),
+            Padding(
+              padding: const EdgeInsets.all(12.0),
               child: Text(
-                "Historic City Walking Tour",
-                style: TextStyle(
+                controller.allSchedules[index].name?? '',
+                style: const TextStyle(
                   fontSize: 19,
                   fontWeight: FontWeight.w600,
                 ),

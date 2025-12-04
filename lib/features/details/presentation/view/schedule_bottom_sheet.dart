@@ -1,15 +1,9 @@
 import 'dart:ui';
 import 'package:depi_graduation_project/core/database/models/schedules.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:get/get.dart';
-
 import '../../../../core/utilities/app_colors.dart';
-import '../../../../core/utilities/app_text_style.dart';
-import '../../../../core/widgets/app_button.dart';
 import '../../../../main.dart';
 import '../../controllers/details_controller.dart';
 

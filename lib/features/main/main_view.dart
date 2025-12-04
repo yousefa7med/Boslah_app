@@ -92,23 +92,6 @@ class MainView extends GetView<MainController> {
           screen: Builder(
             builder: (_) {
               // Ensure the controller is initialized
-              if (!Get.isRegistered<ProfileController>()) {
-                Get.put(ProfileController());
-              }
-              return const ProfileView();
-            },
-          ),
-          item: ItemConfig(
-            icon: const Icon(Icons.person),
-            title: 'Profile',
-            activeForegroundColor: AppColors.main,
-            inactiveForegroundColor: Colors.grey,
-          ),
-        ),
-        PersistentTabConfig(
-          screen: Builder(
-            builder: (_) {
-              // Ensure the controller is initialized
               if (!Get.isRegistered<ScheduleController>()) {
                 Get.put(ScheduleController());
               }
@@ -122,6 +105,24 @@ class MainView extends GetView<MainController> {
             inactiveForegroundColor: Colors.grey,
           ),
         ),
+        PersistentTabConfig(
+          screen: Builder(
+            builder: (_) {
+              // Ensure the controller is initialized
+              if (!Get.isRegistered<ProfileController>()) {
+                Get.put(ProfileController());
+              }
+              return const ProfileView();
+            },
+          ),
+          item: ItemConfig(
+            icon: const Icon(Icons.person),
+            title: 'Profile',
+            activeForegroundColor: AppColors.main,
+            inactiveForegroundColor: Colors.grey,
+          ),
+        ),
+
       ],
     );
   }

@@ -10,6 +10,10 @@ abstract class ScheduleDao{
 
   @Query('SELECT * FROM schedules WHERE scheduleId = :id')
   Future<Schedule?> selectScheduleById(int id);
+  
+  @Query('SELECT * FROM schedules WHERE userId = :id')
+  Future<List<Schedule?>> selectAllScheduleById(int id);
+
 
   @Insert(onConflict: OnConflictStrategy.replace)
   Future<int> insertSchedule(Schedule schedule);

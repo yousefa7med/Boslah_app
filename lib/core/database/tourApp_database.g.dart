@@ -490,6 +490,25 @@ class _$ScheduleDao extends ScheduleDao {
   }
 
   @override
+  Future<List<Schedule?>> selectAllScheduleById(int id) async {
+    return _queryAdapter.queryList('SELECT * FROM schedules WHERE userId = ?1',
+        mapper: (Map<String, Object?> row) => Schedule(
+            scheduleId: row['scheduleId'] as int?,
+            placeId: row['placeId'] as int?,
+            date: row['date'] as String,
+            note: row['note'] as String?,
+            isDone: row['isDone'] == null ? null : (row['isDone'] as int) != 0,
+            createdAt: row['createdAt'] as int?,
+            userId: row['userId'] as String?,
+            name: row['name'] as String?,
+            lat: row['lat'] as double?,
+            lng: row['lng'] as double?,
+            image: row['image'] as String,
+            hour: row['hour'] as String),
+        arguments: [id]);
+  }
+
+  @override
   Future<void> markAsDone(int id) async {
     await _queryAdapter.queryNoReturn(
         'UPDATE schedules SET isDone = 1 WHERE scheduleId = ?1',
