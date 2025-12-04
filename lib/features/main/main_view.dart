@@ -1,3 +1,5 @@
+import 'package:depi_graduation_project/core/errors/app_exception.dart';
+import 'package:depi_graduation_project/core/functions/snack_bar.dart';
 import 'package:depi_graduation_project/core/utilities/app_colors.dart';
 import 'package:depi_graduation_project/features/favourite/presentation/views/favourites_view.dart';
 import 'package:depi_graduation_project/features/home/controllers/home_controller.dart';
@@ -23,18 +25,39 @@ class MainView extends GetView<MainController> {
       navBarBuilder: (navBarConfig) =>
           Style6BottomNavBar(navBarConfig: navBarConfig),
       onTabChanged: (value) {
+        print(value);
         if (value == 1) {
           controller.isFavPage = true;
-          controller.removeFavFromDB();
+          // if (controller.favControoller.deleted.isNotEmpty) {
+          //   try {
+          //     controller.removeFavFromDB();
+          //     // controller.favControoller.deleted.clear();
+          //   } on AppException catch (e) {
+          //     showSnackBar(context, e.msg);
+          //   } catch (e) {
+          //     showSnackBar(context, e.toString());
+          //   }
+          // }
         } else {
-          controller.isFavPage = false;
-          controller.favControoller.isFav.clear();
-          controller.favControoller.isFav.addAll(
-            List.generate(
-              controller.favControoller.allFavourits.length,
-              (i) => true.obs,
-            ),
-          );
+          if (controller.isFavPage &&
+              controller.favControoller.deleted.isNotEmpty) {
+            try {
+              controller.removeFavFromDB();
+              controller.favControoller.deleted.clear();
+            } on AppException catch (e) {
+              showSnackBar(context, e.msg);
+            } catch (e) {
+              showSnackBar(context, e.toString());
+            }
+            controller.isFavPage = false;
+            controller.favControoller.isFav.clear();
+            controller.favControoller.isFav.addAll(
+              List.generate(
+                controller.favControoller.allFavourits.length,
+                (i) => true.obs,
+              ),
+            );
+          }
         }
 
         // controller.

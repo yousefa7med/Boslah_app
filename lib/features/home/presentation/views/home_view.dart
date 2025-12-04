@@ -7,7 +7,6 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 import '../../../../core/utilities/app_colors.dart';
-import '../../../../core/utilities/routes.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({super.key});

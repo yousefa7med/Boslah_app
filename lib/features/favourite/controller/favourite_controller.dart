@@ -56,9 +56,7 @@ class FavouritesController extends GetxController {
       if (localList.isNotEmpty) {
         allFavourits.value = localList;
         isFav.addAll(List.generate(allFavourits.length, (i) => true.obs));
-        for (var element in localList) {
-          print(element.image);
-        }
+        print("locaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaal");
         return;
       }
       final remoteList = await FavoritesService().getFavorites();
@@ -66,6 +64,7 @@ class FavouritesController extends GetxController {
       allFavourits.value = remoteList;
       if (allFavourits.isNotEmpty) {
         isFav.addAll(List.generate(allFavourits.length, (i) => true.obs));
+        print("sopaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
       }
       for (var fav in remoteList) {
         await database.favoritedao.insertFavorite(
