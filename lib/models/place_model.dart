@@ -16,10 +16,6 @@ class PlaceModel {
   });
 
   factory PlaceModel.fromJson(Map<String, dynamic> json) {
-    print(json);
-    print(
-      '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++',
-    );
     return PlaceModel(
       placeId: json["pageid"],
       name: json["title"],

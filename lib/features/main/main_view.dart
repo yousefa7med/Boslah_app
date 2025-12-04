@@ -1,3 +1,5 @@
+import 'package:depi_graduation_project/core/errors/app_exception.dart';
+import 'package:depi_graduation_project/core/functions/snack_bar.dart';
 import 'package:depi_graduation_project/core/utilities/app_colors.dart';
 import 'package:depi_graduation_project/features/favourite/presentation/views/favourites_view.dart';
 import 'package:depi_graduation_project/features/home/controllers/home_controller.dart';
@@ -5,6 +7,8 @@ import 'package:depi_graduation_project/features/home/presentation/views/home_vi
 import 'package:depi_graduation_project/features/main/controller/main_controller.dart';
 import 'package:depi_graduation_project/features/profile/controllers/profile_controller.dart';
 import 'package:depi_graduation_project/features/profile/presentation/views/profile_view.dart';
+import 'package:depi_graduation_project/features/schedule/controllers/schedule_controller.dart';
+import 'package:depi_graduation_project/features/schedule/presentation/view/schedule_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -21,20 +25,32 @@ class MainView extends GetView<MainController> {
       stateManagement: false,
 
       navBarBuilder: (navBarConfig) =>
-          Style6BottomNavBar(navBarConfig: navBarConfig),
+          Style1BottomNavBar(navBarConfig: navBarConfig),
       onTabChanged: (value) {
+        print(value);
         if (value == 1) {
           controller.isFavPage = true;
-          controller.removeFavFromDB();
+     
         } else {
-          controller.isFavPage = false;
-          controller.favControoller.isFav.clear();
-          controller.favControoller.isFav.addAll(
-            List.generate(
-              controller.favControoller.allFavourits.length,
-              (i) => true.obs,
-            ),
-          );
+          if (controller.isFavPage &&
+              controller.favControoller.deleted.isNotEmpty) {
+            try {
+              controller.removeFavFromDB();
+              controller.favControoller.deleted.clear();
+            } on AppException catch (e) {
+              showSnackBar(context, e.msg);
+            } catch (e) {
+              showSnackBar(context, e.toString());
+            }
+            controller.isFavPage = false;
+            controller.favControoller.isFav.clear();
+            controller.favControoller.isFav.addAll(
+              List.generate(
+                controller.favControoller.allFavourits.length,
+                (i) => true.obs,
+              ),
+            );
+          }
         }
 
         // controller.
@@ -90,6 +106,23 @@ class MainView extends GetView<MainController> {
           screen: Builder(
             builder: (_) {
               // Ensure the controller is initialized
+              if (!Get.isRegistered<ScheduleController>()) {
+                Get.put(ScheduleController());
+              }
+              return const ScheduleView();
+            },
+          ),
+          item: ItemConfig(
+            icon: const Icon(Icons.schedule),
+            title: 'Schedule',
+            activeForegroundColor: AppColors.main,
+            inactiveForegroundColor: Colors.grey,
+          ),
+        ),
+        PersistentTabConfig(
+          screen: Builder(
+            builder: (_) {
+              // Ensure the controller is initialized
               if (!Get.isRegistered<ProfileController>()) {
                 Get.put(ProfileController());
               }
@@ -103,6 +136,7 @@ class MainView extends GetView<MainController> {
             inactiveForegroundColor: Colors.grey,
           ),
         ),
+
       ],
     );
   }

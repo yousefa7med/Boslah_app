@@ -8,6 +8,7 @@ class MainController extends GetxController {
   void removeFavFromDB() {
     if (isFavPage) {
       for (var place in favControoller.deleted) {
+        print("object");
         favControoller.removeFavoriteFromDB(place);
       }
     }

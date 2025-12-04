@@ -31,7 +31,7 @@ class LoginView extends GetView<LoginController> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Gap(70.h),
-                SvgPicture.asset(Assets.imagesAppIcon, height: 90.h),
+                SvgPicture.asset(Assets.logo, height: 90.h),
                 const Gap(10),
                 Text(
                   'Welcome Back!',
@@ -96,7 +96,7 @@ class LoginView extends GetView<LoginController> {
                             } on AppException catch (e) {
                               showSnackBar(context, e.msg);
                             }    await database.profiledao.insertUser(
-                              Profile(user_id: cloud.auth.currentUser!.id),
+                              Profile(userId: cloud.auth.currentUser!.id),
                             );
                         
                             print(cloud.auth.currentUser);
