@@ -93,7 +93,13 @@ class MyApp extends StatelessWidget {
           initialRoute: AuthService().isLogin() ? Routes.main : Routes.login,
           // initialRoute: Routes.schedule,
           initialBinding: BindingsBuilder(() {
-            Get.lazyPut(() => ApiServices());
+           
+           
+           
+            Get.put( ApiServices());
+
+
+
           }),
           getPages: [
             GetPage(

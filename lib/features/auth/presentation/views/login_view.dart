@@ -58,7 +58,7 @@ class LoginView extends GetView<LoginController> {
                       AppTextFormField(
                         hintText: 'Enter your email',
                         controller: controller.emailController,
-                        validator: Validator.signupNameValidator(),
+                        validator: Validator.emailValidator(),
                       ),
                       const Gap(15),
                       Text(
@@ -92,13 +92,14 @@ class LoginView extends GetView<LoginController> {
                                 email: controller.emailController.text,
                                 password: controller.passwordController.text,
                               );
+                              await database.profiledao.insertUser(
+                                Profile(userId: cloud.auth.currentUser!.id),
+                              );
                               showSnackBar(context, "Logged in successfully!");
                             } on AppException catch (e) {
                               showSnackBar(context, e.msg);
-                            }    await database.profiledao.insertUser(
-                              Profile(userId: cloud.auth.currentUser!.id),
-                            );
-                        
+                            }
+
                             print(cloud.auth.currentUser);
                           }
                         },

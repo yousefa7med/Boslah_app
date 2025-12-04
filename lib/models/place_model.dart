@@ -5,7 +5,6 @@ class PlaceModel {
   final String? image;
   final double? lat;
   final double? lng;
-
   PlaceModel({
     this.lat,
     this.lng,

@@ -620,6 +620,6 @@ class _$ProfileDao extends ProfileDao {
   @override
   Future<int> insertUser(Profile user) {
     return _profileInsertionAdapter.insertAndReturnId(
-        user, OnConflictStrategy.replace);
+        user, OnConflictStrategy.ignore);
   }
 }

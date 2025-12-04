@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:depi_graduation_project/core/database/models/favorites.dart';
+import 'package:depi_graduation_project/core/database/models/schedules.dart';
 import 'package:depi_graduation_project/core/services/supabase_services/favorite_service.dart';
+import 'package:depi_graduation_project/features/schedule/controllers/schedule_controller.dart';
 import 'package:depi_graduation_project/main.dart';
 import 'package:depi_graduation_project/models/favorite_supabase.dart';
 import 'package:flutter/material.dart';
@@ -111,6 +113,31 @@ class DetailsController extends GetxController {
 
     // لو ملقاش في الاتنين
     return false;
+  }
+
+  Future<void> addSchdule() async {
+    final sch = Schedule(
+      date: dateController.text,
+      image: place.image ?? '',
+      hour: timeController.text,
+      note: noteController.text,
+      name: place.name,
+      lat: place.lat,
+      lng: place.lng,
+      userId: cloud.auth.currentUser!.id,
+      placeId: place.placeId,
+      isDone: false,
+      createdAt: DateTime.now().millisecondsSinceEpoch,
+    );
+    await database.scheduledao.insertSchedule(sch);
+    dateController.clear();
+    noteController.clear();
+    timeController.clear();
+    debugPrint('schedule object: ${sch.date}');
+    try {
+      final schController = Get.find<ScheduleController>();
+      await schController.loadData();
+    } catch (_) {}
   }
 
   @override

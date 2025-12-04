@@ -1,9 +1,7 @@
-import 'package:depi_graduation_project/core/database/models/schedules.dart';
 import 'package:depi_graduation_project/core/functions/snack_bar.dart';
 import 'package:depi_graduation_project/core/utilities/app_text_style.dart';
 import 'package:depi_graduation_project/core/widgets/app_button.dart';
 import 'package:depi_graduation_project/features/details/controllers/details_controller.dart';
-import 'package:depi_graduation_project/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
@@ -114,24 +112,7 @@ class ScheduleForm extends StatelessWidget {
                 showSnackBar(context, 'please fill Data and Time');
                 return;
               }
-              final sch = Schedule(
-                date: controller.dateController.text,
-                image: controller.place.image ?? '',
-                hour: controller.timeController.text,
-                note: controller.noteController.text,
-                name: controller.place.name,
-                lat: controller.place.lat,
-                lng: controller.place.lng,
-                userId: cloud.auth.currentUser!.id,
-                placeId: controller.place.placeId,
-                isDone: false,
-                createdAt: DateTime.now().millisecondsSinceEpoch,
-              );
-              await database.scheduledao.insertSchedule(sch);
-              controller.dateController.clear();
-              controller.timeController.clear();
-              controller.noteController.clear();
-              debugPrint('schedule object: ${sch.date}');
+              await controller.addSchdule();
               Get.back();
             },
 
