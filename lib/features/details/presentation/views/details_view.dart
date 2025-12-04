@@ -5,7 +5,7 @@ import 'package:depi_graduation_project/core/utilities/app_colors.dart';
 import 'package:depi_graduation_project/core/utilities/app_text_style.dart';
 import 'package:depi_graduation_project/core/widgets/app_button.dart';
 import 'package:depi_graduation_project/features/details/controllers/details_controller.dart';
-import 'package:depi_graduation_project/features/details/presentation/view/widgets/schedule_form.dart';
+import 'package:depi_graduation_project/features/details/presentation/widgets/schedule_form.dart';
 import 'package:flutter/material.dart' hide Page;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';

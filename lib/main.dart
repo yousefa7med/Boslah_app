@@ -8,8 +8,7 @@ import 'package:depi_graduation_project/features/auth/controllers/register_contr
 import 'package:depi_graduation_project/features/auth/presentation/views/login_view.dart';
 import 'package:depi_graduation_project/features/auth/presentation/views/register_view.dart';
 import 'package:depi_graduation_project/features/details/controllers/details_controller.dart';
-import 'package:depi_graduation_project/features/details/presentation/view/details_view.dart';
-import 'package:depi_graduation_project/features/details/presentation/view/schedule_bottom_sheet.dart';
+import 'package:depi_graduation_project/features/details/presentation/views/details_view.dart';
 import 'package:depi_graduation_project/features/favourite/controller/favourite_controller.dart';
 import 'package:depi_graduation_project/features/favourite/presentation/views/favourites_view.dart';
 import 'package:depi_graduation_project/features/home/controllers/home_controller.dart';

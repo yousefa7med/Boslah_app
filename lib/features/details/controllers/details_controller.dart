@@ -17,7 +17,6 @@ class DetailsController extends GetxController {
   final dateController = TextEditingController();
   final timeController = TextEditingController();
   final noteController = TextEditingController();
-  final formKey = GlobalKey<FormState>();
   @override
   Future<void> onInit() async {
     super.onInit();

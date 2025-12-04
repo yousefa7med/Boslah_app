@@ -22,7 +22,7 @@ class Schedule {
 
   final double? lat;
   final double? lng;
-  final String image;
+  final String? image;
 
 
   Schedule({
