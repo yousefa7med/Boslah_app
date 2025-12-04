@@ -25,9 +25,9 @@ class DetailsView extends GetView<DetailsController> {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(12),
-                    child: controller.place.thumbnail != null
+                    child: controller.place.image != null
                         ? Image.network(
-                            controller.place.thumbnail!,
+                            controller.place.image!,
                             width: double.infinity,
                             height: 350,
                             fit: BoxFit.cover,
@@ -93,13 +93,13 @@ class DetailsView extends GetView<DetailsController> {
               ),
               Gap(56.h),
               Text(
-                controller.place.title,
+                controller.place.name,
                 style: AppTextStyle.bold26.copyWith(fontSize: 30),
               ),
               const Gap(20),
-              controller.place.description != null
+              controller.place.desc != null
                   ? Text(
-                      ' ${controller.place.description}. ',
+                      ' ${controller.place.desc}. ',
                       style: AppTextStyle.semiBold22.copyWith(
                         color: Colors.grey,
                       ),
@@ -140,7 +140,7 @@ class DetailsView extends GetView<DetailsController> {
                       await launchUrl(
                         mode: LaunchMode.externalApplication,
                         Uri.parse(
-                          "https://www.google.com/maps/search/?api=1&query=${controller.place.coordinates![0].lat},${controller.place.coordinates![0].lon}",
+                          "https://www.google.com/maps/search/?api=1&query=${controller.place.lat},${controller.place.lng}",
                         ),
                       );
                     },

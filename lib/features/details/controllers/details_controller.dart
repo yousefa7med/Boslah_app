@@ -22,20 +22,20 @@ class DetailsController extends GetxController {
 
   Future<void> addToFav() async {
     final addFavorite = Favorite(
-      place_id: place.placeId,
-      user_id: cloud.auth.currentUser!.id,
-      image: place.thumbnail,
-      name: place.title,
-      desc: place.description,
+      placeId: place.placeId,
+      userId: cloud.auth.currentUser!.id,
+      image: place.image,
+      name: place.name,
+      desc: place.desc,
     );
     final favoriteSupa = FavoriteSupabase(
       userId: cloud.auth.currentUser!.id,
       placeId: place.placeId,
-      name: place.title,
-      desc: place.description,
-      image: place.thumbnail,
-      lat: place.coordinates?[0].lat,
-      lng: place.coordinates?[0].lon,
+      name: place.name,
+      desc: place.desc,
+      image: place.image,
+      lat: place.lat,
+      lng: place.lng,
     );
     await FavoritesService().addFavorite(favoriteSupa);
     // await FavoritesService().addFavorite(addFavorite);
@@ -94,10 +94,10 @@ class DetailsController extends GetxController {
     if (supabaseResult != null) {
       await database.favoritedao.insertFavorite(
         Favorite(
-          name: supabaseResult.name!,
-          user_id: supabaseResult.userId,
-          place_id: supabaseResult.placeId,
-          added_at: supabaseResult.addedAt,
+          name: supabaseResult.name,
+          userId: supabaseResult.userId,
+          placeId: supabaseResult.placeId,
+          addedAt: supabaseResult.addedAt,
           desc: supabaseResult.desc,
           image: supabaseResult.image,
           lat: supabaseResult.lat,

@@ -7,6 +7,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 import '../../../../core/utilities/app_colors.dart';
+import '../../../../core/utilities/routes.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
@@ -30,30 +31,40 @@ class HomeView extends GetView<HomeController> {
                       fontSize: 30.sp,
                     ),
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.black, width: 3),
-                    ),
-                    child: IconButton(
-                      onPressed: () {
-                        // profile code
-                      },
-                      icon: const Icon(
-                        Icons.person_outline,
-                        size: 32,
-                        color: Colors.black,
-                      ),
+                  IconButton(
+                    onPressed: () {
+                      Get.toNamed('/search');
+                    },
+                    icon: Icon(
+                      Icons.search,
+                      color: AppColors.main.withAlpha(200),
+                      size: 35,
                     ),
                   ),
+                  // Container(
+                  //   decoration: BoxDecoration(
+                  //     shape: BoxShape.circle,
+                  //     border: Border.all(color: Colors.black, width: 3),
+                  //   ),
+                  //   child: IconButton(
+                  //     onPressed: () {
+                  //       Get.toNamed('/profile');
+                  //     },
+                  //     icon: const Icon(
+                  //       Icons.person_outline,
+                  //       size: 32,
+                  //       color: Colors.black,
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
               const Gap(20),
-              Card(
-                elevation: 1,
-                shadowColor: Colors.white,
-                child: buildSearch(),
-              ),
+              // Card(
+              //   elevation: 1,
+              //   shadowColor: Colors.white,
+              //   child: buildSearch(),
+              // ),
               const Gap(15),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -98,7 +109,7 @@ class HomeView extends GetView<HomeController> {
       decoration: InputDecoration(
         prefixIcon: IconButton(
           onPressed: () {
-            //search code
+            Get.toNamed('/search',arguments: controller.searchController.text);
           },
           icon: Icon(
             Icons.search,
@@ -198,9 +209,9 @@ class PlaceCard extends GetView<HomeController> {
                 topLeft: Radius.circular(12),
                 topRight: Radius.circular(12),
               ),
-              child: controller.places[index].thumbnail != null
+              child: controller.places[index].image != null
                   ? Image.network(
-                      controller.places[index].thumbnail!,
+                      controller.places[index].image!,
                       width: double.infinity,
                       height: 180,
                       fit: BoxFit.fill,
@@ -220,11 +231,11 @@ class PlaceCard extends GetView<HomeController> {
             Padding(
               padding: const EdgeInsets.only(left: 8, right: 8, bottom: 5),
               child: Text(
-                controller.places[index].title,
+                controller.places[index].name,
                 style: AppTextStyle.semiBold24,
               ),
             ),
-            controller.places[index].description != null
+            controller.places[index].desc != null
                 ? Padding(
                     padding: const EdgeInsets.only(
                       left: 8,
@@ -232,7 +243,7 @@ class PlaceCard extends GetView<HomeController> {
                       bottom: 8,
                     ),
                     child: Text(
-                      '${controller.places[index].description}',
+                      '${controller.places[index].desc}',
                       style: AppTextStyle.semiBold18.copyWith(
                         color: Colors.grey,
                       ),

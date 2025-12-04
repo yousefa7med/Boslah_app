@@ -95,10 +95,10 @@ class LoginView extends GetView<LoginController> {
                               showSnackBar(context, "Logged in successfully!");
                             } on AppException catch (e) {
                               showSnackBar(context, e.msg);
-                            }
-                            await database.profiledao.insertUser(
+                            }    await database.profiledao.insertUser(
                               Profile(user_id: cloud.auth.currentUser!.id),
                             );
+                        
                             print(cloud.auth.currentUser);
                           }
                         },
