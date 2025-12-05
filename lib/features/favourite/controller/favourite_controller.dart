@@ -5,6 +5,7 @@ import 'package:depi_graduation_project/core/services/supabase_services/favorite
 import 'package:depi_graduation_project/main.dart';
 import 'package:depi_graduation_project/models/favorite_supabase.dart';
 import 'package:depi_graduation_project/models/place_model.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../core/database/models/favorites.dart';
 
@@ -13,6 +14,9 @@ class FavouritesController extends GetxController {
   final error = RxnString();
   final List<int> deleted = [];
   final List<RxBool> isFav = [];
+  var sController=TextEditingController();
+
+
   @override
   void onInit() {
     try {
@@ -20,7 +24,6 @@ class FavouritesController extends GetxController {
     } on Exception catch (e) {
       error.value = e.toString();
     }
-
     super.onInit();
   }
 

@@ -11,6 +11,7 @@ class searchController extends GetxController{
   final api = Get.find<ApiServices>();
 
 
+
   Future<void> loadData() async {
     final data=await api.searchPlacesWithImages(sController.text);
     searchList.value = data?.where((p) {
@@ -27,5 +28,12 @@ class searchController extends GetxController{
           // });
         }).toList() ?? [];
 
+  }
+
+  @override
+  void onClose() {
+    // TODO: implement onClose
+    super.onClose();
+    api.cancelToken;
   }
 }

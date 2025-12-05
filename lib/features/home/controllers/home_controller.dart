@@ -41,6 +41,14 @@ class HomeController extends GetxController {
     loadAll();
   }
 
+
+  @override
+  void onClose() {
+    // TODO: implement onClose
+    api.cancelToken;
+    super.onClose();
+  }
+
   void loadAll() async {
     // position.value= await Location().getPosition();
     final data = await api.getPlacesWithDetails(

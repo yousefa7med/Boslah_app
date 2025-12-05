@@ -8,6 +8,7 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 
 import '../../../../core/functions/snack_bar.dart';
 import '../../../../core/utilities/app_colors.dart';
+import '../../../../core/utilities/app_text_style.dart';
 
 class ScheduleView extends GetView<ScheduleController> {
   const ScheduleView({super.key});
@@ -26,31 +27,20 @@ class ScheduleView extends GetView<ScheduleController> {
             return const Center(child: Text('No schedules yet'));
           }
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 15),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                const SizedBox(
-                  width: double.infinity,
-                  child: Column(
-                    children: [
-                      Text(
-                        "Your Schedule",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-                      SizedBox(height: 4),
-                      Text(
-                        "See your upcoming tours",
-                        style: TextStyle(fontSize: 13, color: Colors.black54),
-                      ),
-                    ],
+                Text(
+                  'Your Scheduling',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 30.sp,
                   ),
                 ),
-
+                Gap(20),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(

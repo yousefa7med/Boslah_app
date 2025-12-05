@@ -15,7 +15,8 @@ class ProfileView extends GetView<ProfileController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: PreferredSize(preferredSize: const Size.fromHeight(75),
+      backgroundColor: Colors.white,
+        appBar: PreferredSize(preferredSize: Size.fromHeight(56.h),
           child: AppBar(
             actions: [
               Obx(() {
@@ -24,19 +25,19 @@ class ProfileView extends GetView<ProfileController> {
                   controller.themesICon.toggle();
                 },
                     icon: controller.themesICon.value
-                        ? Icon(Icons.sunny)
-                        : Icon(Icons.dark_mode));
+                        ? const Icon(Icons.sunny,color: Colors.amber,)
+                        : const Icon(Icons.dark_mode,color:Colors.blueAccent ,));
               }),
               Gap(5.w,)
             ],
-            iconTheme: IconThemeData(color: Colors.white, size: 30.h),
+            iconTheme: IconThemeData(color: Colors.white, size: 40.h),
             title: FittedBox(
               child: Text('Profile',
                   style: AppTextStyle.bold24.copyWith(
-                      color: Colors.white, fontSize: 30)
+                      color: Colors.black, fontSize: 30)
               ),
             )
-            , backgroundColor: AppColors.main,),),
+            , backgroundColor: Colors.white,),),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Obx(() {
@@ -126,7 +127,7 @@ class ProfileView extends GetView<ProfileController> {
                       )
                     ],
                   ),
-                  Gap(20),
+                  const Gap(20),
                   SizedBox(
                     width: 200,
                     height: 47,

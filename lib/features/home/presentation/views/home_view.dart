@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:shimmer/shimmer.dart'; // <- make sure this is at top of file
 
 import '../../../../core/utilities/app_colors.dart';
 
@@ -87,6 +88,14 @@ class HomeView extends GetView<HomeController> {
               ),
               const Gap(10),
               Obx(() {
+                if(controller.places.isEmpty){
+                  return Expanded(
+                      child: ListView.builder(
+                          itemCount: 5,
+                          itemBuilder: (ctx,index)=>shimmerItem()
+                      )
+                  );
+                }
                 return Expanded(
                   child: ListView.builder(
                     itemCount: controller.places.length,
@@ -185,6 +194,57 @@ class HomeView extends GetView<HomeController> {
       );
     });
   }
+
+
+  Widget shimmerItem() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey.shade300,
+      highlightColor: Colors.grey.shade100,
+      child: Card(
+        elevation: 3,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius:const BorderRadius.only(
+                topLeft: Radius.circular(12),
+                topRight: Radius.circular(12)
+              ),
+              child: Container(
+                width: double.infinity,
+                height: 180,
+                color: Colors.grey,
+              ),
+            ),
+            Gap(10.h),
+            Padding(
+              padding: const EdgeInsets.only(left: 8, right: 8, bottom: 5),
+              child: Container(
+                height: 25,
+                width: 180,
+                color: Colors.grey,
+              ),
+            ),
+            Gap(10.h),
+            Padding(
+              padding: const EdgeInsets.only(
+                left: 8,
+                right: 8,
+                bottom: 8,
+              ),
+              child: Container(
+                height: 20,
+                width: 240,
+                color: Colors.grey,
+              ),
+            ),
+            Gap(15.h),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 class PlaceCard extends GetView<HomeController> {
@@ -226,7 +286,7 @@ class PlaceCard extends GetView<HomeController> {
                       ),
                     ),
             ),
-            const Gap(10),
+            Gap(10.h),
             Padding(
               padding: const EdgeInsets.only(left: 8, right: 8, bottom: 5),
               child: Text(
