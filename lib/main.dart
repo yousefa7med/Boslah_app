@@ -53,6 +53,10 @@ Future<void> main() async {
 
   // Initialize Alarm Manager
   await AndroidAlarmManager.initialize();
+  bool allowed = await AwesomeNotifications().isNotificationAllowed();
+  if (!allowed) {
+    await AwesomeNotifications().requestPermissionToSendNotifications();
+  }
   runApp(const MyApp());
 }
 
@@ -104,13 +108,7 @@ class MyApp extends StatelessWidget {
           initialRoute: AuthService().isLogin() ? Routes.main : Routes.login,
           // initialRoute: Routes.schedule,
           initialBinding: BindingsBuilder(() {
-           
-           
-           
-            Get.put( ApiServices());
-
-
-
+            Get.put(ApiServices());
           }),
           getPages: [
             GetPage(

@@ -1,47 +1,60 @@
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../main.dart';
 import '../../../models/schedule_supabase.dart';
+import '../../errors/app_exception.dart';
 import '../alarm_callback.dart';
+import 'package:intl/intl.dart';
 
 class ScheduleServiceSupabase {
   ScheduleServiceSupabase();
 
-  /// Create a new schedule and set an alarm
-  Future<int> createSchedule(ScheduleSupabase schedule) async {
-    // Insert schedule into Supabase
-    final inserted = await cloud
-        .from('schedules')
-        .insert(schedule.toMap())
-        .select()
-        .single();
+  Future<void> createSchedule(ScheduleSupabase schedule) async {
+    try {
+      final inserted = await cloud
+          .from('schedules')
+          .insert(schedule.toMap())
+          .select()
+          .single();
 
-    final scheduleId = inserted['schedule_id'] as int;
+      final id = inserted['schedule_id'] as int;
 
-    // Schedule the alarm
-    // final scheduledDate = DateTime.parse(schedule.date);
-    final date = schedule.date; // "2025-01-10"
-    final hour = schedule.hour; // "14:30"
-    final scheduledDateTime = DateTime.parse(
-      "${schedule.date} ${schedule.hour}:00",
-    );
+      // final scheduledDateTime = DateTime.parse(
+      //   "${schedule.date} ${schedule.hour}:00",
+      // );
+      final dateString = "${schedule.date} ${schedule.hour}";
+      // -> "2025-12-5 9:59 AM"
 
-    await AndroidAlarmManager.oneShotAt(
-      scheduledDateTime,
-      scheduleId, // unique alarm ID
-      alarmCallbackWithId,
-      exact: true,
-      wakeup: true,
-      rescheduleOnReboot: true,
-    );
-    return scheduleId;
+      // FIX: Correct formatter for 12-hour time
+      final formatter = DateFormat("yyyy-M-d h:mm a");
+
+      final scheduledDateTime = formatter.parse(dateString);
+      await AndroidAlarmManager.oneShotAt(
+        scheduledDateTime,
+        id,
+        alarmCallbackWithId,
+        exact: true,
+        wakeup: true,
+        rescheduleOnReboot: true,
+      );
+    } on PostgrestException catch (e) {
+      throw AppException(msg: e.message);
+    } catch (e) {
+      throw AppException(msg: "Failed to schedule");
+    }
   }
 
   /// Delete a schedule and cancel the alarm
   Future<void> deleteSchedule(int? scheduleId) async {
-    await cloud.from('schedules').delete().eq('schedule_id', scheduleId!);
-
-    // Cancel the alarm
-    await AndroidAlarmManager.cancel(scheduleId);
+    try {
+      await cloud.from('schedules').delete().eq('schedule_id', scheduleId!);
+      // Cancel the alarm
+      await AndroidAlarmManager.cancel(scheduleId);
+    } on PostgrestException catch (e) {
+      throw AppException(msg: e.message);
+    } catch (e) {
+      throw AppException(msg: "Failed to schedule");
+    }
   }
 
   /// Mark a schedule as done

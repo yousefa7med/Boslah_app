@@ -47,9 +47,24 @@ class ScheduleSupabase extends ScheduleModel {
     );
   }
 
+  // Map<String, dynamic> toMap() {
+  //   return {
+  //     'schedule_id': scheduleId,
+  //     'place_id': placeId,
+  //     'date': date,
+  //     'hour': hour,
+  //     'note': note,
+  //     'is_done': isDone,
+  //     'created_at': createdAt,
+  //     'user_id': userId,
+  //     'lat': lat,
+  //     'lng': lng,
+  //     'image': image,
+  //     'name': name,
+  //   };
+  // }
   Map<String, dynamic> toMap() {
-    return {
-      'schedule_id': scheduleId,
+    final map = {
       'place_id': placeId,
       'date': date,
       'hour': hour,
@@ -59,8 +74,15 @@ class ScheduleSupabase extends ScheduleModel {
       'user_id': userId,
       'lat': lat,
       'lng': lng,
-      'image': image,
       'name': name,
+      'image': image,
     };
+
+    // Include schedule_id only if it's not null (for updates)
+    if (scheduleId != null) {
+      map['schedule_id'] = scheduleId;
+    }
+
+    return map;
   }
 }

@@ -1,5 +1,3 @@
-
-
 import 'package:depi_graduation_project/core/functions/snack_bar.dart';
 import 'package:depi_graduation_project/core/utilities/app_colors.dart';
 import 'package:depi_graduation_project/core/utilities/app_text_style.dart';
@@ -11,6 +9,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../../../../core/functions/exact_alarm_permission.dart';
 
 class DetailsView extends GetView<DetailsController> {
   const DetailsView({super.key});
@@ -160,18 +160,19 @@ class DetailsView extends GetView<DetailsController> {
                         width: 70,
                         child: ElevatedButton(
                           onPressed: () {
-                            showModalBottomSheet(
-                              isScrollControlled: true,
-
-                              context: context,
-                              // backgroundColor: Colors.transparent,
-                              builder: (_) => Padding(
-                                padding: EdgeInsets.only(
-                                  bottom: Get.mediaQuery.viewInsets.bottom,
-                                ),
-                                child: const ScheduleForm(),
-                              ),
-                            );
+                            // showModalBottomSheet(
+                            //   isScrollControlled: true,
+                            //
+                            //   context: context,
+                            //   // backgroundColor: Colors.transparent,
+                            //   builder: (_) => Padding(
+                            //     padding: EdgeInsets.only(
+                            //       bottom: Get.mediaQuery.viewInsets.bottom,
+                            //     ),
+                            //     child: const ScheduleForm(),
+                            //   ),
+                            // );
+                            checkExactAlarmAndOpenForm(context);
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.grey,

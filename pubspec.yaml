@@ -29,6 +29,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   android_alarm_manager_plus: ^5.0.0
+  android_intent_plus: ^6.0.0
   awesome_notifications: ^0.10.1
   connectivity_plus: ^7.0.0
   cupertino_icons: ^1.0.8
