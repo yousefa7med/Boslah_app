@@ -1,8 +1,10 @@
 import 'package:depi_graduation_project/core/database/models/region_places.dart';
 import 'package:depi_graduation_project/core/database/models/region_requests.dart';
+import 'package:depi_graduation_project/models/filter_model.dart';
 import 'package:depi_graduation_project/models/place_model.dart';
 import 'package:depi_graduation_project/main.dart';
 import 'package:flutter/cupertino.dart' hide Page;
+import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 
@@ -10,12 +12,15 @@ import '../../../core/services/api_services/api_services1.1.dart';
 
 class HomeController extends GetxController {
   final searchController = TextEditingController();
-  final selectedCard = 1.obs;
   final position = Rxn<Position>();
-
   final places = <PlaceModel>[].obs;
   final museums = <PlaceModel>[].obs;
   final restaurant = <PlaceModel>[].obs;
+  final List<FilterModel> filterList = [
+    FilterModel(text: 'All'),
+    FilterModel(text: 'Museums', icon: Icons.museum),
+    FilterModel(text: 'Restaurants', icon: Icons.restaurant_sharp),
+  ];
   // final keywords = [
   //   "sphinx"
   //   "ancient"
@@ -39,6 +44,13 @@ class HomeController extends GetxController {
     // TODO: implement onInit
     super.onInit();
     loadAll();
+  }
+
+  @override
+  void onClose() {
+    // TODO: implement onClose
+    api.cancelToken;
+    super.onClose();
   }
 
   void loadAll() async {

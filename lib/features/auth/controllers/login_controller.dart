@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../core/services/supabase_services/auth_service.dart';
-import '../../../core/utilities/routes.dart';
 
 class LoginController extends GetxController {
   final emailController = TextEditingController();
@@ -22,7 +21,6 @@ class LoginController extends GetxController {
     if (await hasInternet()) {
       await auth.login(email, password);
 
-      Get.offNamed(Routes.main);
     } else {
       throw AppException(msg: "Please Check your internet connection");
     }

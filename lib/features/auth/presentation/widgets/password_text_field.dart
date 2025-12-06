@@ -1,3 +1,4 @@
+import 'package:depi_graduation_project/core/functions/is_dark.dart';
 import 'package:depi_graduation_project/core/utilities/app_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -20,6 +21,7 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
   bool obscureText = true;
   @override
   Widget build(BuildContext context) {
+    print(isDark());
     return TextFormField(
       obscureText: obscureText,
       validator: widget.validator,
@@ -28,7 +30,9 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
       decoration: InputDecoration(
         hintText: widget.hintText,
         hintStyle: const TextStyle(color: AppColors.hintText),
-        fillColor: AppColors.fillTextField,
+        fillColor: isDark()
+            ? const Color(0xff2A2A2A)
+            : AppColors.fillTextField,
         filled: true,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),

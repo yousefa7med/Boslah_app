@@ -1,5 +1,6 @@
 import 'package:depi_graduation_project/core/database/models/profile.dart';
 import 'package:depi_graduation_project/core/errors/app_exception.dart';
+import 'package:depi_graduation_project/core/functions/is_dark.dart';
 import 'package:depi_graduation_project/core/functions/snack_bar.dart';
 import 'package:depi_graduation_project/core/utilities/app_colors.dart';
 import 'package:depi_graduation_project/core/utilities/app_text_style.dart';
@@ -15,6 +16,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 import '../../../../core/utilities/assets.dart';
+import '../../../../core/utilities/routes.dart';
 import '../../helper/validator.dart';
 
 class LoginView extends GetView<LoginController> {
@@ -22,119 +24,123 @@ class LoginView extends GetView<LoginController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Gap(70.h),
-                SvgPicture.asset(Assets.logo, height: 90.h),
-                const Gap(10),
-                Text(
-                  'Welcome Back!',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 30.sp,
-                    fontWeight: FontWeight.bold,
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Gap(70.h),
+                  SvgPicture.asset(Assets.logo, height: 90.h),
+                  const Gap(10),
+                  Text(
+                    'Welcome Back!',
+                    style: TextStyle(
+                      fontSize: 30.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                const Gap(50),
-                Form(
-                  key: controller.formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Email',
-                        style: TextStyle(
-                          color: Colors.black87,
-                          fontSize: 17.sp,
+                  Gap(50.h),
+                  Form(
+                    key: controller.formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Email', style: AppTextStyle.regular18),
+                        const Gap(4),
+                        AppTextFormField(
+                          hintText: 'Enter your email',
+                          controller: controller.emailController,
+                          validator: Validator.emailValidator(),
                         ),
-                      ),
-                      const Gap(4),
-                      AppTextFormField(
-                        hintText: 'Enter your email',
-                        controller: controller.emailController,
-                        validator: Validator.emailValidator(),
-                      ),
-                      const Gap(15),
-                      Text(
-                        'Password',
-                        style: TextStyle(
-                          color: Colors.black87,
-                          fontSize: 17.sp,
+                        const Gap(15),
+                        Text('Password', style: AppTextStyle.regular18),
+                        const Gap(4),
+
+                        PasswordTextField(
+                          hintText: 'Enter your password',
+                          controller: controller.passwordController,
+                          validator: Validator.loginPasswordValidator(),
                         ),
-                      ),
-                      const Gap(4),
 
-                      PasswordTextField(
-                        hintText: 'Enter your password',
-                        controller: controller.passwordController,
-                        validator: Validator.loginPasswordValidator(),
-                      ),
-
-                      const Gap(10),
-                      TextButton(
-                        onPressed: () {},
-                        child: const Text(
-                          'Forget Password?',
-                          style: TextStyle(color: AppColors.main, fontSize: 16),
-                        ),
-                      ),
-                      AppButton(
-                        onPressed: () async {
-                          if (controller.formKey.currentState!.validate()) {
-                            try {
-                              await controller.loginUser(
-                                email: controller.emailController.text,
-                                password: controller.passwordController.text,
-                              );
-                              await database.profiledao.insertUser(
-                                Profile(userId: cloud.auth.currentUser!.id),
-                              );
-                              showSnackBar(context, "Logged in successfully!");
-                            } on AppException catch (e) {
-                              showSnackBar(context, e.msg);
-                            }
-
-                            print(cloud.auth.currentUser);
-                          }
-                        },
-
-                        child: Text(
-                          'Login',
-                          style: TextStyle(
-                            fontSize: 20.sp,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                      const Gap(20),
-
-                      AppButton(
-                        onPressed: () {
-                          Get.offNamed('/register');
-                        },
-
-                        style: ElevatedButton.styleFrom(
-                          foregroundColor: AppColors.main,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadiusGeometry.circular(10),
-                            side: const BorderSide(
+                        const Gap(10),
+                        TextButton(
+                          onPressed: () {
+                            //!forget password func
+                          },
+                          child: Text(
+                            'Forget Password?',
+                            style: AppTextStyle.regular16.copyWith(
                               color: AppColors.main,
-                              width: 2.5,
                             ),
                           ),
                         ),
-                        child: Text('Register', style: AppTextStyle.regular20),
-                      ),
-                    ],
+                        AppButton(
+                          onPressed: () async {
+                            if (controller.formKey.currentState!.validate()) {
+                              try {
+                                await controller.loginUser(
+                                  email: controller.emailController.text,
+                                  password: controller.passwordController.text,
+                                );
+                                Get.offNamed(Routes.main);
+
+                                await database.profiledao.insertUser(
+                                  Profile(userId: cloud.auth.currentUser!.id),
+                                );
+                                showSnackBar(
+                                  context,
+                                  "Logged in successfully!",
+                                );
+                              } on AppException catch (e) {
+                                showSnackBar(context, e.msg);
+                              }
+
+                              print(cloud.auth.currentUser);
+                            }
+                          },
+
+                          child: Text(
+                            'Login',
+                            style: AppTextStyle.regular20.copyWith(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        const Gap(20),
+
+                        AppButton(
+                          onPressed: () {
+                            Get.toNamed(Routes.register);
+                          },
+
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: AppColors.main,
+                            backgroundColor: isDark()
+                                ? const Color(0xff2A2A2A)
+                                : Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadiusGeometry.circular(10),
+                              side: const BorderSide(
+                                color: AppColors.main,
+                                width: 2.5,
+                              ),
+                            ),
+                          ),
+                          child: Text(
+                            'Register',
+                            style: AppTextStyle.regular20,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

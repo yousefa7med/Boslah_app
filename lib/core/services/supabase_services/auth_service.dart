@@ -4,6 +4,10 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../main.dart';
 
 class AuthService {
+  static final AuthService _instance = AuthService._internal();
+  AuthService._internal();
+  factory AuthService() => _instance;
+
   Future<void> register(String fullName, String email, String password) async {
     try {
       final response = await cloud.auth.signUp(

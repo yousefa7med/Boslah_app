@@ -1,4 +1,3 @@
-import 'package:depi_graduation_project/core/utilities/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class AppButton extends StatelessWidget {
@@ -11,18 +10,7 @@ class AppButton extends StatelessWidget {
     return SizedBox(
       height: 48,
       width: double.infinity,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style:
-            style ??
-            ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              backgroundColor: AppColors.main,
-            ),
-        child: child,
-      ),
+      child: ElevatedButton(onPressed: onPressed, style: style, child: child),
     );
   }
 }

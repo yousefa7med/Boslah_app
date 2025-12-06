@@ -1,4 +1,5 @@
 import 'package:depi_graduation_project/core/errors/app_exception.dart';
+import 'package:depi_graduation_project/core/functions/is_dark.dart';
 import 'package:depi_graduation_project/core/functions/snack_bar.dart';
 import 'package:depi_graduation_project/core/utilities/app_colors.dart';
 import 'package:depi_graduation_project/features/favourite/presentation/views/favourites_view.dart';
@@ -23,14 +24,19 @@ class MainView extends GetView<MainController> {
   Widget build(BuildContext context) {
     return PersistentTabView(
       stateManagement: false,
-
-      navBarBuilder: (navBarConfig) =>
-          Style1BottomNavBar(navBarConfig: navBarConfig),
+      navBarBuilder: (navBarConfig) => Style6BottomNavBar(
+        height: 58,
+        navBarConfig: navBarConfig,
+        navBarDecoration: NavBarDecoration(
+          color: isDark() ? AppColors.darkSurface : Colors.white,
+        ),
+      ),
+      handleAndroidBackButtonPress: true,
+      resizeToAvoidBottomInset: true,
       onTabChanged: (value) {
         print(value);
         if (value == 1) {
           controller.isFavPage = true;
-     
         } else {
           if (controller.isFavPage &&
               controller.favControoller.deleted.isNotEmpty) {
@@ -136,7 +142,6 @@ class MainView extends GetView<MainController> {
             inactiveForegroundColor: Colors.grey,
           ),
         ),
-
       ],
     );
   }
