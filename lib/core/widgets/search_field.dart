@@ -39,6 +39,6 @@ class SearchField extends StatelessWidget {
         ),
       ),
     );
-    ;
+    
   }
 }
