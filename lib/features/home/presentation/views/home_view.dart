@@ -1,10 +1,13 @@
 import 'package:depi_graduation_project/core/utilities/app_text_style.dart';
+import 'package:depi_graduation_project/core/utilities/routes.dart';
+import 'package:depi_graduation_project/core/widgets/filter.dart';
 import 'package:depi_graduation_project/features/home/controllers/home_controller.dart';
-import 'package:depi_graduation_project/main.dart';
+import 'package:depi_graduation_project/features/home/presentation/widgets/home_place_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../core/utilities/app_colors.dart';
 
@@ -16,7 +19,7 @@ class HomeView extends GetView<HomeController> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 15),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             children: [
               Row(
@@ -25,72 +28,52 @@ class HomeView extends GetView<HomeController> {
                   Text(
                     'Explore',
                     style: TextStyle(
-                      color: Colors.black,
                       fontWeight: FontWeight.bold,
                       fontSize: 30.sp,
                     ),
                   ),
                   IconButton(
                     onPressed: () {
-                      Get.toNamed('/search');
+                      Get.toNamed(Routes.search);
                     },
                     icon: Icon(
                       Icons.search,
                       color: AppColors.main.withAlpha(200),
-                      size: 35,
+                      size: 35.r,
                     ),
                   ),
-                  // Container(
-                  //   decoration: BoxDecoration(
-                  //     shape: BoxShape.circle,
-                  //     border: Border.all(color: Colors.black, width: 3),
-                  //   ),
-                  //   child: IconButton(
-                  //     onPressed: () {
-                  //       Get.toNamed('/profile');
-                  //     },
-                  //     icon: const Icon(
-                  //       Icons.person_outline,
-                  //       size: 32,
-                  //       color: Colors.black,
-                  //     ),
-                  //   ),
-                  // ),
                 ],
               ),
-              const Gap(20),
-              // Card(
-              //   elevation: 1,
-              //   shadowColor: Colors.white,
-              //   child: buildSearch(),
-              // ),
+
               const Gap(15),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    buildCardFilttring(1, 'All'),
-                    buildCardFilttring(2, 'Museums', IconData: Icons.museum),
-                    buildCardFilttring(
-                      3,
-                      'Restaurants',
-                      IconData: Icons.restaurant_sharp,
-                    ),
-                  ],
-                ),
-              ),
-              const Gap(20),
+
+              Filter(filterList: controller.filterList),
+
+              const Gap(10),
               Align(
-                alignment: const Alignment(-0.9, 1),
+                alignment: Alignment.centerLeft,
                 child: Text('Nearby Attractions', style: AppTextStyle.bold26),
               ),
               const Gap(10),
               Obx(() {
+                if (controller.places.isEmpty) {
+                  return Expanded(
+                    child: ListView.separated(
+                      itemCount: 5,
+                      itemBuilder: (ctx, index) => shimmerItem(),
+                      separatorBuilder: (BuildContext context, int index) {
+                        return const Gap(10);
+                      },
+                    ),
+                  );
+                }
                 return Expanded(
-                  child: ListView.builder(
+                  child: ListView.separated(
                     itemCount: controller.places.length,
-                    itemBuilder: (ctx, index) => PlaceCard(index),
+                    itemBuilder: (ctx, index) => HomePlaceCard(index),
+                    separatorBuilder: (BuildContext context, int index) {
+                      return const Gap(10);
+                    },
                   ),
                 );
               }),
@@ -101,102 +84,10 @@ class HomeView extends GetView<HomeController> {
     );
   }
 
-  Widget buildSearch() {
-    return TextField(
-      controller: controller.searchController,
-      style: const TextStyle(color: AppColors.main),
-      decoration: InputDecoration(
-        prefixIcon: IconButton(
-          onPressed: () {
-            Get.toNamed('/search',arguments: controller.searchController.text);
-          },
-          icon: Icon(
-            Icons.search,
-            color: AppColors.main.withAlpha(200),
-            size: 27,
-          ),
-        ),
-        hintText: 'Search for attractions...',
-        hintStyle: TextStyle(color: Colors.grey, fontSize: 17.sp),
-        filled: true,
-        fillColor: Colors.white,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide.none,
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide.none,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: Colors.grey.shade400, width: 2.8),
-        ),
-      ),
-    );
-  }
-
-  Widget buildCardFilttring(int index, String label, {IconData}) {
-    return Obx(() {
-      bool isSelected = controller.selectedCard.value == index;
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        child: GestureDetector(
-          onTap: () {
-            controller.selectedCard.value = index;
-            // calling the api
-          },
-          child: Card(
-            elevation: 3,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
-            ),
-            color: isSelected ? AppColors.main : Colors.grey.shade300,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-                vertical: 8,
-              ),
-              child: Row(
-                children: [
-                  IconData != null
-                      ? Row(
-                          children: [
-                            Icon(
-                              IconData,
-                              color: isSelected ? Colors.white : Colors.black,
-                            ),
-                            const Gap(10),
-                          ],
-                        )
-                      : const SizedBox.shrink(),
-                  Text(
-                    label,
-                    style: TextStyle(
-                      color: isSelected ? Colors.white : Colors.black,
-                      fontSize: 20.sp,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      );
-    });
-  }
-}
-
-class PlaceCard extends GetView<HomeController> {
-  const PlaceCard(this.index, {super.key});
-  final int index;
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        Get.toNamed('/details', arguments: controller.places[index]);
-        print(cloud.auth.currentUser!.id);
-      },
+  Widget shimmerItem() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey.shade300,
+      highlightColor: Colors.grey.shade100,
       child: Card(
         elevation: 3,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
@@ -208,47 +99,23 @@ class PlaceCard extends GetView<HomeController> {
                 topLeft: Radius.circular(12),
                 topRight: Radius.circular(12),
               ),
-              child: controller.places[index].image != null
-                  ? Image.network(
-                      controller.places[index].image!,
-                      width: double.infinity,
-                      height: 180,
-                      fit: BoxFit.fill,
-                    )
-                  : Container(
-                      width: double.infinity,
-                      height: 180,
-                      color: Colors.grey[300],
-                      child: const Icon(
-                        Icons.image_not_supported,
-                        size: 50,
-                        color: Colors.grey,
-                      ),
-                    ),
-            ),
-            const Gap(10),
-            Padding(
-              padding: const EdgeInsets.only(left: 8, right: 8, bottom: 5),
-              child: Text(
-                controller.places[index].name,
-                style: AppTextStyle.semiBold24,
+              child: Container(
+                width: double.infinity,
+                height: 180.h,
+                color: Colors.grey,
               ),
             ),
-            controller.places[index].desc != null
-                ? Padding(
-                    padding: const EdgeInsets.only(
-                      left: 8,
-                      right: 8,
-                      bottom: 8,
-                    ),
-                    child: Text(
-                      '${controller.places[index].desc}',
-                      style: AppTextStyle.semiBold18.copyWith(
-                        color: Colors.grey,
-                      ),
-                    ),
-                  )
-                : const Gap(5),
+            Gap(10.h),
+            Padding(
+              padding: const EdgeInsets.only(left: 8, right: 8, bottom: 5),
+              child: Container(height: 25.h, width: 180.w, color: Colors.grey),
+            ),
+            Gap(10.h),
+            Padding(
+              padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
+              child: Container(height: 20.h, width: 240.w, color: Colors.grey),
+            ),
+            Gap(15.h),
           ],
         ),
       ),

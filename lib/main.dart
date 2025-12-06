@@ -1,7 +1,10 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:depi_graduation_project/core/database/tourApp_database.dart';
+import 'package:depi_graduation_project/core/helper/casheHelper.dart';
+import 'package:depi_graduation_project/core/helper/theme_manager.dart';
 import 'package:depi_graduation_project/core/services/api_services/api_services1.1.dart';
+import 'package:depi_graduation_project/core/utilities/app_themes.dart';
 import 'package:depi_graduation_project/core/utilities/assets.dart';
 import 'package:depi_graduation_project/features/auth/controllers/login_controller.dart';
 import 'package:depi_graduation_project/features/auth/controllers/register_controller.dart';
@@ -19,7 +22,7 @@ import 'package:depi_graduation_project/features/profile/controllers/profile_con
 import 'package:depi_graduation_project/features/profile/presentation/views/profile_view.dart';
 import 'package:depi_graduation_project/features/schedule/controllers/schedule_controller.dart';
 import 'package:depi_graduation_project/features/schedule/presentation/view/schedule_view.dart';
-import 'package:depi_graduation_project/features/search/presentation/search_view.dart';
+import 'package:depi_graduation_project/features/home/presentation/views/search_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -29,11 +32,11 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:sqflite/sqflite.dart';
 import 'core/services/supabase_services/auth_service.dart';
 import 'core/utilities/routes.dart';
-import 'features/search/search_controller/search_controller.dart';
+import 'features/home/controllers/search_controller.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  await CasheHelper().init();
   await copyDatabase();
 
   database = await $FloortourDatabase.databaseBuilder('tourAppDB.db').build();
@@ -42,6 +45,7 @@ Future<void> main() async {
     anonKey:
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhwaXJsYW9reHhyZnR0aHhvZXdoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQwMTk2MTAsImV4cCI6MjA3OTU5NTYxMH0.rpqSSo8Swf5QEqbM6RfIvV5vtRbJOYUg5_MvCNHIheY',
   );
+  ThemeManager().loadTheme();
   runApp(const MyApp());
 }
 
@@ -89,17 +93,14 @@ class MyApp extends StatelessWidget {
       splitScreenMode: true,
       builder: (_, child) {
         return GetMaterialApp(
+          theme: AppThemes.lightTheme,
+          darkTheme: AppThemes.darkTheme,
+          themeMode: ThemeManager().getTheme(),
           debugShowCheckedModeBanner: false,
           initialRoute: AuthService().isLogin() ? Routes.main : Routes.login,
           // initialRoute: Routes.schedule,
           initialBinding: BindingsBuilder(() {
-           
-           
-           
-            Get.put( ApiServices());
-
-
-
+            Get.put(ApiServices());
           }),
           getPages: [
             GetPage(

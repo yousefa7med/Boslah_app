@@ -1,3 +1,4 @@
+import 'package:depi_graduation_project/core/functions/is_dark.dart';
 import 'package:get/get.dart';
 
 import '../../../core/services/supabase_services/auth_service.dart';
@@ -6,14 +7,13 @@ class ProfileController extends GetxController {
   final AuthService _authService = AuthService();
 
   final fullName = ''.obs;
-  final themesICon=true.obs;
+  final lightTheme = (!isDark()).obs;
 
   @override
   void onInit() {
     super.onInit();
     loadUserName();
   }
-
 
   Future<void> loadUserName() async {
     fullName.value = await _authService.getCurrentUserFullName();

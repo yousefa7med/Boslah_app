@@ -1,5 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:depi_graduation_project/core/utilities/app_text_style.dart';
 import 'package:depi_graduation_project/features/schedule/controllers/schedule_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
@@ -23,19 +26,20 @@ class SchadulePlaceCard extends GetView<ScheduleController> {
                   top: Radius.circular(16),
                 ),
                 child: controller.allSchedules[index].image != null
-                    ? Image.network(
-                        controller.allSchedules[index].image!, // الصورة
-                        height: 150,
+                    ? CachedNetworkImage(
+                        imageUrl:
+                            controller.allSchedules[index].image!, // الصورة
+                        height: 150.h,
                         width: double.infinity,
                         fit: BoxFit.cover,
                       )
                     : Container(
                         width: double.infinity,
-                        height: 180,
+                        height: 180.h,
                         color: Colors.grey[300],
-                        child: const Icon(
+                        child: Icon(
                           Icons.image_not_supported,
-                          size: 50,
+                          size: 50.r,
                           color: Colors.grey,
                         ),
                       ),
@@ -63,9 +67,8 @@ class SchadulePlaceCard extends GetView<ScheduleController> {
                       const Gap(5),
                       Text(
                         "In Progress",
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: Colors.black.withOpacity(0.7),
+                        style: AppTextStyle.regular14.copyWith(
+                          color: Colors.black,
                         ),
                       ),
                     ],
@@ -86,9 +89,9 @@ class SchadulePlaceCard extends GetView<ScheduleController> {
                     color: AppColors.main,
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  child: const Text(
+                  child: Text(
                     "Today",
-                    style: TextStyle(color: Colors.white, fontSize: 13),
+                    style: AppTextStyle.regular14.copyWith(color: Colors.white),
                   ),
                 ),
               ),
@@ -100,7 +103,7 @@ class SchadulePlaceCard extends GetView<ScheduleController> {
             padding: const EdgeInsets.all(12.0),
             child: Text(
               controller.allSchedules[index].name ?? '',
-              style: const TextStyle(fontSize: 19, fontWeight: FontWeight.w600),
+              style: AppTextStyle.semiBold20,
             ),
           ),
 
@@ -109,8 +112,7 @@ class SchadulePlaceCard extends GetView<ScheduleController> {
             padding: const EdgeInsets.only(left: 12, right: 12, bottom: 12),
             child: Text(
               controller.allSchedules[index].note,
-              style: TextStyle(
-                fontSize: 14,
+              style: AppTextStyle.regular14.copyWith(
                 height: 1.4,
                 color: Colors.grey.shade700,
               ),
