@@ -1,3 +1,4 @@
+import 'package:depi_graduation_project/core/services/supabase_services/auth_service.dart';
 import 'package:depi_graduation_project/core/utilities/app_colors.dart';
 import 'package:depi_graduation_project/features/profile/controllers/profile_controller.dart';
 import 'package:depi_graduation_project/main.dart';
@@ -5,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
+
 
 import '../../../../core/utilities/app_text_style.dart';
 
@@ -154,7 +155,8 @@ class ProfileView extends GetView<ProfileController> {
                   width: 200,
                   height: 47,
                   child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
+                      await AuthService().logout();
                       Get.offNamed('/login');
                     },
                     style: ElevatedButton.styleFrom(
