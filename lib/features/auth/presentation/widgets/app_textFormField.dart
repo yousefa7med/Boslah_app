@@ -1,3 +1,4 @@
+import 'package:depi_graduation_project/core/functions/is_dark.dart';
 import 'package:depi_graduation_project/core/utilities/app_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -20,7 +21,9 @@ class AppTextFormField extends StatelessWidget {
       decoration: InputDecoration(
         hintText: hintText,
         hintStyle: const TextStyle(color: AppColors.hintText),
-        fillColor: AppColors.fillTextField,
+        fillColor: isDark()
+            ? const Color(0xff2A2A2A)
+            : AppColors.fillTextField,
         filled: true,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),

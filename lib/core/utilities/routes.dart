@@ -6,4 +6,8 @@ abstract class Routes {
   static const String favourites = '/favourites';
   static const String main = '/main';
   static const String details = '/details';
+  static const String search = '/search';
+  static const String scheduleBottomSheet = '/schedule_bottom_sheet';
+  static const String schedule = '/schedule_view';
+
 }

@@ -1,21 +1,28 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:depi_graduation_project/core/database/tourApp_database.dart';
+import 'package:depi_graduation_project/core/helper/casheHelper.dart';
+import 'package:depi_graduation_project/core/helper/theme_manager.dart';
 import 'package:depi_graduation_project/core/services/api_services/api_services1.1.dart';
-import 'package:depi_graduation_project/core/services/api_services/geoapify_services.dart';
+import 'package:depi_graduation_project/core/utilities/app_themes.dart';
 import 'package:depi_graduation_project/core/utilities/assets.dart';
 import 'package:depi_graduation_project/features/auth/controllers/login_controller.dart';
 import 'package:depi_graduation_project/features/auth/controllers/register_controller.dart';
 import 'package:depi_graduation_project/features/auth/presentation/views/login_view.dart';
 import 'package:depi_graduation_project/features/auth/presentation/views/register_view.dart';
 import 'package:depi_graduation_project/features/details/controllers/details_controller.dart';
-import 'package:depi_graduation_project/features/details/presentation/view/details_view.dart';
+import 'package:depi_graduation_project/features/details/presentation/views/details_view.dart';
 import 'package:depi_graduation_project/features/favourite/controller/favourite_controller.dart';
 import 'package:depi_graduation_project/features/favourite/presentation/views/favourites_view.dart';
 import 'package:depi_graduation_project/features/home/controllers/home_controller.dart';
 import 'package:depi_graduation_project/features/home/presentation/views/home_view.dart';
+import 'package:depi_graduation_project/features/main/controller/main_controller.dart';
 import 'package:depi_graduation_project/features/main/main_view.dart';
+import 'package:depi_graduation_project/features/profile/controllers/profile_controller.dart';
 import 'package:depi_graduation_project/features/profile/presentation/views/profile_view.dart';
+import 'package:depi_graduation_project/features/schedule/controllers/schedule_controller.dart';
+import 'package:depi_graduation_project/features/schedule/presentation/view/schedule_view.dart';
+import 'package:depi_graduation_project/features/home/presentation/views/search_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -25,10 +32,11 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:sqflite/sqflite.dart';
 import 'core/services/supabase_services/auth_service.dart';
 import 'core/utilities/routes.dart';
+import 'features/home/controllers/search_controller.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  await CasheHelper().init();
   await copyDatabase();
 
   database = await $FloortourDatabase.databaseBuilder('tourAppDB.db').build();
@@ -37,6 +45,7 @@ Future<void> main() async {
     anonKey:
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhwaXJsYW9reHhyZnR0aHhvZXdoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQwMTk2MTAsImV4cCI6MjA3OTU5NTYxMH0.rpqSSo8Swf5QEqbM6RfIvV5vtRbJOYUg5_MvCNHIheY',
   );
+  ThemeManager().loadTheme();
   runApp(const MyApp());
 }
 
@@ -84,12 +93,14 @@ class MyApp extends StatelessWidget {
       splitScreenMode: true,
       builder: (_, child) {
         return GetMaterialApp(
+          theme: AppThemes.lightTheme,
+          darkTheme: AppThemes.darkTheme,
+          themeMode: ThemeManager().getTheme(),
           debugShowCheckedModeBanner: false,
           initialRoute: AuthService().isLogin() ? Routes.main : Routes.login,
+          // initialRoute: Routes.schedule,
           initialBinding: BindingsBuilder(() {
-            Get.lazyPut(() => ApiServices());
-            Get.lazyPut(() => GeoapifyService());
-            Get.lazyPut(() => HomeController(), fenix: true); // <- سجّله هنا
+            Get.put(ApiServices());
           }),
           getPages: [
             GetPage(
@@ -115,18 +126,44 @@ class MyApp extends StatelessWidget {
             ),
             GetPage(
               name: Routes.details,
-              page: () => DetailsView(),
+              page: () => const DetailsView(),
               binding: BindingsBuilder(() {
                 Get.lazyPut(() => DetailsController());
               }),
             ),
-            GetPage(name: Routes.profile, page: () => const ProfileView()),
-            GetPage(name: Routes.main, page: () => const MainView()),
+            GetPage(
+              name: Routes.profile,
+              page: () => const ProfileView(),
+              binding: BindingsBuilder(() {
+                Get.lazyPut(() => ProfileController());
+              }),
+            ),
+            GetPage(
+              name: Routes.main,
+              page: () => const MainView(),
+              binding: BindingsBuilder(() {
+                Get.lazyPut(() => MainController());
+              }),
+            ),
             GetPage(
               name: Routes.favourites,
               page: () => const FavouritesView(),
               binding: BindingsBuilder(() {
                 Get.lazyPut(() => FavouritesController());
+              }),
+            ),
+            GetPage(
+              name: Routes.search,
+              page: () => const SearchView(),
+              binding: BindingsBuilder(() {
+                Get.lazyPut(() => searchController());
+              }),
+            ),
+            GetPage(
+              name: Routes.schedule,
+              page: () => const ScheduleView(),
+              binding: BindingsBuilder(() {
+                Get.lazyPut(() => ScheduleController());
               }),
             ),
           ],

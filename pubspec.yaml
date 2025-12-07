@@ -42,10 +42,16 @@ dependencies:
   path_provider: ^2.1.5
   persistent_bottom_nav_bar_v2: ^6.2.0
   shared_preferences: ^2.5.3
+  shimmer_animation: ^2.2.2+1
   supabase_flutter: ^2.10.3
   url_launcher: ^6.3.2
+  shimmer: ^3.0.0
+  cached_network_image: ^3.4.1
 
 dev_dependencies:
+  flutter_launcher_icons: ^0.14.4
+
+
   build_runner: ^2.4.13
   floor_generator: ^1.5.0
   flutter_lints: ^5.0.0
@@ -93,3 +99,13 @@ flutter_assets:
   output_path: lib/core/utilities
   filename: assets.dart
   field_prefix: null
+
+
+flutter_launcher_icons:
+  android: true
+  ios: false
+
+  adaptive_icon_background: "#DE7254"
+  adaptive_icon_foreground: "assets/images/appIcon/1024.png"
+
+  min_sdk_android: 21

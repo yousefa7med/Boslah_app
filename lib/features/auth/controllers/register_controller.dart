@@ -4,7 +4,6 @@ import 'package:depi_graduation_project/core/services/supabase_services/auth_ser
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../core/utilities/routes.dart';
 
 class RegisterController extends GetxController {
   final nameController = TextEditingController();
@@ -25,7 +24,6 @@ class RegisterController extends GetxController {
   ) async {
     if (await hasInternet()) {
       await auth.register(fullName, email, password);
-      Get.offNamed(Routes.login);
     } else {
       throw AppException(msg: "Please Check your internet connection");
     }

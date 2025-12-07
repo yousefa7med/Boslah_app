@@ -1,9 +1,12 @@
 import 'dart:async';
 
 import 'package:depi_graduation_project/core/database/models/favorites.dart';
+import 'package:depi_graduation_project/core/database/models/schedules.dart';
 import 'package:depi_graduation_project/core/services/supabase_services/favorite_service.dart';
+import 'package:depi_graduation_project/features/schedule/controllers/schedule_controller.dart';
 import 'package:depi_graduation_project/main.dart';
 import 'package:depi_graduation_project/models/favorite_supabase.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../models/place_model.dart';
@@ -12,7 +15,10 @@ import '../../favourite/controller/favourite_controller.dart';
 class DetailsController extends GetxController {
   RxBool favorite = false.obs; // initialize here
   late PlaceModel place;
-
+  //? for schedule
+  final dateController = TextEditingController();
+  final timeController = TextEditingController();
+  final noteController = TextEditingController();
   @override
   Future<void> onInit() async {
     super.onInit();
@@ -22,20 +28,20 @@ class DetailsController extends GetxController {
 
   Future<void> addToFav() async {
     final addFavorite = Favorite(
-      place_id: place.placeId,
-      user_id: cloud.auth.currentUser!.id,
-      image: place.thumbnail,
-      name: place.title,
-      desc: place.description,
+      placeId: place.placeId,
+      userId: cloud.auth.currentUser!.id,
+      image: place.image,
+      name: place.name,
+      desc: place.desc,
     );
     final favoriteSupa = FavoriteSupabase(
       userId: cloud.auth.currentUser!.id,
       placeId: place.placeId,
-      name: place.title,
-      desc: place.description,
-      image: place.thumbnail,
-      lat: place.coordinates?[0].lat,
-      lng: place.coordinates?[0].lon,
+      name: place.name,
+      desc: place.desc,
+      image: place.image,
+      lat: place.lat,
+      lng: place.lng,
     );
     await FavoritesService().addFavorite(favoriteSupa);
     await database.favoritedao.insertFavorite(addFavorite);
@@ -92,10 +98,10 @@ class DetailsController extends GetxController {
     if (supabaseResult != null) {
       await database.favoritedao.insertFavorite(
         Favorite(
-          name: supabaseResult.name!,
-          user_id: supabaseResult.userId,
-          place_id: supabaseResult.placeId,
-          added_at: supabaseResult.addedAt,
+          name: supabaseResult.name,
+          userId: supabaseResult.userId,
+          placeId: supabaseResult.placeId,
+          addedAt: supabaseResult.addedAt,
           desc: supabaseResult.desc,
           image: supabaseResult.image,
           lat: supabaseResult.lat,
@@ -107,5 +113,38 @@ class DetailsController extends GetxController {
 
     // لو ملقاش في الاتنين
     return false;
+  }
+
+  Future<void> addSchdule() async {
+    final sch = Schedule(
+      date: dateController.text,
+      image: place.image ?? '',
+      hour: timeController.text,
+      note: noteController.text,
+      name: place.name,
+      lat: place.lat,
+      lng: place.lng,
+      userId: cloud.auth.currentUser!.id,
+      placeId: place.placeId,
+      isDone: false,
+      createdAt: DateTime.now().millisecondsSinceEpoch,
+    );
+    await database.scheduledao.insertSchedule(sch);
+    dateController.clear();
+    noteController.clear();
+    timeController.clear();
+    debugPrint('schedule object: ${sch.date}');
+    try {
+      final schController = Get.find<ScheduleController>();
+      await schController.loadData();
+    } catch (_) {}
+  }
+
+  @override
+  void onClose() {
+    dateController.dispose();
+    timeController.dispose();
+    noteController.dispose();
+    super.onClose();
   }
 }
