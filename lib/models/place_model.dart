@@ -4,7 +4,11 @@
 //   final String title;
 //   final List<Coordinate>? coordinates;
 //   final String? description;
-//   final String? thumbnail;
+//   final String? thumbnail;         // Wiki only
+//
+//   final List<String>? categories;  // Geoapify only
+//   final int? distance;             // Geoapify only
+//
 //
 //   PlaceModel({
 //     required this.placeId,
@@ -12,6 +16,8 @@
 //     this.coordinates,
 //     this.thumbnail,
 //     this.description,
+//     this.categories,
+//     this.distance
 //   });
 //
 //   factory PlaceModel.fromJson(Map<String, dynamic> json) => PlaceModel(

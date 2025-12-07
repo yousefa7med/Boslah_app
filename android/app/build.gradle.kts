@@ -9,7 +9,8 @@ android {
     namespace = "com.example.depi_graduation_project"
     compileSdk = flutter.compileSdkVersion
 //    ndkVersion = flutter.ndkVersion
-    ndkVersion = "29.0.13599879"
+//    ndkVersion = "29.0.13599879"
+    ndkVersion = "29.0.13846066"  //bassam
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
