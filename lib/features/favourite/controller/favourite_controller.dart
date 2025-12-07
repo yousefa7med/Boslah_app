@@ -11,6 +11,7 @@ import '../../../core/database/models/favorites.dart';
 
 class FavouritesController extends GetxController {
   final allFavourits = <PlaceModel>[].obs; //علشان السوبا غير الفلور
+  final filteredFav = <PlaceModel>[].obs;
   final error = RxnString();
   final List<int> deleted = [];
   final List<RxBool> isFav = [];
@@ -19,6 +20,9 @@ class FavouritesController extends GetxController {
 
   @override
   void onInit() {
+    sController.addListener(() {
+      filterFavorites(sController.text);
+    });
     try {
       loadData();
     } on Exception catch (e) {
@@ -43,6 +47,7 @@ class FavouritesController extends GetxController {
 
       if (localList.isNotEmpty) {
         allFavourits.value = localList;
+        filteredFav.value = allFavourits;
         isFav.addAll(List.generate(allFavourits.length, (i) => true.obs));
         print("locaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaal");
         return;
@@ -50,6 +55,7 @@ class FavouritesController extends GetxController {
       final remoteList = await FavoritesService().getFavorites();
 
       allFavourits.value = remoteList;
+      filteredFav.value = allFavourits;
       if (allFavourits.isNotEmpty) {
         isFav.addAll(List.generate(allFavourits.length, (i) => true.obs));
         print("sopaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
@@ -99,5 +105,19 @@ class FavouritesController extends GetxController {
         msg: "Adding to favorites failed with place id : $placeId",
       );
     }
+  }
+
+
+  void filterFavorites(String query) {
+    if (query.isEmpty) {
+      filteredFav.value = allFavourits;
+      return;
+    }
+    final lowerQuery = query.toLowerCase();
+
+    filteredFav.value = allFavourits.where((fav) {
+      return fav.name.toLowerCase().contains(lowerQuery) ||
+          (fav.desc?.toLowerCase().contains(lowerQuery) ?? false);
+    }).toList();
   }
 }

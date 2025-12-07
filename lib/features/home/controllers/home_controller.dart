@@ -21,22 +21,6 @@ class HomeController extends GetxController {
     FilterModel(text: 'Museums', icon: Icons.museum),
     FilterModel(text: 'Restaurants', icon: Icons.restaurant_sharp),
   ];
-  // final keywords = [
-  //   "sphinx"
-  //   "ancient"
-  //   "mosque",
-  //   "museum",
-  //   "park",
-  //   "temple",
-  //   "pyramid",
-  //   "fort",
-  //   "castle",
-  //   "citadel",
-  //   "historical",
-  //   "archaeological",
-  //   "landmark",
-  //   "tourist",
-  // ];
 
   final api = Get.find<ApiServices>();
   @override
