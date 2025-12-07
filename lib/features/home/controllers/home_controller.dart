@@ -67,9 +67,11 @@ class HomeController extends GetxController {
         lon: 31.134202,
     );
 
-    // data!.addAll(geoapifyData!);
+    if (data != null && geoapifyData != null ) {
+      data.addAll(geoapifyData);
+      data.shuffle();
+    };
 
-    if (data != null && geoapifyData != null ) data.addAll(geoapifyData);
     places.value =
         data?.where((p) {
           if (p.desc == null || p.desc!.trim().isEmpty) {
