@@ -4,7 +4,7 @@ class ScheduleModel {
 
   final String date;
   final String hour;
-  final String note;
+  String note;
   final String? name;
 
   final bool? isDone;

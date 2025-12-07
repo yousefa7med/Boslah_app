@@ -117,6 +117,8 @@ class _$tourDatabase extends tourDatabase {
             'CREATE TABLE IF NOT EXISTS `search_history` (`seachId` INTEGER PRIMARY KEY AUTOINCREMENT, `query` TEXT NOT NULL, `timestamp` INTEGER NOT NULL, `userId` TEXT)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `profile` (`userId` TEXT NOT NULL, `username` TEXT, `gmail` TEXT, `image` TEXT, PRIMARY KEY (`userId`))');
+        await database.execute(
+            'CREATE UNIQUE INDEX `index_schedules_placeId_date_hour` ON `schedules` (`placeId`, `date`, `hour`)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -420,24 +422,6 @@ class _$ScheduleDao extends ScheduleDao {
                   'lat': item.lat,
                   'lng': item.lng,
                   'image': item.image
-                }),
-        _scheduleDeletionAdapter = DeletionAdapter(
-            database,
-            'schedules',
-            ['scheduleId'],
-            (Schedule item) => <String, Object?>{
-                  'scheduleId': item.scheduleId,
-                  'placeId': item.placeId,
-                  'date': item.date,
-                  'hour': item.hour,
-                  'note': item.note,
-                  'name': item.name,
-                  'isDone': item.isDone == null ? null : (item.isDone! ? 1 : 0),
-                  'createdAt': item.createdAt,
-                  'userId': item.userId,
-                  'lat': item.lat,
-                  'lng': item.lng,
-                  'image': item.image
                 });
 
   final sqflite.DatabaseExecutor database;
@@ -447,8 +431,6 @@ class _$ScheduleDao extends ScheduleDao {
   final QueryAdapter _queryAdapter;
 
   final InsertionAdapter<Schedule> _scheduleInsertionAdapter;
-
-  final DeletionAdapter<Schedule> _scheduleDeletionAdapter;
 
   @override
   Future<List<Schedule>> selectSchedules(String uid) async {
@@ -516,6 +498,23 @@ class _$ScheduleDao extends ScheduleDao {
   }
 
   @override
+  Future<void> updateNote(
+    String newNote,
+    int id,
+  ) async {
+    await _queryAdapter.queryNoReturn(
+        'UPDATE schedules SET note = ?1 WHERE scheduleId = ?2',
+        arguments: [newNote, id]);
+  }
+
+  @override
+  Future<void> deleteScheduleById(int id) async {
+    await _queryAdapter.queryNoReturn(
+        'DELETE FROM schedules WHERE scheduleId = ?1',
+        arguments: [id]);
+  }
+
+  @override
   Future<void> deleteAllSchedules(String uid) async {
     await _queryAdapter.queryNoReturn('DELETE FROM schedules WHERE userId = ?1',
         arguments: [uid]);
@@ -525,11 +524,6 @@ class _$ScheduleDao extends ScheduleDao {
   Future<int> insertSchedule(Schedule schedule) {
     return _scheduleInsertionAdapter.insertAndReturnId(
         schedule, OnConflictStrategy.replace);
-  }
-
-  @override
-  Future<int> deleteSchedule(Schedule schedule) {
-    return _scheduleDeletionAdapter.deleteAndReturnChangedRows(schedule);
   }
 }
 

@@ -18,6 +18,8 @@ import 'package:depi_graduation_project/features/main/main_view.dart';
 import 'package:depi_graduation_project/features/profile/controllers/profile_controller.dart';
 import 'package:depi_graduation_project/features/profile/presentation/views/profile_view.dart';
 import 'package:depi_graduation_project/features/schedule/controllers/schedule_controller.dart';
+import 'package:depi_graduation_project/features/schedule/controllers/schedule_place_controller.dart';
+import 'package:depi_graduation_project/features/schedule/presentation/view/schedule_place_view.dart';
 import 'package:depi_graduation_project/features/schedule/presentation/view/schedule_view.dart';
 import 'package:depi_graduation_project/features/search/presentation/search_view.dart';
 import 'package:flutter/material.dart';
@@ -163,6 +165,13 @@ class MyApp extends StatelessWidget {
               page: () => const ScheduleView(),
               binding: BindingsBuilder(() {
                 Get.lazyPut(() => ScheduleController());
+              }),
+            ),
+            GetPage(
+              name: Routes.schedule_place,
+              page: () => const SchedulePlaceView(),
+              binding: BindingsBuilder(() {
+                Get.lazyPut(() => SchedulePlaceController());
               }),
             ),
           ],

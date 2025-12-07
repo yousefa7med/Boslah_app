@@ -54,9 +54,11 @@ class ScheduleForm extends StatelessWidget {
                     children: [
                       Icon(Icons.calendar_today, color: Colors.white),
                       Gap(10),
-                      Text(
-                        'Choose the date',
-                        style: TextStyle(color: Colors.white),
+                      Expanded(
+                        child: Text(
+                          'Date',
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ),
                     ],
                   ),
@@ -83,9 +85,11 @@ class ScheduleForm extends StatelessWidget {
                     children: [
                       Icon(Icons.access_time, color: Colors.white),
                       Gap(7),
-                      Text(
-                        'Choose the time',
-                        style: TextStyle(color: Colors.white),
+                      Expanded(
+                        child: Text(
+                          'time',
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ),
                     ],
                   ),
