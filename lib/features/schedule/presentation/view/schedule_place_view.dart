@@ -1,13 +1,12 @@
 import 'package:depi_graduation_project/features/schedule/controllers/schedule_place_controller.dart';
 import 'package:depi_graduation_project/main.dart';
-import 'package:depi_graduation_project/models/place_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-import '../../../../core/database/DAO/region_places_dao.dart';
-import '../../../../core/utilities/app_colors.dart';
+
 import '../../../../core/utilities/app_text_style.dart';
 import '../../../../core/widgets/app_button.dart';
 
@@ -235,15 +234,21 @@ class SchedulePlaceView
                 Gap(25.h),
                 AppButton(
                   child: Text(
-                    'Go to details page',
+                    'Go to Location',
                     style: AppTextStyle.regular18.copyWith(
                       color: Colors.white,
                     ),
                   ),
 
                   onPressed: () async {
-                    final scheduledPlace = await database.regionplacedao.selectPlaceById(place.placeId!);
-                    Get.toNamed('/details', arguments: scheduledPlace);
+                    // final scheduledPlace = await database.regionplacedao.selectPlaceById(place.placeId!);
+                    // Get.toNamed('/details', arguments: scheduledPlace);
+                    await launchUrl(
+                      mode: LaunchMode.externalApplication,
+                      Uri.parse(
+                        "https://www.google.com/maps/search/?api=1&query=${controller.scheduleplace.lat},${controller.scheduleplace.lng}",
+                      ),
+                    );
 
                   },
                 ),

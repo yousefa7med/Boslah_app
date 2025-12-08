@@ -1,5 +1,5 @@
 import 'package:depi_graduation_project/features/schedule/controllers/schedule_controller.dart';
-import 'package:depi_graduation_project/features/schedule/presentation/widgets/schadule_place_card.dart';
+import 'package:depi_graduation_project/features/schedule/presentation/widgets/schedule_place_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
@@ -14,17 +14,23 @@ class ScheduleView extends GetView<ScheduleController> {
 
   @override
   Widget build(BuildContext context) {
+    // لو حصل error من الكنترولر
     ever(controller.error, (msg) {
       if (msg != null) {
         showSnackBar(context, msg);
       }
     });
+
     return Scaffold(
       body: SafeArea(
         child: Obx(() {
+          // لو مفيش أي سكجوالز في الداتا بيز أصلاً
           if (controller.allSchedules.isEmpty) {
             return const Center(child: Text('No schedules yet'));
           }
+
+          final items = controller.filteredSchedules;
+
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Column(
@@ -51,6 +57,9 @@ class ScheduleView extends GetView<ScheduleController> {
                   ),
                 ),
 
+                const Gap(12),
+
+                // الفيلتر
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
@@ -70,14 +79,21 @@ class ScheduleView extends GetView<ScheduleController> {
                     ],
                   ),
                 ),
+
                 const Gap(20),
+
+                // الليست نفسها
                 Expanded(
-                  child: ListView.separated(
-                    itemCount: controller.allSchedules.length,
+                  child: items.isEmpty
+                      ? const Center(
+                    child: Text('No schedules for this filter'),
+                  )
+                      : ListView.separated(
+                    itemCount: items.length,
                     itemBuilder: (_, index) =>
-                        Column(children: [SchadulePlaceCard(index)]),
+                        Column(children: [SchedulePlaceCard(index)]),
                     separatorBuilder: (BuildContext context, int index) =>
-                        const Gap(20),
+                    const Gap(20),
                   ),
                 ),
               ],
@@ -91,12 +107,12 @@ class ScheduleView extends GetView<ScheduleController> {
   Widget buildCardFilttring(int index, String label, {IconData}) {
     return Obx(() {
       bool isSelected = controller.selectedCard.value == index;
+
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8),
         child: GestureDetector(
           onTap: () {
-            controller.selectedCard.value = index;
-            // calling the api
+            controller.applyFilter(index);
           },
           child: Card(
             elevation: 3,
@@ -113,14 +129,14 @@ class ScheduleView extends GetView<ScheduleController> {
                 children: [
                   IconData != null
                       ? Row(
-                          children: [
-                            Icon(
-                              IconData,
-                              color: isSelected ? Colors.white : Colors.black,
-                            ),
-                            const Gap(10),
-                          ],
-                        )
+                    children: [
+                      Icon(
+                        IconData,
+                        color: isSelected ? Colors.white : Colors.black,
+                      ),
+                      const Gap(10),
+                    ],
+                  )
                       : const SizedBox.shrink(),
                   Text(
                     label,

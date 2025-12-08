@@ -4,13 +4,13 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import '../../../../core/utilities/app_colors.dart';
 
-class SchadulePlaceCard extends GetView<ScheduleController> {
-  const SchadulePlaceCard(this.index, {super.key});
+class SchedulePlaceCard extends GetView<ScheduleController> {
+  const SchedulePlaceCard(this.index, {super.key});
   final int index;
 
   @override
   Widget build(BuildContext context) {
-    final item = controller.allSchedules[index];
+    final item = controller.filteredSchedules[index];
 
     final status = controller.getStatus(item.date);
     final color = controller.getStatusColor(status);

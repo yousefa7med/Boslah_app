@@ -7,7 +7,7 @@ class ScheduleModel {
   String note;
   final String? name;
 
-  final bool? isDone;
+  bool? isDone;
 
   final int? createdAt;
 
