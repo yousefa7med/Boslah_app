@@ -37,11 +37,13 @@ class AccountInfo extends GetView<ProfileController> {
               ),
             ),
             const Gap(15),
-            buildRow(
-              Icons.person,
-              massage: 'Full Name',
-              des: controller.fullName.value,
-            ),
+            Obx(() {
+              return buildRow(
+                Icons.person,
+                massage: 'Full Name',
+                des: controller.fullName.value,
+              );
+            }),
             const Gap(10),
             const Divider(color: Colors.grey),
             buildRow(
@@ -74,15 +76,17 @@ class AccountInfo extends GetView<ProfileController> {
             ),
           ),
         ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              massage!,
-              style: AppTextStyle.regular20.copyWith(color: Colors.grey),
-            ),
-            Text(des!, style: AppTextStyle.regular18),
-          ],
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                massage!,
+                style: AppTextStyle.regular20.copyWith(color: Colors.grey),
+              ),
+              Text(des!, style: AppTextStyle.regular18,),
+            ],
+          ),
         ),
       ],
     );

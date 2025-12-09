@@ -51,25 +51,27 @@ class ProfileView extends GetView<ProfileController> {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Column(
-          children: [
-            Gap(20.h),
-            const Column(children: [UserInfo(), Gap(10), AccountInfo()]),
-            Gap(30.h),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Column(
+            children: [
+              Gap(20.h),
+              const Column(children: [UserInfo(), Gap(10), AccountInfo()]),
+              Gap(30.h),
 
-            AppButton(
-              child: Text(
-                'Logout',
-                style: AppTextStyle.regular20.copyWith(color: Colors.white),
+              AppButton(
+                child: Text(
+                  'Logout',
+                  style: AppTextStyle.regular20.copyWith(color: Colors.white),
+                ),
+                onPressed: () async {
+                  await AuthService().logout();
+                  Get.offNamed('/login');
+                },
               ),
-              onPressed: () async {
-                await AuthService().logout();
-                Get.offNamed('/login');
-              },
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
