@@ -8,21 +8,56 @@ class AuthService {
   AuthService._internal();
   factory AuthService() => _instance;
 
+  // Future<void> register(String fullName, String email, String password) async {
+  //   try {
+  //     final response = await cloud.auth.signUp(
+  //       password: password,
+  //       email: email,
+  //     );
+  //     final user = response.user;
+  //
+  //     if (user != null) {
+  //       await cloud.from('profiles').insert({
+  //         'id': user.id,
+  //         'full_name': fullName,
+  //       });
+  //     }
+  //   } catch (e) {
+  //     print("ERROR TYPE: ${e.runtimeType}");
+  //     print("ERROR: $e");
+  //     throw AppException(msg: "Registration failed, please try again");
+  //   }
+  // }
+
   Future<void> register(String fullName, String email, String password) async {
     try {
-      final response = await cloud.auth.signUp(
-        password: password,
+      final response = await Supabase.instance.client.auth.signUp(
         email: email,
+        password: password,
       );
+
       final user = response.user;
 
       if (user != null) {
-        await cloud.from('profiles').insert({
+        await Supabase.instance.client.from('profiles').insert({
           'id': user.id,
           'full_name': fullName,
         });
       }
     } catch (e) {
+      if (e is AuthException) {
+        if (e.message.toLowerCase().contains("registered") ||
+            e.message.toLowerCase().contains("exists") ||
+            e.message.toLowerCase().contains("email")) {
+          throw AppException(msg: "This email is already in use");
+        }
+        throw AppException(msg: e.message);
+      }
+
+      if (e is PostgrestException) {
+        throw AppException(msg: "Database error: ${e.message}");
+      }
+
       throw AppException(msg: "Registration failed, please try again");
     }
   }

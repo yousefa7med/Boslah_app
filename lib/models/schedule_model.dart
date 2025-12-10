@@ -1,13 +1,17 @@
-class ScheduleModel {
+import 'package:floor/floor.dart';
 
-  final int? placeId;
+class ScheduleModel {
+  final int placeId;
+    @PrimaryKey(autoGenerate: true)
+
+  final int? scheduleId;
 
   final String date;
   final String hour;
-  final String note;
+  String note;
   final String? name;
 
-  final bool? isDone;
+  bool? isDone;
 
   final int? createdAt;
 
@@ -18,9 +22,10 @@ class ScheduleModel {
   final String? image;
 
   ScheduleModel({
-    this.placeId,
+    required this.placeId,
+     this.scheduleId,
     required this.date,
-    required this.note,
+   required this.note,
     this.isDone,
     this.createdAt,
     this.userId,

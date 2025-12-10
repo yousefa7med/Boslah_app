@@ -1,6 +1,6 @@
 import 'package:depi_graduation_project/core/widgets/filter.dart';
 import 'package:depi_graduation_project/features/schedule/controllers/schedule_controller.dart';
-import 'package:depi_graduation_project/features/schedule/presentation/widgets/schadule_place_card.dart';
+import 'package:depi_graduation_project/features/schedule/presentation/widgets/schedule_place_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
@@ -19,12 +19,14 @@ class ScheduleView extends GetView<ScheduleController> {
         showSnackBar(context, msg);
       }
     });
+
     return Scaffold(
       body: SafeArea(
         child: Obx(() {
-          if (controller.allSchedules.isEmpty) {
+          if (controller.viewedSchedules.isEmpty) {
             return const Center(child: Text('No schedules yet'));
           }
+
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
             child: Column(
@@ -38,17 +40,25 @@ class ScheduleView extends GetView<ScheduleController> {
                     fontSize: 30.sp,
                   ),
                 ),
+
+                const Gap(12),
+
                 const Gap(20),
                 Filter(filterList: controller.filterList),
                 const Gap(20),
+
                 Expanded(
-                  child: ListView.separated(
-                    itemCount: controller.allSchedules.length,
-                    itemBuilder: (_, index) =>
-                        Column(children: [SchadulePlaceCard(index)]),
-                    separatorBuilder: (BuildContext context, int index) =>
-                        const Gap(10),
-                  ),
+                  child: controller.viewedSchedules.isEmpty
+                      ? const Center(
+                          child: Text('No schedules for this filter'),
+                        )
+                      : ListView.separated(
+                          itemCount: controller.viewedSchedules.length,
+                          itemBuilder: (_, index) =>
+                              Column(children: [SchedulePlaceCard(index)]),
+                          separatorBuilder: (BuildContext context, int index) =>
+                              const Gap(10),
+                        ),
                 ),
               ],
             ),

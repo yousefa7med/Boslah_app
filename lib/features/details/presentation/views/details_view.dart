@@ -1,5 +1,3 @@
-
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:depi_graduation_project/core/functions/snack_bar.dart';
 import 'package:depi_graduation_project/core/utilities/app_colors.dart';
@@ -12,6 +10,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 
 class DetailsView extends GetView<DetailsController> {
   const DetailsView({super.key});
@@ -31,8 +30,8 @@ class DetailsView extends GetView<DetailsController> {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(12),
                       child: controller.place.image != null
-                          ?    CachedNetworkImage(imageUrl: 
-                              controller.place.image!,
+                          ? CachedNetworkImage(
+                              imageUrl: controller.place.image!,
                               width: double.infinity,
                               height: 350,
                               fit: BoxFit.cover,
@@ -173,6 +172,7 @@ class DetailsView extends GetView<DetailsController> {
                                 child: const ScheduleForm(),
                               ),
                             );
+                            // checkExactAlarmAndOpenForm(context);
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.grey,

@@ -17,6 +17,16 @@ class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Get.toNamed(Routes.chatbot);
+        },
+        backgroundColor: AppColors.main, // أو أي لون تحبه
+        child: Icon(
+          Icons.smart_toy,
+        ), // أيقونة AI، ممكن تغيرها لأي أيقونة تناسبك
+        tooltip: 'Chatbot',
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),

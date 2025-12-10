@@ -54,22 +54,78 @@ class ScheduleForm extends StatelessWidget {
                     children: [
                       Icon(Icons.calendar_today, color: Colors.white),
                       Gap(10),
-                      Text(
-                        'Choose the date',
-                        style: TextStyle(color: Colors.white),
+                      Expanded(
+                        child: Text(
+                          'Date',
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ),
                     ],
                   ),
                   onPressed: () async {
+                    // final picked = await showDatePicker(
+                    //   context: context,
+                    //   initialDate: DateTime.now(),
+                    //   firstDate: DateTime(2020),
+                    //   lastDate: DateTime(2050),
+                    // );
+                    // if (picked != null) {
+                    //   controller.dateController.text =
+                    //       "${picked.year}-${picked.month}-${picked.day}";
+                    //   print(controller.dateController.text);
+                    //   // controller.dateController.text =
+                    //   //     "${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";
+                    //   // print('Date: ${controller.dateController.text}');
+                    //   // print('Time: ${controller.timeController.text}');
+                    // }
                     final picked = await showDatePicker(
                       context: context,
                       initialDate: DateTime.now(),
                       firstDate: DateTime(2020),
                       lastDate: DateTime(2050),
                     );
+
                     if (picked != null) {
-                      controller.dateController.text =
-                          "${picked.year}-${picked.month}-${picked.day}";
+                      final today = DateTime.now();
+                      final pickedDate = DateTime(
+                        picked.year,
+                        picked.month,
+                        picked.day,
+                      );
+                      final currentDate = DateTime(
+                        today.year,
+                        today.month,
+                        today.day,
+                      );
+
+                      if (pickedDate.isBefore(currentDate)) {
+                        // Show snackbar for invalid date
+                        Get.snackbar(
+                          "Invalid date",
+                          "You cannot choose a past date. Please select another date.",
+                          snackPosition: SnackPosition.BOTTOM,
+                          duration: const Duration(
+                            seconds: 1,
+                            milliseconds: 500,
+                          ),
+
+                          margin: EdgeInsets.only(
+                            right: 30,
+                            left: 30,
+                            bottom:
+                                MediaQuery.of(context).viewInsets.bottom + 30,
+                          ),
+                        );
+                        // showSnackBar( // i don't know why it's not working
+                        //   context,
+                        //   "You cannot choose a past date. Please select another date.",
+                        // );
+                      } else {
+                        // Accept the date
+                        controller.dateController.text =
+                            "${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";
+                        print(controller.dateController.text);
+                      }
                     }
                   },
                 ),
@@ -83,20 +139,81 @@ class ScheduleForm extends StatelessWidget {
                     children: [
                       Icon(Icons.access_time, color: Colors.white),
                       Gap(7),
-                      Text(
-                        'Choose the time',
-                        style: TextStyle(color: Colors.white),
+                      Expanded(
+                        child: Text(
+                          'time',
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ),
                     ],
                   ),
                   onPressed: () async {
-                    final picked = await showTimePicker(
+                    // final picked = await showTimePicker(
+                    //   context: context,
+                    //   initialTime: TimeOfDay.now(),
+                    // );
+                    // if (picked != null) {
+                    //   print(picked.format(context));
+                    //   controller.timeController.text = picked.format(context);
+                    // }
+                    final pickedTime = await showTimePicker(
                       context: context,
                       initialTime: TimeOfDay.now(),
                     );
-                    if (picked != null) {
-                      print(picked.format(context));
-                      controller.timeController.text = picked.format(context);
+
+                    if (pickedTime != null) {
+                      // Parse the currently picked date from your dateController
+                      final dateParts = controller.dateController.text.split(
+                        '-',
+                      );
+                      if (dateParts.length == 3) {
+                        final pickedDate = DateTime(
+                          int.parse(dateParts[0]),
+                          int.parse(dateParts[1]),
+                          int.parse(dateParts[2]),
+                        );
+
+                        final now = DateTime.now();
+                        final currentDate = DateTime(
+                          now.year,
+                          now.month,
+                          now.day,
+                        );
+
+                        // Only validate if picked date is today
+                        if (pickedDate.isAtSameMomentAs(currentDate)) {
+                          // Create DateTime for picked time today
+                          final pickedDateTime = DateTime(
+                            pickedDate.year,
+                            pickedDate.month,
+                            pickedDate.day,
+                            pickedTime.hour,
+                            pickedTime.minute,
+                          );
+
+                          if (pickedDateTime.isBefore(now)) {
+                            // Show snackbar for past time
+                            Get.snackbar(
+                              "Invalid time",
+                              "You cannot choose a past time for today. Please select another time.",
+                              snackPosition: SnackPosition.BOTTOM,
+                              // backgroundColor: Colors.redAccent,
+                              // colorText: Colors.white,
+                            );
+                            // showSnackBar(
+                            //   context,
+                            //   "You cannot choose a past time for today. Please select another time.",
+                            // );
+                            return; // exit without assigning the time
+                          }
+                        }
+                      }
+
+                      // Assign time if valid
+                      controller.timeController.text = pickedTime.format(
+                        context,
+                      );
+                      print("Picked time: ${controller.timeController.text}");
                     }
                   },
                 ),
@@ -108,6 +225,8 @@ class ScheduleForm extends StatelessWidget {
             onPressed: () async {
               if (controller.dateController.text.isEmpty ||
                   controller.timeController.text.isEmpty) {
+                print(controller.dateController.text);
+                print(controller.timeController.text);
                 Get.back();
                 showSnackBar(context, 'please fill Data and Time');
                 return;

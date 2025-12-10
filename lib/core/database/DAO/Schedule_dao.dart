@@ -21,10 +21,15 @@ abstract class ScheduleDao{
   @Query('UPDATE schedules SET isDone = 1 WHERE scheduleId = :id')
   Future<void> markAsDone(int id);
 
-  @delete
-  Future<int> deleteSchedule(Schedule schedule);
+  @Query('UPDATE schedules SET note = :newNote WHERE scheduleId = :id')
+  Future<void> updateNote(String newNote, int id);
+
+
+  @Query('DELETE FROM schedules WHERE scheduleId = :id')
+  Future<void> deleteScheduleById(int id);
 
   @Query('DELETE FROM schedules WHERE userId = :uid')
   Future<void> deleteAllSchedules(String uid);
+
 
 }

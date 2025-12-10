@@ -25,10 +25,10 @@ class SchadulePlaceCard extends GetView<ScheduleController> {
                 borderRadius: const BorderRadius.vertical(
                   top: Radius.circular(16),
                 ),
-                child: controller.allSchedules[index].image != null
+                child: controller.viewedSchedules[index].image != null
                     ? CachedNetworkImage(
                         imageUrl:
-                            controller.allSchedules[index].image!, // الصورة
+                            controller.viewedSchedules[index].image!, // الصورة
                         height: 150.h,
                         width: double.infinity,
                         fit: BoxFit.cover,
@@ -102,7 +102,7 @@ class SchadulePlaceCard extends GetView<ScheduleController> {
           Padding(
             padding: const EdgeInsets.all(12.0),
             child: Text(
-              controller.allSchedules[index].name ?? '',
+              controller.viewedSchedules[index].name ?? '',
               style: AppTextStyle.semiBold20,
             ),
           ),
@@ -110,16 +110,18 @@ class SchadulePlaceCard extends GetView<ScheduleController> {
           // -------------------- NOTE --------------------
           Padding(
             padding: const EdgeInsets.only(left: 12, right: 12, bottom: 12),
-            child: Text(
-              controller.allSchedules[index].note,
-              style: AppTextStyle.regular14.copyWith(
-                height: 1.4,
-                color: Colors.grey.shade700,
-              ),
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.start,
-            ),
+
+            child: 
+                Text(
+                    controller.allSchedules[index].note,
+                    style: AppTextStyle.regular14.copyWith(
+                      height: 1.4,
+                      color: Colors.grey.shade700,
+                    ),
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.start,
+                  ),
           ),
         ],
       ),

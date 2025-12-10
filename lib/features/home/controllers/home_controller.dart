@@ -1,5 +1,6 @@
 import 'package:depi_graduation_project/core/database/models/region_places.dart';
 import 'package:depi_graduation_project/core/database/models/region_requests.dart';
+import 'package:depi_graduation_project/core/services/api_services/geoapify_services.dart';
 import 'package:depi_graduation_project/models/filter_model.dart';
 import 'package:depi_graduation_project/models/place_model.dart';
 import 'package:depi_graduation_project/main.dart';
@@ -21,24 +22,9 @@ class HomeController extends GetxController {
     FilterModel(text: 'Museums', icon: Icons.museum),
     FilterModel(text: 'Restaurants', icon: Icons.restaurant_sharp),
   ];
-  // final keywords = [
-  //   "sphinx"
-  //   "ancient"
-  //   "mosque",
-  //   "museum",
-  //   "park",
-  //   "temple",
-  //   "pyramid",
-  //   "fort",
-  //   "castle",
-  //   "citadel",
-  //   "historical",
-  //   "archaeological",
-  //   "landmark",
-  //   "tourist",
-  // ];
 
   final api = Get.find<ApiServices>();
+  final geoapify = Get.find<GeoapifyService>();
   @override
   void onInit() {
     // TODO: implement onInit
@@ -59,6 +45,17 @@ class HomeController extends GetxController {
       lat: 29.979235,
       long: 31.134202,
     );
+
+    final geoapifyData = await geoapify.getPlaces(
+        lat: 29.979235,
+        lon: 31.134202,
+    );
+
+    if (data != null && geoapifyData != null ) {
+      data.addAll(geoapifyData);
+      data.shuffle();
+    };
+
     places.value =
         data?.where((p) {
           if (p.desc == null || p.desc!.trim().isEmpty) {
@@ -83,10 +80,13 @@ class HomeController extends GetxController {
     for (var element in data!) {
       list.add(
         RegionPlace(
+          name: element.name,
           region_id: regionId,
           place_id: element.placeId.toString(),
           lat: element.lat,
           lng: element.lng,
+          image: element.image,
+          desc: element.desc
         ),
       );
     }

@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../core/utilities/app_colors.dart';
 
@@ -26,35 +27,37 @@ class FavouritesView extends GetView<FavouritesController> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         body: SafeArea(
-          child: Obx(() {
-            final allFav = controller.allFavourits;
-            if (allFav.isEmpty) {
-              return const Center(child: Text('No favorites yet'));
-            }
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Favourites',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 30.sp,
-                    ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Favourites',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 30.sp,
                   ),
-                  const Gap(15),
-                  SearchField(
-                    controller: controller.sController,
-                    onPressed: () {
-                      if (controller.sController.text.isNotEmpty) {
-                        controller.loadData();
-                      }
-                    },
-                  ),
-                  const Gap(10),
-                  Expanded(
-                    child: ListView.builder(
+                ),
+                const Gap(15),
+                SearchField(
+                  controller: controller.sController,
+                  onPressed:  () {
+                    if (controller.sController.text.isNotEmpty) {
+                         controller.loadData();
+                    }
+                  },
+                ),
+                const Gap(10),
+                Expanded(
+                  child: Obx(() {
+                    final allFav = controller.filteredFav;
+
+                    if (allFav.isEmpty) {
+                      return const Center(child: Text('No favorites yet'));
+                    }
+
+                    return ListView.builder(
                       itemCount: allFav.length,
                       itemBuilder: (ctx, index) {
                         final fav = allFav[index];
@@ -70,7 +73,6 @@ class FavouritesView extends GetView<FavouritesController> {
                             },
                             child: Card(
                               elevation: 4,
-                              color: Colors.white,
                               child: Padding(
                                 padding: const EdgeInsets.only(
                                   left: 8,
@@ -80,15 +82,22 @@ class FavouritesView extends GetView<FavouritesController> {
                                 ),
                                 child: Row(
                                   children: [
-                                    Container(
+                                    SizedBox(
                                       width: 80.w,
                                       height: 80.h,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        image: DecorationImage(
-                                          image: CachedNetworkImageProvider(fav.image ?? ''),
-                                          fit: BoxFit.cover,
+                                      child: CachedNetworkImage(
+                                        imageUrl: fav.image ?? '',
+                                        imageBuilder: (context, imageProvider) => Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(10),
+                                            image: DecorationImage(
+                                              image: imageProvider,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
                                         ),
+                                        placeholder: (context, url) => shimmerItem(),
+                                        errorWidget: (context, url, error) => shimmerItem(),
                                       ),
                                     ),
                                     Expanded(
@@ -103,34 +112,33 @@ class FavouritesView extends GetView<FavouritesController> {
                                         ),
                                       ),
                                     ),
-                                    Obx(
-                                      () => IconButton(
-                                        onPressed: () {
-                                          if (controller.isFav[index].value) {
-                                            controller.addToDeletedList(
-                                              allFav[index].placeId,
-                                            );
-                                          } else {
-                                            controller.removeFromDeletedList(
-                                              allFav[index].placeId,
-                                            );
-                                          }
-                                          controller.isFav[index].toggle();
-                                          print(controller.deleted);
-                                        },
-                                        icon: controller.isFav[index].value
-                                            ? const Icon(
-                                                Icons.favorite,
-                                                color: AppColors.main,
-                                                size: 32,
-                                              )
-                                            : const Icon(
-                                                Icons.favorite_border_outlined,
-                                                color: AppColors.main,
-                                                size: 32,
-                                              ),
+                                    Obx(() => IconButton(
+                                      onPressed: () {
+                                        if (controller.isFav[index].value) {
+                                          controller.addToDeletedList(
+                                            allFav[index].placeId,
+                                          );
+                                        } else {
+                                          controller.removeFromDeletedList(
+                                            allFav[index].placeId,
+                                          );
+                                        }
+
+                                        controller.isFav[index].toggle();
+                                        print(controller.deleted);
+                                      },
+                                      icon: controller.isFav[index].value
+                                          ? const Icon(
+                                        Icons.favorite,
+                                        color: AppColors.main,
+                                        size: 32,
+                                      )
+                                          : const Icon(
+                                        Icons.favorite_border_outlined,
+                                        color: AppColors.main,
+                                        size: 32,
                                       ),
-                                    ),
+                                    )),
                                   ],
                                 ),
                               ),
@@ -138,14 +146,31 @@ class FavouritesView extends GetView<FavouritesController> {
                           ),
                         );
                       },
-                    ),
-                  ),
-                ],
-              ),
-            );
-          }),
+                    );
+                  }),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
+    );
+  }
+
+  Widget shimmerItem() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey.shade300,
+      highlightColor: Colors.grey.shade100,
+      child:
+          Container(
+            width: 80.w,
+            height: 80.h,
+            decoration: BoxDecoration(
+              color: Colors.grey,
+              borderRadius: BorderRadius.circular(10)
+            ),
+          ),
+
     );
   }
 }

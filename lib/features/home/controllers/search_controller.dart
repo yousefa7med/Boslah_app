@@ -4,18 +4,16 @@ import 'package:get/get.dart';
 
 import '../../../core/services/api_services/api_services1.1.dart';
 
-class searchController extends GetxController{
-
-  final searchList=<PlaceModel>[].obs;
-  var sController=TextEditingController();
+class searchController extends GetxController {
+  final searchList = <PlaceModel>[].obs;
+  var sController = TextEditingController();
   final api = Get.find<ApiServices>();
 
-
-
   Future<void> loadData() async {
-    final data=await api.searchPlacesWithImages(sController.text);
-    searchList.value = data?.where((p) {
-          if (p.image == null ) {
+    final data = await api.searchPlacesWithImages(sController.text);
+    searchList.value =
+        data?.where((p) {
+          if (p.image == null) {
             return false;
           }
 
@@ -26,8 +24,8 @@ class searchController extends GetxController{
           //   final key = k.toLowerCase();
           //   return title.toLowerCase().contains(key) || desc.toLowerCase().contains(key);
           // });
-        }).toList() ?? [];
-
+        }).toList() ??
+        [];
   }
 
   @override

@@ -28,6 +28,8 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  android_intent_plus: ^6.0.0
+  awesome_notifications: ^0.10.1
   connectivity_plus: ^7.0.0
   cupertino_icons: ^1.0.8
   dio: ^5.9.0
@@ -47,6 +49,9 @@ dependencies:
   url_launcher: ^6.3.2
   shimmer: ^3.0.0
   cached_network_image: ^3.4.1
+  flutter_chat_ui: ^1.5.4
+  flutter_chat_types: ^3.4.0
+  flutter_gemini: ^3.0.0
 
 dev_dependencies:
   flutter_launcher_icons: ^0.14.4
