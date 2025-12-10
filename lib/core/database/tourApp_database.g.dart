@@ -112,7 +112,7 @@ class _$tourDatabase extends tourDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `favorites` (`favId` INTEGER PRIMARY KEY AUTOINCREMENT, `addedAt` INTEGER, `userId` TEXT NOT NULL, `category` TEXT, `placeId` INTEGER NOT NULL, `name` TEXT NOT NULL, `desc` TEXT, `image` TEXT, `lat` REAL, `lng` REAL)');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `schedules` (`scheduleId` INTEGER PRIMARY KEY AUTOINCREMENT, `placeId` INTEGER, `date` TEXT NOT NULL, `hour` TEXT NOT NULL, `note` TEXT NOT NULL, `name` TEXT, `isDone` INTEGER, `createdAt` INTEGER, `userId` TEXT, `lat` REAL, `lng` REAL, `image` TEXT)');
+            'CREATE TABLE IF NOT EXISTS `schedules` (`placeId` INTEGER NOT NULL, `scheduleId` INTEGER PRIMARY KEY AUTOINCREMENT, `date` TEXT NOT NULL, `hour` TEXT NOT NULL, `note` TEXT NOT NULL, `name` TEXT, `isDone` INTEGER, `createdAt` INTEGER, `userId` TEXT, `lat` REAL, `lng` REAL, `image` TEXT)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `search_history` (`seachId` INTEGER PRIMARY KEY AUTOINCREMENT, `query` TEXT NOT NULL, `timestamp` INTEGER NOT NULL, `userId` TEXT)');
         await database.execute(
@@ -410,8 +410,8 @@ class _$ScheduleDao extends ScheduleDao {
             database,
             'schedules',
             (Schedule item) => <String, Object?>{
-                  'scheduleId': item.scheduleId,
                   'placeId': item.placeId,
+                  'scheduleId': item.scheduleId,
                   'date': item.date,
                   'hour': item.hour,
                   'note': item.note,
@@ -438,7 +438,7 @@ class _$ScheduleDao extends ScheduleDao {
         'SELECT * FROM schedules WHERE userId = ?1 ORDER BY date ASC, hour ASC',
         mapper: (Map<String, Object?> row) => Schedule(
             scheduleId: row['scheduleId'] as int?,
-            placeId: row['placeId'] as int?,
+            placeId: row['placeId'] as int,
             date: row['date'] as String,
             note: row['note'] as String,
             isDone: row['isDone'] == null ? null : (row['isDone'] as int) != 0,
@@ -457,7 +457,7 @@ class _$ScheduleDao extends ScheduleDao {
     return _queryAdapter.query('SELECT * FROM schedules WHERE scheduleId = ?1',
         mapper: (Map<String, Object?> row) => Schedule(
             scheduleId: row['scheduleId'] as int?,
-            placeId: row['placeId'] as int?,
+            placeId: row['placeId'] as int,
             date: row['date'] as String,
             note: row['note'] as String,
             isDone: row['isDone'] == null ? null : (row['isDone'] as int) != 0,
@@ -476,7 +476,7 @@ class _$ScheduleDao extends ScheduleDao {
     return _queryAdapter.queryList('SELECT * FROM schedules WHERE userId = ?1',
         mapper: (Map<String, Object?> row) => Schedule(
             scheduleId: row['scheduleId'] as int?,
-            placeId: row['placeId'] as int?,
+            placeId: row['placeId'] as int,
             date: row['date'] as String,
             note: row['note'] as String,
             isDone: row['isDone'] == null ? null : (row['isDone'] as int) != 0,

@@ -8,12 +8,9 @@ import 'package:floor/floor.dart';
   ],
 )
 class Schedule extends ScheduleModel {
-  @PrimaryKey(autoGenerate: true)
-  final int? scheduleId;
-
   Schedule({
-    this.scheduleId,
-    super.placeId,
+    super.scheduleId,
+    required super.placeId,
     required super.date,
     required super.note,
     super.isDone,

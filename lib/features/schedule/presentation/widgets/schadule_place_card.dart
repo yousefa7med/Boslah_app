@@ -110,16 +110,19 @@ class SchadulePlaceCard extends GetView<ScheduleController> {
           // -------------------- NOTE --------------------
           Padding(
             padding: const EdgeInsets.only(left: 12, right: 12, bottom: 12),
-            child: Text(
-              controller.viewedSchedules[index].note,
-              style: AppTextStyle.regular14.copyWith(
-                height: 1.4,
-                color: Colors.grey.shade700,
-              ),
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.start,
-            ),
+
+            child: controller.allSchedules[index].note == null
+                ? const SizedBox.shrink()
+                : Text(
+                    controller.allSchedules[index].note,
+                    style: AppTextStyle.regular14.copyWith(
+                      height: 1.4,
+                      color: Colors.grey.shade700,
+                    ),
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.start,
+                  ),
           ),
         ],
       ),

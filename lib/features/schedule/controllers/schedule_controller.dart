@@ -1,3 +1,5 @@
+import 'package:depi_graduation_project/core/services/supabase_services/schedule_service_supabase.dart';
+import 'package:depi_graduation_project/models/schedule_model.dart';
 import 'package:depi_graduation_project/models/filter_model.dart';
 import 'dart:async';
 
@@ -5,13 +7,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../core/database/models/schedules.dart';
 import '../../../core/errors/app_exception.dart';
 import '../../../main.dart';
 
 class ScheduleController extends GetxController {
-  final viewedSchedules = <Schedule>[].obs;
-  final allSchedules = <Schedule>[].obs;
+  final viewedSchedules = <ScheduleModel>[].obs;
+  final allSchedules = <ScheduleModel>[].obs;
 
   final error = RxnString();
   final selectedCard = 1.obs;
@@ -86,6 +87,14 @@ class ScheduleController extends GetxController {
 
       viewedSchedules.value = localList;
       await updateIsDoneForSchedules();
+      if (localList.isNotEmpty) {
+        allSchedules.value = localList;
+        return;
+      } else {
+        allSchedules.value = await ScheduleServiceSupabase().getSchedules(
+          userId,
+        );
+      }
     } catch (e) {
       throw AppException(msg: "Failed to load schedules");
     }
