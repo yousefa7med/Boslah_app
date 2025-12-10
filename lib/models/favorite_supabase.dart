@@ -14,7 +14,7 @@ class FavoriteSupabase extends PlaceModel {
     super.lat,
     super.lng,
     super.image,
-    super.desc,
+    super.desc, required super.categories,
   });
 
   factory FavoriteSupabase.fromJson(Map<String, dynamic> json) {
@@ -26,7 +26,7 @@ class FavoriteSupabase extends PlaceModel {
       lng: json['lng'],
       addedAt: json['added_at'],
       image: json['image'],
-      desc: json['desc'],
+      desc: json['desc'], categories: [],
     );
   }
 

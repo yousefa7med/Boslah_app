@@ -10,13 +10,13 @@ class Favorite extends PlaceModel {
 
   final String userId;
 
-  final String? category;
+  final List<String> categories;
 
   Favorite({
     this.favId,
     this.addedAt,
     required this.userId,
-    this.category,
+    this.categories = const [],
     required super.placeId,
     required super.name,
     super.desc,

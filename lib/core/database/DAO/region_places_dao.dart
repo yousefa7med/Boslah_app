@@ -4,10 +4,10 @@ import 'package:floor/floor.dart';
 
 @dao
 abstract class RegionPlacesDao{
-  @Query('SELECT * FROM region_places WHERE region_id = :regionId')
+  @Query('SELECT * FROM region_places WHERE regionId = :regionId')
   Future<List<RegionPlace>> selectRegionPlaces(int regionId);
 
-  @Query('SELECT * FROM region_places WHERE place_id = :placeId')
+  @Query('SELECT * FROM region_places WHERE placeId = :placeId')
   Future<RegionPlace?> selectPlaceById(int placeId);
 
   @Insert(onConflict: OnConflictStrategy.replace)
@@ -16,7 +16,7 @@ abstract class RegionPlacesDao{
   @Insert(onConflict: OnConflictStrategy.replace)
   Future<List<int>> insertRespPlaces(List<RegionPlace> rp);
 
-  @Query('DELETE FROM region_places WHERE region_id = :regionId')
+  @Query('DELETE FROM region_places WHERE regionId = :regionId')
   Future<void> deletePlacesByRegion(int regionId);
 
 }

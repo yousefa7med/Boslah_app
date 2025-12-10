@@ -5,11 +5,13 @@ import 'package:depi_graduation_project/models/filter_model.dart';
 import 'package:depi_graduation_project/models/place_model.dart';
 import 'package:depi_graduation_project/main.dart';
 import 'package:flutter/cupertino.dart' hide Page;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 
 import '../../../core/services/api_services/api_services1.1.dart';
+import 'dart:math';
 
 class HomeController extends GetxController {
   final searchController = TextEditingController();
@@ -39,8 +41,78 @@ class HomeController extends GetxController {
     super.onClose();
   }
 
+
+  double distanceInMeters(double lat1, double lon1, double lat2, double lon2) {
+    const R = 6371000;
+
+    final dLat = _degToRad(lat2 - lat1);
+    final dLon = _degToRad(lon2 - lon1);
+
+    final a = sin(dLat / 2) * sin(dLat / 2) +
+        cos(_degToRad(lat1)) *
+            cos(_degToRad(lat2)) *
+            sin(dLon / 2) *
+            sin(dLon / 2);
+
+    final c = 2 * atan2(sqrt(a), sqrt(1 - a));
+
+    return R * c;
+  }
+
+  double _degToRad(double deg) => deg * pi / 180;
+
+
+  Future<RegionRequest?> getNearbyRequest(
+      double lat,
+      double lng,
+      double thresholdMeters,
+      ) async {
+    final all = await database.regionrequestdao.selectRequests();
+
+    print('Found ${all.length} region_requests in DB');
+
+    for (final r in all) {
+      final dist = distanceInMeters(lat, lng, r.lat, r.lng);
+      print('Request ${r.region_id} distance = $dist');
+
+      if (dist < thresholdMeters) {
+        final placesForReq =
+        await database.regionplacedao.selectRegionPlaces(r.region_id!);
+
+        print(
+            'Request ${r.region_id} has ${placesForReq.length} places in DB');
+
+        if (placesForReq.isNotEmpty) {
+          return r;
+        }
+      }
+    }
+
+    return null;
+  }
+
+
+
   Future<void> loadAll() async {
     // position.value= await Location().getPosition();
+    const currentLat = 29.979235;
+    const currentLng = 31.134202;
+
+    final nearbyRequest = await getNearbyRequest(currentLat, currentLng, 500);
+
+    if (nearbyRequest != null) {
+      print("Using cached data from request ${nearbyRequest.region_id}");
+
+      places.value = await database.regionplacedao
+          .selectRegionPlaces(nearbyRequest.region_id!);
+
+      print('Loaded ${places.value.length} places from cache');
+
+      return;
+    }
+
+
+
     final data = await api.getPlacesWithDetails(
       lat: 29.979235,
       long: 31.134202,
@@ -81,8 +153,8 @@ class HomeController extends GetxController {
       list.add(
         RegionPlace(
           name: element.name,
-          region_id: regionId,
-          place_id: element.placeId.toString(),
+          regionId: regionId,
+          placeId: element.placeId,
           lat: element.lat,
           lng: element.lng,
           image: element.image,

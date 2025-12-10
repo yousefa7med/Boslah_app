@@ -1,35 +1,35 @@
+import 'package:depi_graduation_project/models/place_model.dart';
 import 'package:floor/floor.dart';
 
-@Entity(
-  tableName: 'region_places',)
-class RegionPlace {
+@Entity(tableName: 'region_places')
+class RegionPlace extends PlaceModel {
   @PrimaryKey(autoGenerate: true)
   final int? id;
-  final int region_id;
+  final int regionId;
   final int? search_id;
-
-  final String place_id;
-  final String? name;
-  final String? desc;
-  final List<String> category;
-  final String? image;
-
-
-  final double? lat;
-  final double? lng;
-
 
 
   RegionPlace({
     this.id,
-    required this.region_id,
-    required this.place_id,
-    this.name,
-    required this.lat,
-    required this.lng,
-    this.desc,
-    this.category = const [],
-    this.image,
+    required this.regionId,
+    required super.placeId,
+    super.lat,
+    super.lng,
+    super.desc,
+    super.categories,
+    super.image,
     this.search_id,
+    required super.name,
   });
+
+  Map<String, dynamic> toJson() => {
+    'region_id': regionId,
+    'search_id': search_id,
+    'place_id': placeId,
+    'name': name,
+    'lat': lat,
+    'lng': lng,
+    'image': image,
+    'desc': desc,
+  };
 }

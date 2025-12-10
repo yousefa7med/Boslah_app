@@ -8,7 +8,7 @@ class PlaceModel {
   final String? image;
   final double? lat;
   final double? lng;
-  final List<String>? categories;
+  final List<String> categories;
 
   PlaceModel({
     this.lat,
@@ -17,7 +17,7 @@ class PlaceModel {
     required this.name,
     this.image,
     this.desc,
-    this.categories,
+     this.categories = const [],
   });
 
   // Generate integer ID from a string for Geoapify
@@ -59,7 +59,7 @@ class PlaceModel {
         desc: props["formatted"] ?? props["address_line2"],
         categories: props["categories"] != null
             ? List<String>.from(props["categories"])
-            : null,
+            : [],
         lat: props["lat"],
         lng: props["lon"],
 
@@ -68,7 +68,7 @@ class PlaceModel {
     // Unknown structure
     return PlaceModel(
       placeId: 0,
-      name: "Unknown",
+      name: "Unknown", categories: [],
     );
   }
   // Map<String, dynamic> toJson() => {"lat": lat, "lon": lng};
