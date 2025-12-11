@@ -1,3 +1,4 @@
+import 'package:Boslah/core/functions/snack_bar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:Boslah/core/utilities/app_colors.dart';
 import 'package:Boslah/core/utilities/app_text_style.dart';
@@ -27,22 +28,19 @@ class DetailsView extends GetView<DetailsController> {
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(12),
-                      child: controller.place.image != null
-                          ? CachedNetworkImage(
-                              imageUrl: controller.place.image!,
+                      child:
+                          controller.place.isAssetPath(controller.place.image!)
+                          ? Image.asset(
+                              controller.place.image!,
                               width: double.infinity,
-                              height: 350,
+                              height: 350.h,
                               fit: BoxFit.cover,
                             )
-                          : Container(
+                          : CachedNetworkImage(
+                              imageUrl: controller.place.image!,
                               width: double.infinity,
-                              height: 300,
-                              color: Colors.grey[300],
-                              child: const Icon(
-                                Icons.image_not_supported,
-                                size: 50,
-                                color: Colors.grey,
-                              ),
+                              height: 350.h,
+                              fit: BoxFit.cover,
                             ),
                     ),
                     Positioned(
@@ -58,13 +56,7 @@ class DetailsView extends GetView<DetailsController> {
                         child: Obx(() {
                           return IconButton(
                             onPressed: () async {
-                              // if (controller.favorite.value) {
-                              //   controller.removeFromFav();
-                              // } else {
-                              //   controller.addToFav();
-                              // }
-                              // controller.favorite.toggle();
-                              // try {
+                              try {
                               if (controller.favorite.value) {
                                 await controller.removeFromFav();
                               } else {
@@ -72,9 +64,9 @@ class DetailsView extends GetView<DetailsController> {
                               }
 
                               controller.favorite.toggle();
-                              // } catch (e) {
-                              //   showSnackBar(context, e.toString());
-                              // }
+                              } catch (e) {
+                                showSnackBar( e.toString());
+                              }
                             },
                             icon: controller.favorite.value
                                 ? const Icon(

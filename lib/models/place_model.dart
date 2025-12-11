@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:Boslah/core/utilities/assets.dart';
 import 'package:crypto/crypto.dart';
 
 class PlaceModel {
@@ -40,7 +41,9 @@ class PlaceModel {
             ? json["coordinates"][0]["lon"]?.toDouble()
             : null,
 
-        image: json["thumbnail"] != null ? json["thumbnail"]['source'] : null,
+        image: json["thumbnail"] != null
+            ? json["thumbnail"]['source']
+            : Assets.imagesDefaultPhotosTourism,
 
         desc: json["description"],
         categories: ["Tourism"],
@@ -62,12 +65,52 @@ class PlaceModel {
             : [],
         lat: props["lat"],
         lng: props["lon"],
-        image:
-            'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg',
+        image: getDefaultPhoto(
+          props["categories"] != null
+              ? List<String>.from(props["categories"])
+              : [],
+        ),
       );
     }
     // Unknown structure
     return PlaceModel(placeId: 0, name: "Unknown", categories: []);
   }
-  // Map<String, dynamic> toJson() => {"lat": lat, "lon": lng};
+  static String getDefaultPhoto(final List<String> categories) {
+    switch (categories[0]) {
+      case 'airport':
+        return Assets.imagesDefaultPhotosAirport;
+      case 'commercial':
+        return Assets.imagesDefaultPhotosShoppingMall;
+
+      case 'catering':
+        if (categories[1] == 'catering.cafe') {
+          return Assets.imagesDefaultPhotosCafe;
+        } else {
+          return Assets.imagesDefaultPhotosRestaurant;
+        }
+      case 'accommodation':
+        return Assets.imagesDefaultPhotosHotel;
+      case 'national_park':
+        return Assets.imagesDefaultPhotosNationalPark;
+      case 'entertainment':
+        return Assets.imagesDefaultPhotosEntertainment;
+      case 'sport':
+        return Assets.imagesDefaultPhotosSport;
+      case 'beach':
+        return Assets.imagesDefaultPhotosBeach;
+      case 'religion':
+        return Assets.imagesDefaultPhotosReligion;
+      case 'natural':
+        return Assets.imagesDefaultPhotosNatural;
+
+      default:
+        return Assets.imagesDefaultPhotosNoImageAvailable;
+    }
+  }
+
+  bool isAssetPath(String path) {
+    // يبدأ بـ assets/
+    if (path.startsWith('assets/')) return true;
+    return false;
+  }
 }

@@ -6,7 +6,10 @@ import 'package:get/get_navigation/src/snackbar/snackbar.dart';
 void showSnackBar(String message) {
   Get.rawSnackbar(
     messageText: Center(
-      child: Text(message, style: const TextStyle(fontSize: 16)),
+      child: Text(
+        message,
+        style: const TextStyle(fontSize: 16, color: Colors.white),
+      ),
     ),
 
     duration: const Duration(seconds: 1, milliseconds: 800),
@@ -19,11 +22,6 @@ void showSnackBar(String message) {
       bottom: Get.mediaQuery.viewInsets.bottom + 30,
     ),
 
-    //       MediaQuery.of(
-    //         Get.context!,
-    //       ).viewInsets.bottom +
-    //       30,
-    // ),
     borderRadius: 20,
     animationDuration: const Duration(milliseconds: 300),
 

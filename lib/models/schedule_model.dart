@@ -35,4 +35,10 @@ class ScheduleModel {
     required this.image,
     required this.hour,
   });
+
+    bool isAssetPath(String path) {
+    // يبدأ بـ assets/
+    if (path.startsWith('assets/')) return true;
+    return false;
+  }
 }

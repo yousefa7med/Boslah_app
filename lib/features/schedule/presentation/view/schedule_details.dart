@@ -29,8 +29,16 @@ class ScheduleDetails extends GetView<ScheduleDetailsController> {
                 // ------------------ IMAGE ------------------
                 ClipRRect(
                   borderRadius: BorderRadius.circular(16),
-                  child: CachedNetworkImage(
-                    height: 260,
+                  child: 
+                     place.isAssetPath(place.image!)
+                  ?
+                 Image.asset(place.image!,
+                    height: 260.h,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  )
+                 : CachedNetworkImage(
+                    height: 260.h,
                     width: double.infinity,
                     fit: BoxFit.cover,
                     imageUrl: place.image!,

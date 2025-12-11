@@ -219,12 +219,18 @@ class ScheduleForm extends StatelessWidget {
                 return;
               }
               try {
+                print('11111111111111111111111');
                 await controller.addSchdule();
+                Get.back();
+
+                print('2222222222222222222222222');
                 showSnackBar('Schedule Added Successfully');
               } catch (e) {
+                print('2222222222222222222222222');
+                Get.back();
+
                 showSnackBar(e.toString());
               }
-              Get.back();
             },
 
             child: const Text('confirm', style: TextStyle(color: Colors.white)),

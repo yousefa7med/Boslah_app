@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:Boslah/core/utilities/app_text_style.dart';
 import 'package:Boslah/features/home/controllers/home_controller.dart';
@@ -14,6 +16,7 @@ class HomePlaceCard extends GetView<HomeController> {
   final int index;
   @override
   Widget build(BuildContext context) {
+    log(controller.viewedPlaces[index].categories[0]);
     return InkWell(
       onTap: () {
         Get.toNamed(Routes.details, arguments: controller.viewedPlaces[index]);
@@ -30,22 +33,21 @@ class HomePlaceCard extends GetView<HomeController> {
                 topLeft: Radius.circular(12),
                 topRight: Radius.circular(12),
               ),
-              child: controller.viewedPlaces[index].image != null
-                  ? CachedNetworkImage(
-                      imageUrl: controller.viewedPlaces[index].image!,
+              child:
+                  controller.viewedPlaces[index].isAssetPath(
+                    controller.viewedPlaces[index].image!,
+                  )
+                  ? Image.asset(
+                      controller.viewedPlaces[index].image!,
                       width: double.infinity,
                       height: 180.h,
                       fit: BoxFit.fill,
                     )
-                  : Container(
+                  : CachedNetworkImage(
+                      imageUrl: controller.viewedPlaces[index].image!,
                       width: double.infinity,
                       height: 180.h,
-                      color: Colors.grey[300],
-                      child: Icon(
-                        Icons.image_not_supported,
-                        size: 50.r,
-                        color: Colors.grey,
-                      ),
+                      fit: BoxFit.fill,
                     ),
             ),
             Gap(10.h),
