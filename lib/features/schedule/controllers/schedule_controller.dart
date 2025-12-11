@@ -22,7 +22,7 @@ class ScheduleController extends GetxController {
   var today = DateTime.now().obs;
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     print('initttttt');
     ever(today, (_) => update());
     filterList.addAll([
@@ -66,44 +66,45 @@ class ScheduleController extends GetxController {
       updateIsDoneForSchedules();
     });
 
+    // try {
+    //   loadData();
+    // } on Exception catch (e) {
+    //   error.value = e.toString();
+    // }
     try {
-      loadData();
-    } on Exception catch (e) {
+      await loadData();
+    } catch (e) {
       error.value = e.toString();
     }
-
     super.onInit();
   }
 
   Future<void> loadData() async {
     try {
-    final userId = cloud.auth.currentUser!.id;
-    final localList = await database.scheduledao.selectSchedules(userId);
+      final userId = cloud.auth.currentUser!.id;
+      final localList = await database.scheduledao.selectSchedules(userId);
 
-    localList.sort((a, b) {
-      final dtA = combineDateAndTime(a.date, a.hour);
-      final dtB = combineDateAndTime(b.date, b.hour);
-      log('uuuuuuuuuuuuuuuuuuuuuuuuuuuuu');
-      return dtA.compareTo(dtB);
-    });
-    if (localList.isNotEmpty) {
-      allSchedules.value = localList;
-      viewedSchedules.value = localList;
-    await updateIsDoneForSchedules();
+      // localList.sort((a, b) {
+      //   final dtA = combineDateAndTime(a.date, a.hour);
+      //   final dtB = combineDateAndTime(b.date, b.hour);
+      //   log('uuuuuuuuuuuuuuuuuuuuuuuuuuuuu');
+      //   return dtA.compareTo(dtB);
+      // });
+      if (localList.isNotEmpty) {
+        allSchedules.value = localList;
+        viewedSchedules.value = localList;
+        await updateIsDoneForSchedules();
 
+        return;
+      } else {
+        final remote = await ScheduleServiceSupabase().getSchedules(userId);
+        allSchedules.value = remote;
+        viewedSchedules.value = remote;
+      }
 
- 
-      return;
-    } else {
-final remote =await ScheduleServiceSupabase().getSchedules(userId);
-      allSchedules.value = remote;
-      viewedSchedules.value = remote;
-        
-    }
-
-    log('doneeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
+      log('doneeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
     } catch (e) {
-    throw AppException(msg: "Failed to load schedules");
+      throw AppException(msg: "Failed to load schedules");
     }
   }
 

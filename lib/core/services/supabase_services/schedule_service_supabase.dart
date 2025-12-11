@@ -17,8 +17,8 @@ class ScheduleServiceSupabase {
           .select()
           .single();
 
-      final id = inserted['schedule_id'] as int;
-//!بص علي سطر 20
+      // final id = inserted['schedule_id'] as int;
+      //!بص علي سطر 20
       NotificationService.scheduleNotification(
         id: schedule.notificationId!,
         title: "Visit Reminder",
@@ -59,28 +59,61 @@ class ScheduleServiceSupabase {
 
   /// Fetch all schedules for the current user
   Future<List<ScheduleSupabase>> getSchedules(String userId) async {
-    print('rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr');
-    final data = await cloud
-        .from('schedules')
-        .select()
-        .eq('user_id', userId)
-        .order('date', ascending: true)
-        .order('hour', ascending: true);
-    print('reyu');
-    return (data as List)
-        .map((e) => ScheduleSupabase.fromMap(e as Map<String, dynamic>))
-        .toList();
+    try {
+      print('rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr');
+      final data = await cloud
+          .from('schedules')
+          .select()
+          .eq('user_id', userId)
+          .order('date', ascending: true)
+          .order('hour', ascending: true);
+      print('reyu');
+      return (data as List)
+          .map((e) => ScheduleSupabase.fromMap(e as Map<String, dynamic>))
+          .toList();
+    } on PostgrestException catch (e) {
+      throw AppException(msg: e.message);
+    } catch (e) {
+      throw AppException(msg: "Failed to schedule");
+    }
   }
 
   /// Fetch a single schedule by ID
-  Future<ScheduleSupabase?> getScheduleById(int scheduleId) async {
+  Future<ScheduleSupabase> getScheduleById(int scheduleId) async {
     final data = await cloud
         .from('schedules')
         .select()
         .eq('schedule_id', scheduleId)
         .maybeSingle();
 
-    if (data == null) return null;
-    return ScheduleSupabase.fromMap(data);
+    // if (data == null);
+    return ScheduleSupabase.fromMap(data!);
+  }
+
+  Future<int> getNotificationId(int scheduleId) async {
+    final data = await cloud
+        .from('schedules')
+        .select('notification_id')
+        .eq('schedule_id', scheduleId)
+        .maybeSingle();
+
+    return data?['notification_id'] as int;
+  }
+
+  Future<void> updateNote(String Note, int scheduleId) async {
+    try {
+      final updated = await cloud
+          .from('schedules')
+          .update({'note': Note})
+          .eq('schedule_id', scheduleId)
+          .select()
+          .single();
+
+      // final id = inserted['schedule_id'] as int;
+    } on PostgrestException catch (e) {
+      throw AppException(msg: e.message);
+    } catch (e) {
+      throw AppException(msg: "Failed to Edit the note");
+    }
   }
 }
