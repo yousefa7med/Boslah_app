@@ -47,15 +47,14 @@ class ScheduleServiceSupabase {
   }
 
   /// Mark a schedule as done
-  // Future<void> markAsDone(int scheduleId) async {
-  //   await cloud
-  //       .from('schedules')
-  //       .update({'is_done': true})
-  //       .eq('schedule_id', scheduleId);
-  //
-  //   // Optionally, cancel the alarm if you don't want notifications anymore
-  //   await AndroidAlarmManager.cancel(scheduleId);
-  // }
+  Future<void> markAsDone(int scheduleId) async {
+    await cloud
+        .from('schedules')
+        .update({'is_done': true})
+        .eq('schedule_id', scheduleId);
+
+    // Optionally, cancel the alarm if you don't want notifications anymore
+  }
 
   /// Fetch all schedules for the current user
   Future<List<ScheduleSupabase>> getSchedules(String userId) async {

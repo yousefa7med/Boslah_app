@@ -85,27 +85,51 @@ class FavouritesView extends GetView<FavouritesController> {
                                     SizedBox(
                                       width: 80.w,
                                       height: 80.h,
-                                      child: CachedNetworkImage(
-                                        imageUrl: fav.image ?? '',
-                                        imageBuilder:
-                                            (context, imageProvider) =>
-                                                Container(
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                          10,
-                                                        ),
-                                                    image: DecorationImage(
-                                                      image: imageProvider,
-                                                      fit: BoxFit.cover,
+                                      child:
+                                          controller.allFavourits[index]
+                                              .isAssetPath(
+                                                controller
+                                                    .allFavourits[index]
+                                                    .image!,
+                                              )
+                                          ? Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                image: DecorationImage(
+                                                  image: AssetImage(
+                                                    controller
+                                                        .allFavourits[index]
+                                                        .image!,
+                                                  ),
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                            )
+                                          : CachedNetworkImage(
+                                              imageUrl: fav.image ?? '',
+                                              imageBuilder:
+                                                  (
+                                                    context,
+                                                    imageProvider,
+                                                  ) => Container(
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                            10,
+                                                          ),
+                                                      image: DecorationImage(
+                                                        image: imageProvider,
+                                                        fit: BoxFit.cover,
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
-                                        placeholder: (context, url) =>
-                                            shimmerItem(),
-                                        errorWidget: (context, url, error) =>
-                                            shimmerItem(),
-                                      ),
+                                              placeholder: (context, url) =>
+                                                  shimmerItem(),
+                                              errorWidget:
+                                                  (context, url, error) =>
+                                                      shimmerItem(),
+                                            ),
                                     ),
                                     Expanded(
                                       child: Padding(

@@ -81,7 +81,6 @@ class ChatScreen extends GetView<ChatController> {
             ),
           ),
 
-          // Loading indicator when bot is thinking
           Obx(() {
             if (controller.isLoading.value) {
               return const Positioned(

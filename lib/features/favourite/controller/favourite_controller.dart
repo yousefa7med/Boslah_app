@@ -8,6 +8,7 @@ import 'package:Boslah/models/place_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../core/database/models/favorites.dart';
+import '../../../core/functions/has_internet.dart';
 
 class FavouritesController extends GetxController {
   final allFavourits = <PlaceModel>[].obs; //علشان السوبا غير الفلور
@@ -42,39 +43,43 @@ class FavouritesController extends GetxController {
     try {
       final userId = cloud.auth.currentUser!.id;
       print("++++++++++++++++++++++++++$userId");
-      final localList = await database.favoritedao.selectFavorites(userId);
 
-      if (localList.isNotEmpty) {
-        allFavourits.value = localList;
-        filteredFav.value = allFavourits;
+      isFav.addAll(List.generate(allFavourits.length, (i) => true.obs));
+
+      final hasInt = await hasInternet();
+      if (hasInt) {
+        final remote = await FavoritesService().getFavorites();
+        allFavourits.value = remote;
         isFav.addAll(List.generate(allFavourits.length, (i) => true.obs));
-        print("locaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaal");
-        return;
+        await database.favoritedao.deleteAllFavoritesByUser(userId);
+        for (var fav in remote) {
+          print('11111111111');
+          try {
+            await database.favoritedao.insertFavorite(
+              Favorite(
+                name: fav.name,
+                userId: fav.userId,
+                placeId: fav.placeId,
+                addedAt: fav.addedAt,
+                desc: fav.desc,
+                image: fav.image,
+                lat: fav.lat,
+                lng: fav.lng,
+                categories: fav.categories,
+              ),
+            );
+          } catch (_) {}
+        }
+      } else {
+        final localList = await database.favoritedao.selectFavorites(userId);
+        allFavourits.value = localList;
       }
-      final remoteList = await FavoritesService().getFavorites();
 
-      allFavourits.value = remoteList;
       filteredFav.value = allFavourits;
       if (allFavourits.isNotEmpty) {
         filteredFav.value = allFavourits;
         isFav.addAll(List.generate(allFavourits.length, (i) => true.obs));
         print("sopaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-      }
-      for (var fav in remoteList) {
-        await database.favoritedao.insertFavorite(
-          Favorite(
-            name: fav.name,
-            userId: fav.userId,
-            placeId: fav.placeId,
-            addedAt: fav.addedAt,
-            desc: fav.desc,
-            image: fav.image,
-            lat: fav.lat,
-            lng: fav.lng,
-            categories: fav.categories,
-          ),
-        );
-        print(fav.image);
       }
     } catch (e) {
       throw AppException(msg: "Failed to load favorites");
