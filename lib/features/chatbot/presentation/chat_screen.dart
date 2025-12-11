@@ -1,3 +1,4 @@
+import 'package:depi_graduation_project/core/functions/is_dark.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
@@ -14,22 +15,20 @@ class ChatScreen extends GetView<ChatController> {
     // final ChatController controller = Get.find();
 
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.white,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon: Icon(
+            Icons.arrow_back,
+            color: !isDark() ? Colors.black : Colors.white,
+          ),
           onPressed: () => Get.back(),
         ),
         title: Row(
           children: [
             const Text(
               "Chatbot",
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontWeight: FontWeight.bold),
             ),
             const SizedBox(width: 6),
             Container(
@@ -42,7 +41,10 @@ class ChatScreen extends GetView<ChatController> {
                 children: [
                   Icon(Icons.circle, size: 8, color: Colors.green),
                   SizedBox(width: 4),
-                  Text("Online", style: TextStyle(fontSize: 12)),
+                  Text(
+                    "Online",
+                    style: TextStyle(fontSize: 12, color: Colors.black),
+                  ),
                 ],
               ),
             ),
@@ -53,13 +55,13 @@ class ChatScreen extends GetView<ChatController> {
         children: [
           Obx(
             () => Chat(
-              messages: controller.messages,
+              messages: controller.messages.value,
               onSendPressed: (types.PartialText msg) {
                 controller.sendUserMessage(msg.text);
               },
               user: const types.User(id: 'user'),
               theme: const DefaultChatTheme(
-                backgroundColor: Colors.white,
+                backgroundColor: Color.fromARGB(19, 28, 28, 34),
                 primaryColor: AppColors.main,
                 sentMessageBodyTextStyle: TextStyle(
                   color: Colors.white,
@@ -70,8 +72,8 @@ class ChatScreen extends GetView<ChatController> {
                   color: Colors.black87,
                   fontSize: 16,
                 ),
-                inputBackgroundColor: Colors.white,
-                inputTextColor: Colors.black,
+                inputBackgroundColor: Colors.blueGrey,
+                inputTextColor: Colors.white,
                 inputMargin: EdgeInsets.all(12),
                 inputBorderRadius: BorderRadius.all(Radius.circular(25)),
                 messageInsetsVertical: 16,

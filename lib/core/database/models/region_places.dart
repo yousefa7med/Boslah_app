@@ -6,7 +6,7 @@ class RegionPlace extends PlaceModel {
   @PrimaryKey(autoGenerate: true)
   final int? id;
   final int regionId;
-  final int? search_id;
+  final int? searchId;
 
 
   RegionPlace({
@@ -18,13 +18,13 @@ class RegionPlace extends PlaceModel {
     super.desc,
    required super.categories,
     super.image,
-    this.search_id,
+    this.searchId,
     required super.name,
   });
 
   Map<String, dynamic> toJson() => {
     'region_id': regionId,
-    'search_id': search_id,
+    'search_id': searchId,
     'place_id': placeId,
     'name': name,
     'lat': lat,

@@ -108,7 +108,7 @@ class _$tourDatabase extends tourDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `region_requests` (`region_id` INTEGER PRIMARY KEY AUTOINCREMENT, `lat` REAL NOT NULL, `lng` REAL NOT NULL, `timestamp` INTEGER)');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `region_places` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `regionId` INTEGER NOT NULL, `search_id` INTEGER, `placeId` INTEGER NOT NULL, `name` TEXT NOT NULL, `desc` TEXT, `image` TEXT, `lat` REAL, `lng` REAL, `categories` TEXT NOT NULL)');
+            'CREATE TABLE IF NOT EXISTS `region_places` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `regionId` INTEGER NOT NULL, `searchId` INTEGER, `placeId` INTEGER NOT NULL, `name` TEXT NOT NULL, `desc` TEXT, `image` TEXT, `lat` REAL, `lng` REAL, `categories` TEXT NOT NULL)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `favorites` (`favId` INTEGER PRIMARY KEY AUTOINCREMENT, `addedAt` INTEGER, `userId` TEXT NOT NULL, `placeId` INTEGER NOT NULL, `name` TEXT NOT NULL, `desc` TEXT, `image` TEXT, `lat` REAL, `lng` REAL, `categories` TEXT NOT NULL)');
         await database.execute(
@@ -231,7 +231,7 @@ class _$RegionPlacesDao extends RegionPlacesDao {
             (RegionPlace item) => <String, Object?>{
                   'id': item.id,
                   'regionId': item.regionId,
-                  'search_id': item.search_id,
+                  'searchId': item.searchId,
                   'placeId': item.placeId,
                   'name': item.name,
                   'desc': item.desc,
@@ -263,7 +263,7 @@ class _$RegionPlacesDao extends RegionPlacesDao {
             categories:
                 _categoriesConverter.decode(row['categories'] as String),
             image: row['image'] as String?,
-            search_id: row['search_id'] as int?,
+            searchId: row['searchId'] as int?,
             name: row['name'] as String),
         arguments: [regionId]);
   }
@@ -281,7 +281,7 @@ class _$RegionPlacesDao extends RegionPlacesDao {
             categories:
                 _categoriesConverter.decode(row['categories'] as String),
             image: row['image'] as String?,
-            search_id: row['search_id'] as int?,
+            searchId: row['searchId'] as int?,
             name: row['name'] as String),
         arguments: [placeId]);
   }
