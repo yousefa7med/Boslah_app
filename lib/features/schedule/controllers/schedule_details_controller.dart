@@ -1,8 +1,13 @@
 import 'package:depi_graduation_project/features/schedule/controllers/schedule_controller.dart';
 import 'package:depi_graduation_project/main.dart';
 import 'package:depi_graduation_project/models/schedule_model.dart';
+import 'package:depi_graduation_project/models/schedule_supabase.dart';
+import 'package:depi_graduation_project/models/schedule_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+import '../../../core/services/supabase_services/schedule_service_supabase.dart';
 
 class ScheduleDetailsController extends GetxController {
   late ScheduleModel scheduleplace;
@@ -33,13 +38,14 @@ class ScheduleDetailsController extends GetxController {
     final allSchedulers = Get.find<ScheduleController>();
 
     allSchedulers.viewedSchedules.removeWhere((f) => f.scheduleId == id);
-
+    final notiID = await ScheduleServiceSupabase().getNotificationId(id);
+    await ScheduleServiceSupabase().deleteSchedule(id, notiID);
     await database.scheduledao.deleteScheduleById(id);
   }
 
   Future<void> updateNote(int id, String newNote) async {
     final allSchedulers = Get.find<ScheduleController>();
-
+    await ScheduleServiceSupabase().updateNote(newNote, id);
     await database.scheduledao.updateNote(newNote, id);
 
     final sched = allSchedulers.viewedSchedules.firstWhere(

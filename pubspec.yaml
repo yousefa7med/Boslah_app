@@ -52,6 +52,8 @@ dependencies:
   flutter_chat_ui: ^1.5.4
   flutter_chat_types: ^3.4.0
   flutter_gemini: ^3.0.0
+  debounce_throttle: ^2.0.0
+
 
 dev_dependencies:
   flutter_launcher_icons: ^0.14.4

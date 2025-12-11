@@ -48,7 +48,6 @@ class RegisterView extends GetView<RegisterController> {
                       children: [
                         Text('UserName', style: AppTextStyle.regular18),
                         const Gap(4),
-
                         AppTextFormField(
                           controller: controller.nameController,
                           hintText: 'Enter your username',
@@ -57,7 +56,6 @@ class RegisterView extends GetView<RegisterController> {
                         const Gap(15),
                         Text('Email', style: AppTextStyle.regular18),
                         const Gap(4),
-
                         AppTextFormField(
                           controller: controller.gmailController,
                           hintText: 'Enter your email',
@@ -66,16 +64,15 @@ class RegisterView extends GetView<RegisterController> {
                         const Gap(15),
                         Text('Password', style: AppTextStyle.regular18),
                         const Gap(4),
-
                         PasswordTextField(
                           controller: controller.passwordController,
                           hintText: 'Enter your password',
                           validator: Validator.signupPasswordValidator(),
                         ),
                         const Gap(15),
-                        Text('Password', style: AppTextStyle.regular18),
+                        // <-- fixed label here
+                        Text('Confirm Password', style: AppTextStyle.regular18),
                         const Gap(4),
-
                         PasswordTextField(
                           controller: controller.confirmPasswordController,
                           hintText: 'Confirm your password',
