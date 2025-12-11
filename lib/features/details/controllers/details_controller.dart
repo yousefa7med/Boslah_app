@@ -35,7 +35,8 @@ class DetailsController extends GetxController {
       userId: cloud.auth.currentUser!.id,
       image: place.image,
       name: place.name,
-      desc: place.desc, categories: place.categories,
+      desc: place.desc,
+      categories: place.categories,
     );
     final favoriteSupa = FavoriteSupabase(
       userId: cloud.auth.currentUser!.id,
@@ -44,7 +45,8 @@ class DetailsController extends GetxController {
       desc: place.desc,
       image: place.image,
       lat: place.lat,
-      lng: place.lng, categories: place.categories,
+      lng: place.lng,
+      categories: place.categories,
     );
     await FavoritesService().addFavorite(favoriteSupa);
     // await FavoritesService().addFavorite(addFavorite);
@@ -110,7 +112,8 @@ class DetailsController extends GetxController {
           desc: supabaseResult.desc,
           image: supabaseResult.image,
           lat: supabaseResult.lat,
-          lng: supabaseResult.lng, categories: supabaseResult.categories,
+          lng: supabaseResult.lng,
+          categories: supabaseResult.categories,
         ),
       );
       return true;
@@ -121,6 +124,7 @@ class DetailsController extends GetxController {
   }
 
   Future<void> addSchdule() async {
+    final schController = Get.find<ScheduleController>();
     final int newNotificationId = NotificationService.generateId();
     final uId = cloud.auth.currentUser!.id;
     final sch = Schedule(
@@ -158,8 +162,8 @@ class DetailsController extends GetxController {
     timeController.clear();
     debugPrint('schedule object: ${sch.date}');
     // try {
-      final schController = Get.find<ScheduleController>();
-      await schController.loadData();
+
+    await schController.loadData();
     // } catch (_) {}
   }
 

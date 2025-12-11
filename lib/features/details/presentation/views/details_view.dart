@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:depi_graduation_project/core/functions/snack_bar.dart';
 import 'package:depi_graduation_project/core/utilities/app_colors.dart';
 import 'package:depi_graduation_project/core/utilities/app_text_style.dart';
 import 'package:depi_graduation_project/core/widgets/app_button.dart';
@@ -175,7 +174,7 @@ class DetailsView extends GetView<DetailsController> {
                             // checkExactAlarmAndOpenForm(context);
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.grey,
+                            backgroundColor: Colors.grey.shade200,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),

@@ -4,7 +4,7 @@ import 'package:depi_graduation_project/main.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class SchedulePlaceController extends GetxController {
+class ScheduleDetailsController extends GetxController {
   late Schedule scheduleplace;
   final editorIndicator = false.obs;
 

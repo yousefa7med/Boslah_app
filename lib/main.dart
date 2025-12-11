@@ -29,8 +29,8 @@ import 'package:depi_graduation_project/features/main/main_view.dart';
 import 'package:depi_graduation_project/features/profile/controllers/profile_controller.dart';
 import 'package:depi_graduation_project/features/profile/presentation/views/profile_view.dart';
 import 'package:depi_graduation_project/features/schedule/controllers/schedule_controller.dart';
-import 'package:depi_graduation_project/features/schedule/controllers/schedule_place_controller.dart';
-import 'package:depi_graduation_project/features/schedule/presentation/view/schedule_place_view.dart';
+import 'package:depi_graduation_project/features/schedule/controllers/schedule_details_controller.dart';
+import 'package:depi_graduation_project/features/schedule/presentation/view/schedule_details.dart';
 import 'package:depi_graduation_project/features/schedule/presentation/view/schedule_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -41,7 +41,6 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:path/path.dart';
 import 'core/utilities/routes.dart';
 import 'package:sqflite/sqflite.dart';
-
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -192,9 +191,9 @@ class MyApp extends StatelessWidget {
             ),
             GetPage(
               name: Routes.schedulePlace,
-              page: () => const SchedulePlaceView(),
+              page: () => const ScheduleDetails(),
               binding: BindingsBuilder(() {
-                Get.lazyPut(() => SchedulePlaceController());
+                Get.lazyPut(() => ScheduleDetailsController());
               }),
             ),
             GetPage(
@@ -211,3 +210,5 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+

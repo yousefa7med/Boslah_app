@@ -4,8 +4,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 
 class MainController extends GetxController {
-  final favControoller = FavouritesController();
-  final scheduleController = ScheduleController();
+  final favControoller = Get.put(FavouritesController());
+  final scheduleController = Get.put(ScheduleController());
   bool isFavPage = false;
   @override
   Future<void> onInit() async {

@@ -1,17 +1,15 @@
-import 'package:depi_graduation_project/features/schedule/controllers/schedule_place_controller.dart';
+import 'package:depi_graduation_project/features/schedule/controllers/schedule_details_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-
 import '../../../../core/utilities/app_text_style.dart';
 import '../../../../core/widgets/app_button.dart';
 
-class SchedulePlaceView
-    extends GetView<SchedulePlaceController> {
-  const SchedulePlaceView({super.key});
+class ScheduleDetails extends GetView<ScheduleDetailsController> {
+  const ScheduleDetails({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -62,10 +60,7 @@ class SchedulePlaceView
                 // ------------------ DATE + TIME ------------------
                 Row(
                   children: [
-                    Icon(
-                      Icons.calendar_today,
-                      color: Colors.grey.shade600,
-                    ),
+                    Icon(Icons.calendar_today, color: Colors.grey.shade600),
                     Gap(8.w),
                     Text(
                       place.date,
@@ -75,10 +70,7 @@ class SchedulePlaceView
                       ),
                     ),
                     Gap(20.w),
-                    Icon(
-                      Icons.access_time,
-                      color: Colors.grey.shade600,
-                    ),
+                    Icon(Icons.access_time, color: Colors.grey.shade600),
                     Gap(8.w),
                     Text(
                       place.hour,
@@ -131,7 +123,11 @@ class SchedulePlaceView
                                 },
                                 child: Row(
                                   children: [
-                                    const Icon(Icons.edit, color: Color(0xffDE7254), size: 18),
+                                    const Icon(
+                                      Icons.edit,
+                                      color: Color(0xffDE7254),
+                                      size: 18,
+                                    ),
                                     Gap(4.w),
                                     Text(
                                       "Edit",
@@ -157,7 +153,9 @@ class SchedulePlaceView
                               fontSize: 16.sp,
                               height: 1.4,
                               color: Colors.grey.shade700,
-                              fontStyle: controller.note.trim().isEmpty ? FontStyle.italic : FontStyle.normal,
+                              fontStyle: controller.note.trim().isEmpty
+                                  ? FontStyle.italic
+                                  : FontStyle.normal,
                             ),
                           ),
 
@@ -185,19 +183,27 @@ class SchedulePlaceView
                               Expanded(
                                 child: ElevatedButton(
                                   onPressed: () {
-                                    controller.updateNote(place.scheduleId!, controller.noteCont.text);
+                                    controller.updateNote(
+                                      place.scheduleId!,
+                                      controller.noteCont.text,
+                                    );
                                     controller.editorIndicator.toggle();
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: const Color(0xffDE7254),
-                                    padding: const EdgeInsets.symmetric(vertical: 14),
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 14,
+                                    ),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(12),
                                     ),
                                   ),
                                   child: Text(
                                     "Save Note",
-                                    style: TextStyle(color: Colors.white, fontSize: 16.sp),
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16.sp,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -210,20 +216,27 @@ class SchedulePlaceView
                                     controller.editorIndicator.value = false;
                                   },
                                   style: OutlinedButton.styleFrom(
-                                    padding: const EdgeInsets.symmetric(vertical: 14),
-                                    side: BorderSide(color: Colors.grey.shade400),
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 14,
+                                    ),
+                                    side: BorderSide(
+                                      color: Colors.grey.shade400,
+                                    ),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(12),
                                     ),
                                   ),
                                   child: Text(
                                     "Cancel",
-                                    style: TextStyle(color: Colors.black87, fontSize: 16.sp),
+                                    style: TextStyle(
+                                      color: Colors.black87,
+                                      fontSize: 16.sp,
+                                    ),
                                   ),
                                 ),
                               ),
                             ],
-                          )
+                          ),
                         ],
                       ],
                     ),
@@ -234,9 +247,7 @@ class SchedulePlaceView
                 AppButton(
                   child: Text(
                     'Go to Location',
-                    style: AppTextStyle.regular18.copyWith(
-                      color: Colors.white,
-                    ),
+                    style: AppTextStyle.regular18.copyWith(color: Colors.white),
                   ),
 
                   onPressed: () async {
@@ -248,7 +259,6 @@ class SchedulePlaceView
                         "https://www.google.com/maps/search/?api=1&query=${controller.scheduleplace.lat},${controller.scheduleplace.lng}",
                       ),
                     );
-
                   },
                 ),
                 Gap(10.h),
@@ -270,8 +280,6 @@ class SchedulePlaceView
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-
-
                                   const Text(
                                     "Remove Schedule",
                                     style: TextStyle(
@@ -280,27 +288,36 @@ class SchedulePlaceView
                                     ),
                                   ),
 
-                                   Gap(12.h),
+                                  Gap(12.h),
 
                                   const Text(
                                     "Are you sure you want to remove this\nfrom your schedule?",
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(fontSize: 15, color: Colors.black87),
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      color: Colors.black87,
+                                    ),
                                   ),
 
                                   Gap(22.h),
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
                                     children: [
-
                                       Expanded(
                                         child: OutlinedButton(
                                           onPressed: () => Get.back(),
                                           style: OutlinedButton.styleFrom(
-                                            padding: const EdgeInsets.symmetric(vertical: 12),
-                                            side: BorderSide(color: Colors.red.shade300, width: 2),
+                                            padding: const EdgeInsets.symmetric(
+                                              vertical: 12,
+                                            ),
+                                            side: BorderSide(
+                                              color: Colors.red.shade300,
+                                              width: 2,
+                                            ),
                                             shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(30),
+                                              borderRadius:
+                                                  BorderRadius.circular(30),
                                             ),
                                           ),
                                           child: Text(
@@ -319,15 +336,20 @@ class SchedulePlaceView
                                       Expanded(
                                         child: ElevatedButton(
                                           onPressed: () async {
-                                             await controller.deleteSchedule(place.scheduleId!);
+                                            await controller.deleteSchedule(
+                                              place.scheduleId!,
+                                            );
                                             Get.back();
                                             Get.back();
                                           },
                                           style: ElevatedButton.styleFrom(
                                             backgroundColor: Colors.redAccent,
-                                            padding: const EdgeInsets.symmetric(vertical: 12),
+                                            padding: const EdgeInsets.symmetric(
+                                              vertical: 12,
+                                            ),
                                             shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(30),
+                                              borderRadius:
+                                                  BorderRadius.circular(30),
                                             ),
                                           ),
                                           child: const Text(
@@ -350,11 +372,7 @@ class SchedulePlaceView
                       );
                     },
 
-
-                    icon: const Icon(
-                      Icons.delete_forever,
-                      color: Colors.white,
-                    ),
+                    icon: const Icon(Icons.delete_forever, color: Colors.white),
                     label: const Text(
                       "Remove from Schedule",
                       style: TextStyle(color: Colors.white),
