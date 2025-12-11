@@ -24,6 +24,11 @@ class ScheduleController extends GetxController {
   @override
   Future<void> onInit() async {
     print('initttttt');
+    try {
+      await loadData();
+    } catch (e) {
+      error.value = e.toString();
+    }
     ever(today, (_) => update());
     filterList.addAll([
       FilterModel(
@@ -38,6 +43,9 @@ class ScheduleController extends GetxController {
         icon: Icons.pending_outlined,
         onTap: () {
           viewedSchedules.clear();
+          allSchedules.forEach((s) {
+            print('Schedule date raw: "${s.date}"');
+          });
           viewedSchedules.addAll(
             allSchedules.where((s) {
               final status = getStatus(s.date);
@@ -116,6 +124,38 @@ class ScheduleController extends GetxController {
       int.parse(parts[2]),
     );
   }
+  // DateTime parseDate(String dateStr) {
+  //   return DateTime.parse(dateStr.split(" ").first);
+  // }
+  // DateTime parseDate(String dateStr) {
+  //   try {
+  //     return DateTime.parse(dateStr);
+  //   } catch (_) {
+  //     return DateTime.parse(dateStr.split(" ").first);
+  //   }
+  // }
+  // DateTime parseDate(String dateStr) {
+  //   try {
+  //     // Try parsing full date/time string directly
+  //     return DateTime.parse(dateStr);
+  //   } catch (_) {
+  //     // If fails, try parsing only the date part (before space)
+  //     return DateTime.parse(dateStr.split(" ").first);
+  //   }
+  // }
+  // DateTime parseDate(String dateStr) {
+  //   try {
+  //     return DateTime.parse(dateStr);
+  //   } catch (e) {
+  //     try {
+  //       final dateOnly = dateStr.split(" ").first;
+  //       return DateTime.parse(dateOnly);
+  //     } catch (e2) {
+  //       print("Failed to parse dateStr: $dateStr");
+  //       rethrow;
+  //     }
+  //   }
+  // }
 
   String getStatus(String date) {
     final d = parseDate(date);
