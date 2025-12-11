@@ -7,14 +7,20 @@ class ApiServices {
   static final ApiServices _instance = ApiServices._internal();
   factory ApiServices() => _instance;
   ApiServices._internal();
+  final String geoApiKey = "29d9a542ed1f4de1994142b6ca3675dc";
 
   final wikiDio = Dio(
     BaseOptions(
       connectTimeout: const Duration(seconds: 4),
-      baseUrl: "https://en.wikipedia.org/w/api.php",
+      baseUrl: "https://en.wikipedia.org/w/",
     ),
   );
-
+  final geoDio = Dio(
+    BaseOptions(
+      connectTimeout: const Duration(seconds: 4),
+      baseUrl: "https://api.geoapify.com/v2/",
+    ),
+  );
   final cancelToken = CancelToken();
 
   void cancel() {
@@ -23,40 +29,75 @@ class ApiServices {
 
   // final rest = "https://en.wikipedia.org/api/rest_v1/page/summary/";
 
-  Future<List<PlaceModel>?> getPlacesWithDetails({
+  Future<List<PlaceModel>?> getPlaces({
     required double lat,
     required double long,
+    int radius = 5000,
   }) async {
     if (await hasInternet()) {
       try {
-        final response = await wikiDio.get(
-          "https://en.wikipedia.org/w/api.php",
-          cancelToken: cancelToken,
+        final result = await Future.wait([
+          wikiDio.get(
+            "api.php",
+            cancelToken: cancelToken,
 
-          queryParameters: {
-            "action": "query",
-            "generator": "geosearch",
-            "ggscoord": "$lat|$long",
-            "ggsradius": 5000,
-            "ggslimit": 20,
-            "prop": "coordinates|pageimages|description|info",
-            "piprop": "thumbnail",
-            "pithumbsize": 1200,
-            "inprop": "url",
-            "format": "json",
-            "origin": "*",
-          },
-        );
+            queryParameters: {
+              "action": "query",
+              "generator": "geosearch",
+              "ggscoord": "$lat|$long",
+              "ggsradius": 5000,
+              "ggslimit": 20,
+              "prop": "coordinates|pageimages|description|info",
+              "piprop": "thumbnail",
+              "pithumbsize": 1200,
+              "inprop": "url",
+              "format": "json",
+              "origin": "*",
+            },
+          ),
 
-        if (response.statusCode == 200 && response.data['query'] != null) {
-          final pages = response.data['query']['pages'] as Map<String, dynamic>;
-          return pages.values
-              .map((pageJson) => PlaceModel.fromJson(pageJson))
-              .toList()
-              .where((e) => e.lat != null && e.lng != null)
-              .toList();
+          geoDio.get(
+            'places',
+            cancelToken: cancelToken,
+
+            queryParameters: {
+              "categories":
+                  "airport,commercial.shopping_mall,commercial.gift_and_souvenir"
+                  ",catering,accommodation.hotel,national_park,entertainment,sport,beach,religion,natural",
+              "filter": "circle:$long,$lat,$radius",
+              "limit": "20",
+              "apiKey": geoApiKey,
+            },
+          ),
+        ]);
+
+        final wikiResponse = result[0];
+        final geoResponse = result[1];
+        final List<PlaceModel> returnedList = [];
+
+        if (wikiResponse.statusCode == 200 &&
+            wikiResponse.data['query'] != null) {
+          final pages =
+              wikiResponse.data['query']['pages'] as Map<String, dynamic>;
+          returnedList.addAll(
+            pages.values
+                .map((pageJson) => PlaceModel.fromJson(pageJson))
+                .toList()
+                .where((e) => e.lat != null && e.lng != null)
+                .toList(),
+          );
         }
-        return null;
+
+        if (geoResponse.statusCode == 200 &&
+            geoResponse.data['features'] != null) {
+          final features = geoResponse.data['features'] as List;
+
+          returnedList.addAll(
+            features.map((f) => PlaceModel.fromJson(f)).toList(),
+          );
+        }
+
+        return returnedList;
       } on DioException catch (e) {
         if (e.type == DioExceptionType.connectionTimeout) {
           throw AppException(msg: "Request timed out");
@@ -72,7 +113,7 @@ class ApiServices {
     if (await hasInternet()) {
       try {
         final response = await wikiDio.get(
-          "https://en.wikipedia.org/w/api.php",
+          "api.php",
           queryParameters: {
             "action": "query",
             "generator": "search",
@@ -95,6 +136,8 @@ class ApiServices {
 
           return pages.values
               .map((pageJson) => PlaceModel.fromJson(pageJson))
+              .toList()
+              .where((e) => (e.lat != null && e.lng != null))
               .toList();
         }
 

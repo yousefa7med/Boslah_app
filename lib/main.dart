@@ -5,7 +5,6 @@ import 'package:depi_graduation_project/core/database/tourApp_database.dart';
 import 'package:depi_graduation_project/core/helper/casheHelper.dart';
 import 'package:depi_graduation_project/core/helper/theme_manager.dart';
 import 'package:depi_graduation_project/core/services/api_services/api_services1.1.dart';
-import 'package:depi_graduation_project/core/services/api_services/geoapify_services.dart';
 import 'package:depi_graduation_project/core/services/notification_service.dart';
 import 'package:depi_graduation_project/core/services/supabase_services/auth_service.dart';
 import 'package:depi_graduation_project/core/utilities/app_themes.dart';
@@ -123,7 +122,6 @@ class MyApp extends StatelessWidget {
           // initialRoute: Routes.chatbot,
           initialBinding: BindingsBuilder(() {
             Get.put(ApiServices());
-            Get.put(GeoapifyService());
           }),
           getPages: [
             GetPage(

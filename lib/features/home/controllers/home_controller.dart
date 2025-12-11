@@ -1,7 +1,6 @@
 import 'package:depi_graduation_project/core/database/models/region_places.dart';
 import 'package:depi_graduation_project/core/database/models/region_requests.dart';
 import 'package:depi_graduation_project/core/functions/get_postion.dart';
-import 'package:depi_graduation_project/core/services/api_services/geoapify_services.dart';
 import 'package:depi_graduation_project/core/widgets/app_dialog.dart';
 import 'package:depi_graduation_project/models/filter_model.dart';
 import 'package:depi_graduation_project/models/place_model.dart';
@@ -25,7 +24,6 @@ class HomeController extends GetxController {
   ];
 
   final api = Get.find<ApiServices>();
-  final geoapify = Get.find<GeoapifyService>();
   @override
   void onInit() {
     super.onInit();
@@ -43,20 +41,13 @@ class HomeController extends GetxController {
     final Position? position;
     try {
       position = await getPosition();
-      final data = await api.getPlacesWithDetails(
+      final data = await api.getPlaces(
         lat: position.latitude,
         long: position.longitude,
       );
 
-      final geoapifyData = await geoapify.getPlaces(
-        lat: position.latitude,
-        lon: position.longitude,
-      );
 
-      if (data != null && geoapifyData != null) {
-        data.addAll(geoapifyData);
-        data.shuffle();
-      }
+
 
       places.value =
           data?.where((p) {
