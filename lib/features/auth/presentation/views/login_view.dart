@@ -79,38 +79,47 @@ class LoginView extends GetView<LoginController> {
                             ),
                           ),
                         ),
-                        AppButton(
-                          onPressed: () async {
-                            if (controller.formKey.currentState!.validate()) {
-                              try {
-                                await controller.loginUser(
-                                  email: controller.emailController.text,
-                                  password: controller.passwordController.text,
-                                );
-                                Get.offNamed(Routes.main);
+                        Obx(() {
+                          return AppButton(
+                            onPressed: controller.isLoading.value
+                                ? null
+                                : () async {
+                              if (controller.formKey.currentState!.validate()) {
+                                try {
+                                  await controller.loginUser(
+                                    email: controller.emailController.text,
+                                    password: controller.passwordController.text,
+                                  );
 
-                                await database.profiledao.insertUser(
-                                  Profile(userId: cloud.auth.currentUser!.id),
-                                );
-                                showSnackBar(
-                                  context,
-                                  "Logged in successfully!",
-                                );
-                              } on AppException catch (e) {
-                                showSnackBar(context, e.msg);
+                                  Get.offNamed(Routes.main);
+
+                                  await database.profiledao.insertUser(
+                                    Profile(userId: cloud.auth.currentUser!.id),
+                                  );
+
+                                  showSnackBar(context, "Logged in successfully!");
+                                } on AppException catch (e) {
+                                  showSnackBar(context, e.msg);
+                                }
+
+                                print(cloud.auth.currentUser);
                               }
-
-                              print(cloud.auth.currentUser);
-                            }
-                          },
-
-                          child: Text(
-                            'Login',
-                            style: AppTextStyle.regular20.copyWith(
-                              color: Colors.white,
+                            },
+                            child: controller.isLoading.value
+                                ? const SizedBox(
+                              height: 22,
+                              width: 22,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: Colors.white,
+                              ),
+                            )
+                                : Text(
+                              'Login',
+                              style: AppTextStyle.regular20.copyWith(color: Colors.white),
                             ),
-                          ),
-                        ),
+                          );
+                        }),
                         const Gap(20),
 
                         AppButton(

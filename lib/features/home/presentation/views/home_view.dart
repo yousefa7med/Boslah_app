@@ -78,12 +78,16 @@ class HomeView extends GetView<HomeController> {
                   );
                 }
                 return Expanded(
-                  child: ListView.separated(
-                    itemCount: controller.places.length,
-                    itemBuilder: (ctx, index) => HomePlaceCard(index),
-                    separatorBuilder: (BuildContext context, int index) {
-                      return const Gap(10);
-                    },
+                  child: RefreshIndicator(
+                    onRefresh: controller.refreshPlaces,
+                    child: ListView.separated(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      itemCount: controller.places.length,
+                      itemBuilder: (ctx, index) => HomePlaceCard(index),
+                      separatorBuilder: (BuildContext context, int index) {
+                        return const Gap(10);
+                      },
+                    ),
                   ),
                 );
               }),

@@ -8,6 +8,7 @@ class ProfileController extends GetxController {
 
   final fullName = ''.obs;
   final lightTheme = (!isDark()).obs;
+  final isLoading = false.obs;
 
   @override
   void onInit() {

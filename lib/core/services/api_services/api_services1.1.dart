@@ -47,6 +47,8 @@ class ApiServices {
           final pages = response.data['query']['pages'] as Map<String, dynamic>;
           return pages.values
               .map((pageJson) => PlaceModel.fromJson(pageJson))
+              .toList()
+              .where((e) => e.lat != null && e.lng != null)
               .toList();
         }
         return null;

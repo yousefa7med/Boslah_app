@@ -7,14 +7,13 @@ class FavoriteSupabase extends PlaceModel {
   @override
   FavoriteSupabase({
     required this.userId,
-
     this.addedAt,
     required super.placeId,
     required super.name,
     super.lat,
     super.lng,
     super.image,
-    super.desc,
+    super.desc, required super.categories,
   });
 
   factory FavoriteSupabase.fromJson(Map<String, dynamic> json) {
@@ -27,6 +26,8 @@ class FavoriteSupabase extends PlaceModel {
       addedAt: json['added_at'],
       image: json['image'],
       desc: json['desc'],
+      categories: json['categories']??[],
+
     );
   }
 
@@ -40,6 +41,7 @@ class FavoriteSupabase extends PlaceModel {
       'added_at': addedAt,
       'image': image,
       'desc': desc,
+      'categories':categories
     };
   }
 }

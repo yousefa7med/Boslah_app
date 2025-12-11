@@ -10,19 +10,18 @@ class Favorite extends PlaceModel {
 
   final String userId;
 
-  final String? category;
 
   Favorite({
     this.favId,
     this.addedAt,
     required this.userId,
-    this.category,
     required super.placeId,
     required super.name,
     super.desc,
     super.image,
     super.lat,
     super.lng,
+    required super.categories
   });
   Map<String, dynamic> toJson() => {
     'user_id': userId,

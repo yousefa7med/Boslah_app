@@ -18,7 +18,7 @@ class ScheduleServiceSupabase {
           .single();
 
       final id = inserted['schedule_id'] as int;
-
+//!بص علي سطر 20
       NotificationService.scheduleNotification(
         id: schedule.notificationId!,
         title: "Visit Reminder",
@@ -59,12 +59,14 @@ class ScheduleServiceSupabase {
 
   /// Fetch all schedules for the current user
   Future<List<ScheduleSupabase>> getSchedules(String userId) async {
+    print('rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr');
     final data = await cloud
         .from('schedules')
         .select()
         .eq('user_id', userId)
-        .order('scheduled_at', ascending: true);
-
+        .order('date', ascending: true)
+        .order('hour', ascending: true);
+    print('reyu');
     return (data as List)
         .map((e) => ScheduleSupabase.fromMap(e as Map<String, dynamic>))
         .toList();

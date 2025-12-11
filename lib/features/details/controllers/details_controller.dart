@@ -35,7 +35,7 @@ class DetailsController extends GetxController {
       userId: cloud.auth.currentUser!.id,
       image: place.image,
       name: place.name,
-      desc: place.desc,
+      desc: place.desc, categories: place.categories,
     );
     final favoriteSupa = FavoriteSupabase(
       userId: cloud.auth.currentUser!.id,
@@ -44,7 +44,7 @@ class DetailsController extends GetxController {
       desc: place.desc,
       image: place.image,
       lat: place.lat,
-      lng: place.lng,
+      lng: place.lng, categories: place.categories,
     );
     await FavoritesService().addFavorite(favoriteSupa);
     // await FavoritesService().addFavorite(addFavorite);
@@ -110,7 +110,7 @@ class DetailsController extends GetxController {
           desc: supabaseResult.desc,
           image: supabaseResult.image,
           lat: supabaseResult.lat,
-          lng: supabaseResult.lng,
+          lng: supabaseResult.lng, categories: supabaseResult.categories,
         ),
       );
       return true;
@@ -157,10 +157,10 @@ class DetailsController extends GetxController {
     noteController.clear();
     timeController.clear();
     debugPrint('schedule object: ${sch.date}');
-    try {
+    // try {
       final schController = Get.find<ScheduleController>();
       await schController.loadData();
-    } catch (_) {}
+    // } catch (_) {}
   }
 
   @override

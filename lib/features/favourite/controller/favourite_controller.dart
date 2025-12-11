@@ -70,7 +70,7 @@ class FavouritesController extends GetxController {
             desc: fav.desc,
             image: fav.image,
             lat: fav.lat,
-            lng: fav.lng,
+            lng: fav.lng, categories: fav.categories,
           ),
         );
         print(fav.image);

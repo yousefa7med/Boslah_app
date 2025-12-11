@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:depi_graduation_project/core/services/supabase_services/schedule_service_supabase.dart';
 import 'package:depi_graduation_project/models/schedule_model.dart';
 import 'package:depi_graduation_project/models/filter_model.dart';
@@ -74,29 +76,34 @@ class ScheduleController extends GetxController {
   }
 
   Future<void> loadData() async {
-    print("sssssssssssssssssssssssss");
     try {
-      final userId = cloud.auth.currentUser!.id;
-      final localList = await database.scheduledao.selectSchedules(userId);
+    final userId = cloud.auth.currentUser!.id;
+    final localList = await database.scheduledao.selectSchedules(userId);
 
-      localList.sort((a, b) {
-        final dtA = combineDateAndTime(a.date, a.hour);
-        final dtB = combineDateAndTime(b.date, b.hour);
-        return dtA.compareTo(dtB);
-      });
-
+    localList.sort((a, b) {
+      final dtA = combineDateAndTime(a.date, a.hour);
+      final dtB = combineDateAndTime(b.date, b.hour);
+      log('uuuuuuuuuuuuuuuuuuuuuuuuuuuuu');
+      return dtA.compareTo(dtB);
+    });
+    if (localList.isNotEmpty) {
+      allSchedules.value = localList;
       viewedSchedules.value = localList;
-      await updateIsDoneForSchedules();
-      if (localList.isNotEmpty) {
-        allSchedules.value = localList;
-        return;
-      } else {
-        allSchedules.value = await ScheduleServiceSupabase().getSchedules(
-          userId,
-        );
-      }
+    await updateIsDoneForSchedules();
+
+
+ 
+      return;
+    } else {
+final remote =await ScheduleServiceSupabase().getSchedules(userId);
+      allSchedules.value = remote;
+      viewedSchedules.value = remote;
+        
+    }
+
+    log('doneeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
     } catch (e) {
-      throw AppException(msg: "Failed to load schedules");
+    throw AppException(msg: "Failed to load schedules");
     }
   }
 

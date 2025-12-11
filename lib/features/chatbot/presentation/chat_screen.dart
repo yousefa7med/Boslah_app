@@ -53,7 +53,7 @@ class ChatScreen extends GetView<ChatController> {
         children: [
           Obx(
             () => Chat(
-              messages: controller.messages.value,
+              messages: controller.messages,
               onSendPressed: (types.PartialText msg) {
                 controller.sendUserMessage(msg.text);
               },

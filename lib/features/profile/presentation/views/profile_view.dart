@@ -61,13 +61,31 @@ class ProfileView extends GetView<ProfileController> {
               Gap(30.h),
 
               AppButton(
-                child: Text(
-                  'Logout',
-                  style: AppTextStyle.regular20.copyWith(color: Colors.white),
-                ),
+                child: Obx(() {
+                  return controller.isLoading.value
+                      ? const SizedBox(
+                    height: 22,
+                    width: 22,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: Colors.white,
+                    ),
+                  )
+                      : Text(
+                    'Logout',
+                    style: AppTextStyle.regular20.copyWith(color: Colors.white),
+                  );
+                }),
                 onPressed: () async {
-                  await AuthService().logout();
-                  Get.offNamed('/login');
+                  try {
+                    controller.isLoading.value = true;
+                    await AuthService().logout();
+                    Get.offNamed('/login');
+                  } catch (e) {
+                    Get.snackbar("Error", "Something went wrong while logging out");
+                  } finally {
+                    controller.isLoading.value = false;
+                  }
                 },
               ),
             ],

@@ -113,7 +113,7 @@ class MainView extends GetView<MainController> {
             builder: (_) {
               // Ensure the controller is initialized
               if (!Get.isRegistered<ScheduleController>()) {
-                Get.put(ScheduleController());
+                Get.put(controller.scheduleController);
               }
               return const ScheduleView();
             },

@@ -85,35 +85,45 @@ class RegisterView extends GetView<RegisterController> {
                           ),
                         ),
                         const Gap(30),
-                        AppButton(
-                          onPressed: () async {
-                            if (controller.formKey.currentState!.validate()) {
-                              try {
-                                await controller.registerUser(
-                                  fullName: controller.nameController.text,
-                                  email: controller.gmailController.text,
-                                  password: controller.passwordController.text,
-                                );
-                                Get.back();
+                        Obx(() {
+                          return AppButton(
+                            onPressed: controller.isLoading.value
+                                ? null
+                                : () async {
+                              if (controller.formKey.currentState!.validate()) {
+                                try {
+                                  await controller.registerUser(
+                                    fullName: controller.nameController.text,
+                                    email: controller.gmailController.text,
+                                    password: controller.passwordController.text,
+                                  );
 
-                                showSnackBar(
-                                  context,
-                                  "Account created successfully!",
-                                );
-                              } on AppException catch (e) {
-                                showSnackBar(context, e.msg);
+                                  Get.back();
+
+                                  showSnackBar(context, "Account created successfully!");
+                                } on AppException catch (e) {
+                                  showSnackBar(context, e.msg);
+                                }
                               }
-                            }
-                          },
-
-                          child: Text(
-                            'Register',
-                            style: TextStyle(
-                              fontSize: 20.sp,
-                              color: Colors.white,
+                            },
+                            child: controller.isLoading.value
+                                ? const SizedBox(
+                              height: 22,
+                              width: 22,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: Colors.white,
+                              ),
+                            )
+                                : Text(
+                              'Register',
+                              style: TextStyle(
+                                fontSize: 20.sp,
+                                color: Colors.white,
+                              ),
                             ),
-                          ),
-                        ),
+                          );
+                        }),
                         const Gap(20),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
