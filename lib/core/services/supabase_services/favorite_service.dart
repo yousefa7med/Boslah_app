@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:depi_graduation_project/core/errors/app_exception.dart';
+import 'package:Boslah/core/errors/app_exception.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../main.dart';

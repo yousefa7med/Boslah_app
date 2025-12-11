@@ -1,5 +1,4 @@
-
-import 'package:depi_graduation_project/models/schedule_model.dart';
+import 'package:Boslah/models/schedule_model.dart';
 
 class ScheduleSupabase extends ScheduleModel {
   final int? notificationId; // NEW

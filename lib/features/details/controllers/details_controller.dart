@@ -1,19 +1,20 @@
 import 'dart:async';
 
-import 'package:depi_graduation_project/core/database/models/favorites.dart';
-import 'package:depi_graduation_project/core/database/models/schedules.dart';
-import 'package:depi_graduation_project/core/services/supabase_services/favorite_service.dart';
-import 'package:depi_graduation_project/core/services/supabase_services/schedule_service_supabase.dart';
-import 'package:depi_graduation_project/features/schedule/controllers/schedule_controller.dart';
-import 'package:depi_graduation_project/main.dart';
-import 'package:depi_graduation_project/models/favorite_supabase.dart';
-import 'package:depi_graduation_project/models/schedule_supabase.dart';
+import 'package:Boslah/core/database/models/favorites.dart';
+import 'package:Boslah/core/database/models/schedules.dart';
+import 'package:Boslah/core/services/notification_service.dart';
+import 'package:Boslah/core/services/supabase_services/favorite_service.dart';
+import 'package:Boslah/core/services/supabase_services/schedule_service_supabase.dart';
+import 'package:Boslah/features/favourite/controller/favourite_controller.dart';
+import 'package:Boslah/features/schedule/controllers/schedule_controller.dart';
+import 'package:Boslah/main.dart';
+import 'package:Boslah/models/favorite_supabase.dart';
+import 'package:Boslah/models/place_model.dart';
+import 'package:Boslah/models/schedule_supabase.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../core/services/notification_service.dart';
-import '../../../models/place_model.dart';
-import '../../favourite/controller/favourite_controller.dart';
+
 
 class DetailsController extends GetxController {
   RxBool favorite = false.obs; // initialize here

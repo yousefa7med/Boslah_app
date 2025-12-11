@@ -1,5 +1,5 @@
-import 'package:depi_graduation_project/features/favourite/controller/favourite_controller.dart';
-import 'package:depi_graduation_project/features/schedule/controllers/schedule_controller.dart';
+import 'package:Boslah/features/favourite/controller/favourite_controller.dart';
+import 'package:Boslah/features/schedule/controllers/schedule_controller.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 

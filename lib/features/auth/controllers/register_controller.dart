@@ -1,6 +1,6 @@
-import 'package:depi_graduation_project/core/errors/app_exception.dart';
-import 'package:depi_graduation_project/core/functions/has_internet.dart';
-import 'package:depi_graduation_project/core/services/supabase_services/auth_service.dart';
+import 'package:Boslah/core/errors/app_exception.dart';
+import 'package:Boslah/core/functions/has_internet.dart';
+import 'package:Boslah/core/services/supabase_services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -12,7 +12,6 @@ class RegisterController extends GetxController {
   final passwordController = TextEditingController();
 
   final confirmPasswordController = TextEditingController();
-
   final see = true.obs;
   final auth = AuthService();
   final formKey = GlobalKey<FormState>();
@@ -49,9 +48,9 @@ class RegisterController extends GetxController {
 }
 
 // import 'package:debounce_throttle/debounce_throttle.dart';
-// import 'package:depi_graduation_project/core/errors/app_exception.dart';
-// import 'package:depi_graduation_project/core/functions/has_internet.dart';
-// import 'package:depi_graduation_project/core/services/supabase_services/auth_service.dart';
+// import 'package:Boslah/errors/app_exception.dart';
+// import 'package:Boslah/functions/has_internet.dart';
+// import 'package:Boslah/services/supabase_services/auth_service.dart';
 // import 'package:flutter/material.dart';
 // import 'package:get/get.dart';
 //

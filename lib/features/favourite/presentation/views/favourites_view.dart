@@ -1,16 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:depi_graduation_project/core/functions/snack_bar.dart';
-import 'package:depi_graduation_project/core/utilities/app_text_style.dart';
-import 'package:depi_graduation_project/core/utilities/routes.dart';
-import 'package:depi_graduation_project/core/widgets/search_field.dart';
-import 'package:depi_graduation_project/features/favourite/controller/favourite_controller.dart';
+import 'package:Boslah/core/functions/snack_bar.dart';
+import 'package:Boslah/core/utilities/app_text_style.dart';
+import 'package:Boslah/core/utilities/routes.dart';
+import 'package:Boslah/core/widgets/search_field.dart';
+import 'package:Boslah/features/favourite/controller/favourite_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../../../core/functions/is_dark.dart';
 import '../../../../core/utilities/app_colors.dart';
 
 class FavouritesView extends GetView<FavouritesController> {
@@ -20,7 +19,7 @@ class FavouritesView extends GetView<FavouritesController> {
   Widget build(BuildContext context) {
     ever(controller.error, (msg) {
       if (msg != null) {
-        showSnackBar( msg);
+        showSnackBar(msg);
       }
     });
 
@@ -43,9 +42,9 @@ class FavouritesView extends GetView<FavouritesController> {
                 const Gap(15),
                 SearchField(
                   controller: controller.sController,
-                  onPressed:  () {
+                  onPressed: () {
                     if (controller.sController.text.isNotEmpty) {
-                         controller.loadData();
+                      controller.loadData();
                     }
                   },
                 ),
@@ -88,17 +87,24 @@ class FavouritesView extends GetView<FavouritesController> {
                                       height: 80.h,
                                       child: CachedNetworkImage(
                                         imageUrl: fav.image ?? '',
-                                        imageBuilder: (context, imageProvider) => Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(10),
-                                            image: DecorationImage(
-                                              image: imageProvider,
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                        ),
-                                        placeholder: (context, url) => shimmerItem(),
-                                        errorWidget: (context, url, error) => shimmerItem(),
+                                        imageBuilder:
+                                            (context, imageProvider) =>
+                                                Container(
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          10,
+                                                        ),
+                                                    image: DecorationImage(
+                                                      image: imageProvider,
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  ),
+                                                ),
+                                        placeholder: (context, url) =>
+                                            shimmerItem(),
+                                        errorWidget: (context, url, error) =>
+                                            shimmerItem(),
                                       ),
                                     ),
                                     Expanded(
@@ -113,33 +119,35 @@ class FavouritesView extends GetView<FavouritesController> {
                                         ),
                                       ),
                                     ),
-                                    Obx(() => IconButton(
-                                      onPressed: () {
-                                        if (controller.isFav[index].value) {
-                                          controller.addToDeletedList(
-                                            allFav[index].placeId,
-                                          );
-                                        } else {
-                                          controller.removeFromDeletedList(
-                                            allFav[index].placeId,
-                                          );
-                                        }
+                                    Obx(
+                                      () => IconButton(
+                                        onPressed: () {
+                                          if (controller.isFav[index].value) {
+                                            controller.addToDeletedList(
+                                              allFav[index].placeId,
+                                            );
+                                          } else {
+                                            controller.removeFromDeletedList(
+                                              allFav[index].placeId,
+                                            );
+                                          }
 
-                                        controller.isFav[index].toggle();
-                                        print(controller.deleted);
-                                      },
-                                      icon: controller.isFav[index].value
-                                          ? const Icon(
-                                        Icons.favorite,
-                                        color: AppColors.main,
-                                        size: 32,
-                                      )
-                                          : const Icon(
-                                        Icons.favorite_border_outlined,
-                                        color: AppColors.main,
-                                        size: 32,
+                                          controller.isFav[index].toggle();
+                                          print(controller.deleted);
+                                        },
+                                        icon: controller.isFav[index].value
+                                            ? const Icon(
+                                                Icons.favorite,
+                                                color: AppColors.main,
+                                                size: 32,
+                                              )
+                                            : const Icon(
+                                                Icons.favorite_border_outlined,
+                                                color: AppColors.main,
+                                                size: 32,
+                                              ),
                                       ),
-                                    )),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -162,16 +170,14 @@ class FavouritesView extends GetView<FavouritesController> {
     return Shimmer.fromColors(
       baseColor: Colors.grey.shade300,
       highlightColor: Colors.grey.shade100,
-      child:
-          Container(
-            width: 80.w,
-            height: 80.h,
-            decoration: BoxDecoration(
-              color: Colors.grey,
-              borderRadius: BorderRadius.circular(10)
-            ),
-          ),
-
+      child: Container(
+        width: 80.w,
+        height: 80.h,
+        decoration: BoxDecoration(
+          color: Colors.grey,
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
     );
   }
 }

@@ -1,6 +1,6 @@
-import 'package:depi_graduation_project/core/errors/app_exception.dart';
-import 'package:depi_graduation_project/core/functions/has_internet.dart';
-import 'package:depi_graduation_project/models/place_model.dart';
+import 'package:Boslah/core/errors/app_exception.dart';
+import 'package:Boslah/core/functions/has_internet.dart';
+import 'package:Boslah/models/place_model.dart';
 import 'package:dio/dio.dart';
 
 class ApiServices {

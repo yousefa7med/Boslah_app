@@ -1,4 +1,4 @@
-import 'package:depi_graduation_project/core/database/models/profile.dart';
+import 'package:Boslah/core/database/models/profile.dart';
 import 'package:floor/floor.dart';
 
 @dao

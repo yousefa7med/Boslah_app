@@ -1,14 +1,14 @@
-import 'package:depi_graduation_project/core/database/models/profile.dart';
-import 'package:depi_graduation_project/core/errors/app_exception.dart';
-import 'package:depi_graduation_project/core/functions/is_dark.dart';
-import 'package:depi_graduation_project/core/functions/snack_bar.dart';
-import 'package:depi_graduation_project/core/utilities/app_colors.dart';
-import 'package:depi_graduation_project/core/utilities/app_text_style.dart';
-import 'package:depi_graduation_project/core/widgets/app_button.dart';
-import 'package:depi_graduation_project/features/auth/controllers/login_controller.dart';
-import 'package:depi_graduation_project/features/auth/presentation/widgets/app_textFormField.dart';
-import 'package:depi_graduation_project/features/auth/presentation/widgets/password_text_field.dart';
-import 'package:depi_graduation_project/main.dart';
+import 'package:Boslah/core/database/models/profile.dart';
+import 'package:Boslah/core/errors/app_exception.dart';
+import 'package:Boslah/core/functions/is_dark.dart';
+import 'package:Boslah/core/functions/snack_bar.dart';
+import 'package:Boslah/core/utilities/app_colors.dart';
+import 'package:Boslah/core/utilities/app_text_style.dart';
+import 'package:Boslah/core/widgets/app_button.dart';
+import 'package:Boslah/features/auth/controllers/login_controller.dart';
+import 'package:Boslah/features/auth/presentation/widgets/app_textFormField.dart';
+import 'package:Boslah/features/auth/presentation/widgets/password_text_field.dart';
+import 'package:Boslah/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -84,40 +84,48 @@ class LoginView extends GetView<LoginController> {
                             onPressed: controller.isLoading.value
                                 ? null
                                 : () async {
-                              if (controller.formKey.currentState!.validate()) {
-                                try {
-                                  await controller.loginUser(
-                                    email: controller.emailController.text,
-                                    password: controller.passwordController.text,
-                                  );
+                                    if (controller.formKey.currentState!
+                                        .validate()) {
+                                      try {
+                                        await controller.loginUser(
+                                          email:
+                                              controller.emailController.text,
+                                          password: controller
+                                              .passwordController
+                                              .text,
+                                        );
 
-                                  Get.offNamed(Routes.main);
+                                        Get.offNamed(Routes.main);
 
-                                  await database.profiledao.insertUser(
-                                    Profile(userId: cloud.auth.currentUser!.id),
-                                  );
+                                        await database.profiledao.insertUser(
+                                          Profile(
+                                            userId: cloud.auth.currentUser!.id,
+                                          ),
+                                        );
 
-                                  showSnackBar( "Logged in successfully!");
-                                } on AppException catch (e) {
-                                  showSnackBar( e.msg);
-                                }
+                                        showSnackBar("Logged in successfully!");
+                                      } on AppException catch (e) {
+                                        showSnackBar(e.msg);
+                                      }
 
-                                print(cloud.auth.currentUser);
-                              }
-                            },
+                                      print(cloud.auth.currentUser);
+                                    }
+                                  },
                             child: controller.isLoading.value
                                 ? const SizedBox(
-                              height: 22,
-                              width: 22,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                color: Colors.white,
-                              ),
-                            )
+                                    height: 22,
+                                    width: 22,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: Colors.white,
+                                    ),
+                                  )
                                 : Text(
-                              'Login',
-                              style: AppTextStyle.regular20.copyWith(color: Colors.white),
-                            ),
+                                    'Login',
+                                    style: AppTextStyle.regular20.copyWith(
+                                      color: Colors.white,
+                                    ),
+                                  ),
                           );
                         }),
                         const Gap(20),

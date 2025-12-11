@@ -1,7 +1,6 @@
-
-import 'package:depi_graduation_project/core/utilities/app_text_style.dart';
-import 'package:depi_graduation_project/features/profile/controllers/profile_controller.dart';
-import 'package:depi_graduation_project/main.dart';
+import 'package:Boslah/core/utilities/app_text_style.dart';
+import 'package:Boslah/features/profile/controllers/profile_controller.dart';
+import 'package:Boslah/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
@@ -85,7 +84,7 @@ class AccountInfo extends GetView<ProfileController> {
                 massage!,
                 style: AppTextStyle.regular20.copyWith(color: Colors.grey),
               ),
-              Text(des!, style: AppTextStyle.regular18,),
+              Text(des!, style: AppTextStyle.regular18),
             ],
           ),
         ),

@@ -1,8 +1,8 @@
-import 'package:depi_graduation_project/models/place_model.dart';
+import 'package:Boslah/models/place_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../core/services/api_services/api_services1.1.dart';
+import '../../../core/services/api_services/api_services.dart';
 
 class searchController extends GetxController {
   final searchList = <PlaceModel>[].obs;

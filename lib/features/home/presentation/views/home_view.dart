@@ -1,8 +1,8 @@
-import 'package:depi_graduation_project/core/utilities/app_text_style.dart';
-import 'package:depi_graduation_project/core/utilities/routes.dart';
-import 'package:depi_graduation_project/core/widgets/filter.dart';
-import 'package:depi_graduation_project/features/home/controllers/home_controller.dart';
-import 'package:depi_graduation_project/features/home/presentation/widgets/home_place_card.dart';
+import 'package:Boslah/core/utilities/app_text_style.dart';
+import 'package:Boslah/core/utilities/routes.dart';
+import 'package:Boslah/core/widgets/filter.dart';
+import 'package:Boslah/features/home/controllers/home_controller.dart';
+import 'package:Boslah/features/home/presentation/widgets/home_place_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
@@ -21,13 +21,12 @@ class HomeView extends GetView<HomeController> {
         onPressed: () {
           Get.toNamed(Routes.chatbot);
         },
-  
-        backgroundColor: AppColors.main, // أيقونة AI، ممكن تغيرها لأي أيقونة تناسبك
+
+        backgroundColor:
+            AppColors.main, // أيقونة AI، ممكن تغيرها لأي أيقونة تناسبك
         tooltip: 'Chatbot', // أو أي لون تحبه
-        child:  const Icon(
-          Icons.smart_toy,
-        ),
-     ),
+        child: const Icon(Icons.smart_toy),
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),

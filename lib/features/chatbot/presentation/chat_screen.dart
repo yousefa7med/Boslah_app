@@ -1,4 +1,4 @@
-import 'package:depi_graduation_project/core/functions/is_dark.dart';
+import 'package:Boslah/core/functions/is_dark.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
@@ -12,7 +12,6 @@ class ChatScreen extends GetView<ChatController> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         elevation: 0,

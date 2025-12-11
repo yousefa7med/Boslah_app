@@ -1,4 +1,4 @@
-import 'package:depi_graduation_project/core/functions/is_dark.dart';
+import 'package:Boslah/core/functions/is_dark.dart';
 import 'package:get/get.dart';
 
 import '../../../core/services/supabase_services/auth_service.dart';

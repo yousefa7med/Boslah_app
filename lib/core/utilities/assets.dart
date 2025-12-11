@@ -50,7 +50,6 @@ class Assets {
   /// assets/images/logo.svg
   static const String logo = "assets/images/logo.svg";
 
-  // ignore_for_file: prefer_single_quotes
 
   static const String databaseAsset = "assets/database/tourAppDB.db";
 

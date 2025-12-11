@@ -1,15 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:depi_graduation_project/core/utilities/app_colors.dart';
-import 'package:depi_graduation_project/core/utilities/app_text_style.dart';
-import 'package:depi_graduation_project/core/widgets/app_button.dart';
-import 'package:depi_graduation_project/features/details/controllers/details_controller.dart';
-import 'package:depi_graduation_project/features/details/presentation/widgets/schedule_form.dart';
+import 'package:Boslah/core/utilities/app_colors.dart';
+import 'package:Boslah/core/utilities/app_text_style.dart';
+import 'package:Boslah/core/widgets/app_button.dart';
+import 'package:Boslah/features/details/controllers/details_controller.dart';
+import 'package:Boslah/features/details/presentation/widgets/schedule_form.dart';
 import 'package:flutter/material.dart' hide Page;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 
 class DetailsView extends GetView<DetailsController> {
   const DetailsView({super.key});
@@ -66,13 +65,13 @@ class DetailsView extends GetView<DetailsController> {
                               // }
                               // controller.favorite.toggle();
                               // try {
-                                if (controller.favorite.value) {
-                                  await controller.removeFromFav();
-                                } else {
-                                  await controller.addToFav();
-                                }
+                              if (controller.favorite.value) {
+                                await controller.removeFromFav();
+                              } else {
+                                await controller.addToFav();
+                              }
 
-                                controller.favorite.toggle();
+                              controller.favorite.toggle();
                               // } catch (e) {
                               //   showSnackBar(context, e.toString());
                               // }

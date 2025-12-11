@@ -1,4 +1,4 @@
-import 'package:depi_graduation_project/features/schedule/controllers/schedule_controller.dart';
+import 'package:Boslah/features/schedule/controllers/schedule_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';

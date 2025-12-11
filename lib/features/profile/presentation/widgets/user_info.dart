@@ -1,7 +1,6 @@
-
-import 'package:depi_graduation_project/core/utilities/app_text_style.dart';
-import 'package:depi_graduation_project/features/profile/controllers/profile_controller.dart';
-import 'package:depi_graduation_project/main.dart';
+import 'package:Boslah/core/utilities/app_text_style.dart';
+import 'package:Boslah/features/profile/controllers/profile_controller.dart';
+import 'package:Boslah/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
@@ -39,7 +38,9 @@ class UserInfo extends GetView<ProfileController> {
               const Gap(10),
               Obx(() {
                 return Text(
-                    controller.fullName.value, style: AppTextStyle.medium26);
+                  controller.fullName.value,
+                  style: AppTextStyle.medium26,
+                );
               }),
               const Gap(5),
               Text(

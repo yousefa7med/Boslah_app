@@ -1,7 +1,6 @@
-
-import 'package:depi_graduation_project/core/widgets/filter.dart';
-import 'package:depi_graduation_project/features/schedule/controllers/schedule_controller.dart';
-import 'package:depi_graduation_project/features/schedule/presentation/widgets/schedule_place_card.dart';
+import 'package:Boslah/core/widgets/filter.dart';
+import 'package:Boslah/features/schedule/controllers/schedule_controller.dart';
+import 'package:Boslah/features/schedule/presentation/widgets/schedule_place_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
@@ -17,7 +16,7 @@ class ScheduleView extends GetView<ScheduleController> {
   Widget build(BuildContext context) {
     ever(controller.error, (msg) {
       if (msg != null) {
-        showSnackBar( msg);
+        showSnackBar(msg);
       }
     });
 

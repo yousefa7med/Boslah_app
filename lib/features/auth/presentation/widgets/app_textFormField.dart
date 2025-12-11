@@ -1,5 +1,5 @@
-import 'package:depi_graduation_project/core/functions/is_dark.dart';
-import 'package:depi_graduation_project/core/utilities/app_colors.dart';
+import 'package:Boslah/core/functions/is_dark.dart';
+import 'package:Boslah/core/utilities/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class AppTextFormField extends StatelessWidget {

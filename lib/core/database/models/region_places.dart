@@ -1,4 +1,4 @@
-import 'package:depi_graduation_project/models/place_model.dart';
+import 'package:Boslah/models/place_model.dart';
 import 'package:floor/floor.dart';
 
 @Entity(tableName: 'region_places')

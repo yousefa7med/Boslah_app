@@ -11,7 +11,7 @@ class ScheduleServiceSupabase {
 
   Future<void> createSchedule(ScheduleSupabase schedule) async {
     try {
-      final inserted = await cloud
+      await cloud
           .from('schedules')
           .insert(schedule.toMap())
           .select()
@@ -102,7 +102,7 @@ class ScheduleServiceSupabase {
 
   Future<void> updateNote(String Note, int scheduleId) async {
     try {
-      final updated = await cloud
+      await cloud
           .from('schedules')
           .update({'note': Note})
           .eq('schedule_id', scheduleId)

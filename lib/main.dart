@@ -1,36 +1,36 @@
 import 'dart:io';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:depi_graduation_project/core/database/tourApp_database.dart';
-import 'package:depi_graduation_project/core/helper/casheHelper.dart';
-import 'package:depi_graduation_project/core/helper/theme_manager.dart';
-import 'package:depi_graduation_project/core/services/api_services/api_services1.1.dart';
-import 'package:depi_graduation_project/core/services/notification_service.dart';
-import 'package:depi_graduation_project/core/services/supabase_services/auth_service.dart';
-import 'package:depi_graduation_project/core/utilities/app_themes.dart';
-import 'package:depi_graduation_project/core/utilities/assets.dart';
-import 'package:depi_graduation_project/features/auth/controllers/login_controller.dart';
-import 'package:depi_graduation_project/features/auth/controllers/register_controller.dart';
-import 'package:depi_graduation_project/features/auth/presentation/views/login_view.dart';
-import 'package:depi_graduation_project/features/auth/presentation/views/register_view.dart';
-import 'package:depi_graduation_project/features/chatbot/controllers/chat_controller.dart';
-import 'package:depi_graduation_project/features/chatbot/presentation/chat_screen.dart';
-import 'package:depi_graduation_project/features/details/controllers/details_controller.dart';
-import 'package:depi_graduation_project/features/details/presentation/views/details_view.dart';
-import 'package:depi_graduation_project/features/favourite/controller/favourite_controller.dart';
-import 'package:depi_graduation_project/features/favourite/presentation/views/favourites_view.dart';
-import 'package:depi_graduation_project/features/home/controllers/home_controller.dart';
-import 'package:depi_graduation_project/features/home/controllers/search_controller.dart';
-import 'package:depi_graduation_project/features/home/presentation/views/home_view.dart';
-import 'package:depi_graduation_project/features/home/presentation/views/search_view.dart';
-import 'package:depi_graduation_project/features/main/controller/main_controller.dart';
-import 'package:depi_graduation_project/features/main/main_view.dart';
-import 'package:depi_graduation_project/features/profile/controllers/profile_controller.dart';
-import 'package:depi_graduation_project/features/profile/presentation/views/profile_view.dart';
-import 'package:depi_graduation_project/features/schedule/controllers/schedule_controller.dart';
-import 'package:depi_graduation_project/features/schedule/controllers/schedule_details_controller.dart';
-import 'package:depi_graduation_project/features/schedule/presentation/view/schedule_details.dart';
-import 'package:depi_graduation_project/features/schedule/presentation/view/schedule_view.dart';
+import 'package:Boslah/core/database/tourApp_database.dart';
+import 'package:Boslah/core/helper/casheHelper.dart';
+import 'package:Boslah/core/helper/theme_manager.dart';
+import 'package:Boslah/core/services/api_services/api_services.dart';
+import 'package:Boslah/core/services/notification_service.dart';
+import 'package:Boslah/core/services/supabase_services/auth_service.dart';
+import 'package:Boslah/core/utilities/app_themes.dart';
+import 'package:Boslah/core/utilities/assets.dart';
+import 'package:Boslah/features/auth/controllers/login_controller.dart';
+import 'package:Boslah/features/auth/controllers/register_controller.dart';
+import 'package:Boslah/features/auth/presentation/views/login_view.dart';
+import 'package:Boslah/features/auth/presentation/views/register_view.dart';
+import 'package:Boslah/features/chatbot/controllers/chat_controller.dart';
+import 'package:Boslah/features/chatbot/presentation/chat_screen.dart';
+import 'package:Boslah/features/details/controllers/details_controller.dart';
+import 'package:Boslah/features/details/presentation/views/details_view.dart';
+import 'package:Boslah/features/favourite/controller/favourite_controller.dart';
+import 'package:Boslah/features/favourite/presentation/views/favourites_view.dart';
+import 'package:Boslah/features/home/controllers/home_controller.dart';
+import 'package:Boslah/features/home/controllers/search_controller.dart';
+import 'package:Boslah/features/home/presentation/views/home_view.dart';
+import 'package:Boslah/features/home/presentation/views/search_view.dart';
+import 'package:Boslah/features/main/controller/main_controller.dart';
+import 'package:Boslah/features/main/main_view.dart';
+import 'package:Boslah/features/profile/controllers/profile_controller.dart';
+import 'package:Boslah/features/profile/presentation/views/profile_view.dart';
+import 'package:Boslah/features/schedule/controllers/schedule_controller.dart';
+import 'package:Boslah/features/schedule/controllers/schedule_details_controller.dart';
+import 'package:Boslah/features/schedule/presentation/view/schedule_details.dart';
+import 'package:Boslah/features/schedule/presentation/view/schedule_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
@@ -124,7 +124,6 @@ class MyApp extends StatelessWidget {
             Get.put(ApiServices());
 
             Get.put(ScheduleController());
-
           }),
           getPages: [
             GetPage(
@@ -211,5 +210,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-

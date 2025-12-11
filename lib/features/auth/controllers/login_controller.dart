@@ -1,6 +1,6 @@
-import 'package:depi_graduation_project/core/errors/app_exception.dart';
-import 'package:depi_graduation_project/core/functions/has_internet.dart';
-// import 'package:depi_graduation_project/features/auth/supabase_services/auth_service.dart';
+import 'package:Boslah/core/errors/app_exception.dart';
+import 'package:Boslah/core/functions/has_internet.dart';
+// import 'package:Boslah/features/auth/supabase_services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

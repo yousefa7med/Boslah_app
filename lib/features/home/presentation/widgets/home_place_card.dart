@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:depi_graduation_project/core/utilities/app_text_style.dart';
-import 'package:depi_graduation_project/features/home/controllers/home_controller.dart';
-import 'package:depi_graduation_project/main.dart';
+import 'package:Boslah/core/utilities/app_text_style.dart';
+import 'package:Boslah/features/home/controllers/home_controller.dart';
+import 'package:Boslah/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
@@ -30,10 +30,10 @@ class HomePlaceCard extends GetView<HomeController> {
                 topLeft: Radius.circular(12),
                 topRight: Radius.circular(12),
               ),
-              child: controller.viewedPlaces[index].image != null?
-
-              CachedNetworkImage(imageUrl:  controller.viewedPlaces[index].image!,
-                       width: double.infinity,
+              child: controller.viewedPlaces[index].image != null
+                  ? CachedNetworkImage(
+                      imageUrl: controller.viewedPlaces[index].image!,
+                      width: double.infinity,
                       height: 180.h,
                       fit: BoxFit.fill,
                     )

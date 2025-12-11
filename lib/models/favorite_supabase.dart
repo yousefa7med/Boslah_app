@@ -1,5 +1,4 @@
-
-import 'package:depi_graduation_project/models/place_model.dart';
+import 'package:Boslah/models/place_model.dart';
 
 class FavoriteSupabase extends PlaceModel {
   final String userId;

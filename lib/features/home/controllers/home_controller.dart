@@ -1,12 +1,12 @@
-import 'package:depi_graduation_project/core/functions/get_postion.dart';
-import 'package:depi_graduation_project/core/widgets/app_dialog.dart';
-import 'package:depi_graduation_project/models/filter_model.dart';
-import 'package:depi_graduation_project/models/place_model.dart';
+import 'package:Boslah/core/functions/get_postion.dart';
+import 'package:Boslah/core/widgets/app_dialog.dart';
+import 'package:Boslah/models/filter_model.dart';
+import 'package:Boslah/models/place_model.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 
-import '../../../core/services/api_services/api_services1.1.dart';
+import '../../../core/services/api_services/api_services.dart';
 
 class HomeController extends GetxController {
   final searchController = TextEditingController();

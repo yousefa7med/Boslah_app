@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:depi_graduation_project/core/errors/app_exception.dart';
-import 'package:depi_graduation_project/core/services/supabase_services/favorite_service.dart';
-import 'package:depi_graduation_project/main.dart';
-import 'package:depi_graduation_project/models/favorite_supabase.dart';
-import 'package:depi_graduation_project/models/place_model.dart';
+import 'package:Boslah/core/errors/app_exception.dart';
+import 'package:Boslah/core/services/supabase_services/favorite_service.dart';
+import 'package:Boslah/main.dart';
+import 'package:Boslah/models/favorite_supabase.dart';
+import 'package:Boslah/models/place_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../core/database/models/favorites.dart';

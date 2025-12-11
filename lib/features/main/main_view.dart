@@ -1,15 +1,14 @@
-
-import 'package:depi_graduation_project/core/errors/app_exception.dart';
-import 'package:depi_graduation_project/core/functions/is_dark.dart';
-import 'package:depi_graduation_project/core/functions/snack_bar.dart';
-import 'package:depi_graduation_project/features/favourite/presentation/views/favourites_view.dart';
-import 'package:depi_graduation_project/features/home/controllers/home_controller.dart';
-import 'package:depi_graduation_project/features/home/presentation/views/home_view.dart';
-import 'package:depi_graduation_project/features/main/controller/main_controller.dart';
-import 'package:depi_graduation_project/features/profile/controllers/profile_controller.dart';
-import 'package:depi_graduation_project/features/profile/presentation/views/profile_view.dart';
-import 'package:depi_graduation_project/features/schedule/controllers/schedule_controller.dart';
-import 'package:depi_graduation_project/features/schedule/presentation/view/schedule_view.dart';
+import 'package:Boslah/core/errors/app_exception.dart';
+import 'package:Boslah/core/functions/is_dark.dart';
+import 'package:Boslah/core/functions/snack_bar.dart';
+import 'package:Boslah/features/favourite/presentation/views/favourites_view.dart';
+import 'package:Boslah/features/home/controllers/home_controller.dart';
+import 'package:Boslah/features/home/presentation/views/home_view.dart';
+import 'package:Boslah/features/main/controller/main_controller.dart';
+import 'package:Boslah/features/profile/controllers/profile_controller.dart';
+import 'package:Boslah/features/profile/presentation/views/profile_view.dart';
+import 'package:Boslah/features/schedule/controllers/schedule_controller.dart';
+import 'package:Boslah/features/schedule/presentation/view/schedule_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -47,7 +46,7 @@ class MainView extends GetView<MainController> {
             } on AppException catch (e) {
               showSnackBar(e.msg);
             } catch (e) {
-              showSnackBar( e.toString());
+              showSnackBar(e.toString());
             }
             controller.isFavPage = false;
             controller.favControoller.isFav.clear();

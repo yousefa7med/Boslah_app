@@ -1,4 +1,4 @@
-import 'package:depi_graduation_project/core/database/models/region_places.dart';
+import 'package:Boslah/core/database/models/region_places.dart';
 import 'package:floor/floor.dart';
 
 @dao

@@ -1,8 +1,8 @@
 import 'dart:developer';
 
-import 'package:depi_graduation_project/core/services/supabase_services/schedule_service_supabase.dart';
-import 'package:depi_graduation_project/models/schedule_model.dart';
-import 'package:depi_graduation_project/models/filter_model.dart';
+import 'package:Boslah/core/services/supabase_services/schedule_service_supabase.dart';
+import 'package:Boslah/models/schedule_model.dart';
+import 'package:Boslah/models/filter_model.dart';
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
@@ -42,9 +42,9 @@ class ScheduleController extends GetxController {
         icon: Icons.pending_outlined,
         onTap: () {
           viewedSchedules.clear();
-          allSchedules.forEach((s) {
+          for (var s in allSchedules) {
             print('Schedule date raw: "${s.date}"');
-          });
+          }
           viewedSchedules.addAll(
             allSchedules.where((s) {
               final status = getStatus(s.date);

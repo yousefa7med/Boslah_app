@@ -1,7 +1,8 @@
-import 'package:depi_graduation_project/core/functions/snack_bar.dart';
-import 'package:depi_graduation_project/core/utilities/app_text_style.dart';
-import 'package:depi_graduation_project/core/widgets/app_button.dart';
-import 'package:depi_graduation_project/features/details/controllers/details_controller.dart';
+import 'package:Boslah/core/functions/snack_bar.dart';
+import 'package:Boslah/core/utilities/app_text_style.dart';
+import 'package:Boslah/core/widgets/app_button.dart';
+
+import 'package:Boslah/features/details/controllers/details_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';

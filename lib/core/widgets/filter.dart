@@ -1,5 +1,5 @@
-import 'package:depi_graduation_project/core/functions/is_dark.dart';
-import 'package:depi_graduation_project/models/filter_model.dart';
+import 'package:Boslah/core/functions/is_dark.dart';
+import 'package:Boslah/models/filter_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
