@@ -21,11 +21,13 @@ class HomeView extends GetView<HomeController> {
         onPressed: () {
           Get.toNamed(Routes.chatbot);
         },
-        backgroundColor:
-            AppColors.main, // أيقونة AI، ممكن تغيرها لأي أيقونة تناسبك
+  
+        backgroundColor: AppColors.main, // أيقونة AI، ممكن تغيرها لأي أيقونة تناسبك
         tooltip: 'Chatbot', // أو أي لون تحبه
-        child: const Icon(Icons.smart_toy),
-      ),
+        child:  const Icon(
+          Icons.smart_toy,
+        ),
+     ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -65,14 +67,26 @@ class HomeView extends GetView<HomeController> {
               ),
               const Gap(10),
               Obx(() {
-                if (controller.places.isEmpty) {
+                if (controller.isLoading.value) {
                   return Expanded(
                     child: ListView.separated(
                       itemCount: 5,
                       itemBuilder: (ctx, index) => shimmerItem(),
-                      separatorBuilder: (BuildContext context, int index) {
-                        return const Gap(10);
-                      },
+                      separatorBuilder: (_, __) => const Gap(10),
+                    ),
+                  );
+                }
+                if (controller.viewedPlaces.isEmpty) {
+                  return Expanded(
+                    child: Center(
+                      child: Text(
+                        'No data available',
+                        style: TextStyle(
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey,
+                        ),
+                      ),
                     ),
                   );
                 }
@@ -81,7 +95,7 @@ class HomeView extends GetView<HomeController> {
                     onRefresh: controller.refreshPlaces,
                     child: ListView.separated(
                       physics: const AlwaysScrollableScrollPhysics(),
-                      itemCount: controller.places.length,
+                      itemCount: controller.viewedPlaces.length,
                       itemBuilder: (ctx, index) => HomePlaceCard(index),
                       separatorBuilder: (BuildContext context, int index) {
                         return const Gap(10);

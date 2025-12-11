@@ -16,7 +16,7 @@ class HomePlaceCard extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Get.toNamed(Routes.details, arguments: controller.places[index]);
+        Get.toNamed(Routes.details, arguments: controller.viewedPlaces[index]);
         print(cloud.auth.currentUser!.id);
       },
       child: Card(
@@ -30,10 +30,10 @@ class HomePlaceCard extends GetView<HomeController> {
                 topLeft: Radius.circular(12),
                 topRight: Radius.circular(12),
               ),
-              child: controller.places[index].image != null
-                  ? CachedNetworkImage(
-                      imageUrl: controller.places[index].image!,
-                      width: double.infinity,
+              child: controller.viewedPlaces[index].image != null?
+
+              CachedNetworkImage(imageUrl:  controller.viewedPlaces[index].image!,
+                       width: double.infinity,
                       height: 180.h,
                       fit: BoxFit.fill,
                     )
@@ -52,11 +52,11 @@ class HomePlaceCard extends GetView<HomeController> {
             Padding(
               padding: const EdgeInsets.only(left: 8, right: 8, bottom: 5),
               child: Text(
-                controller.places[index].name,
+                controller.viewedPlaces[index].name,
                 style: AppTextStyle.semiBold24,
               ),
             ),
-            controller.places[index].desc != null
+            controller.viewedPlaces[index].desc != null
                 ? Padding(
                     padding: const EdgeInsets.only(
                       left: 8,
@@ -64,7 +64,7 @@ class HomePlaceCard extends GetView<HomeController> {
                       bottom: 8,
                     ),
                     child: Text(
-                      '${controller.places[index].desc}',
+                      '${controller.viewedPlaces[index].desc}',
                       style: AppTextStyle.semiBold18.copyWith(
                         color: Colors.grey,
                       ),
