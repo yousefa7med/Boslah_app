@@ -93,7 +93,15 @@ class PlaceModel {
       case 'national_park':
         return Assets.imagesDefaultPhotosNationalPark;
       case 'entertainment':
-        return Assets.imagesDefaultPhotosEntertainment;
+        if(categories[1]== 'entertainment.zoo'){
+          return Assets.imagesDefaultPhotosZoo;
+        }
+        else if(categories[1]== 'entertainment.museum'){
+          return Assets.imagesDefaultPhotosMeseum;
+        }
+        else{
+          return Assets.imagesDefaultPhotosEntertainment;
+        }
       case 'sport':
         return Assets.imagesDefaultPhotosSport;
       case 'beach':
