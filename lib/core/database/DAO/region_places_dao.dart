@@ -1,9 +1,8 @@
-
 import 'package:depi_graduation_project/core/database/models/region_places.dart';
 import 'package:floor/floor.dart';
 
 @dao
-abstract class RegionPlacesDao{
+abstract class RegionPlacesDao {
   @Query('SELECT * FROM region_places WHERE regionId = :regionId')
   Future<List<RegionPlace>> selectRegionPlaces(int regionId);
 
@@ -18,5 +17,4 @@ abstract class RegionPlacesDao{
 
   @Query('DELETE FROM region_places WHERE regionId = :regionId')
   Future<void> deletePlacesByRegion(int regionId);
-
 }

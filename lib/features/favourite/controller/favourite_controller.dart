@@ -15,8 +15,7 @@ class FavouritesController extends GetxController {
   final error = RxnString();
   final List<int> deleted = [];
   final List<RxBool> isFav = [];
-  var sController=TextEditingController();
-
+  var sController = TextEditingController();
 
   @override
   void onInit() {
@@ -57,6 +56,7 @@ class FavouritesController extends GetxController {
       allFavourits.value = remoteList;
       filteredFav.value = allFavourits;
       if (allFavourits.isNotEmpty) {
+        filteredFav.value = allFavourits;
         isFav.addAll(List.generate(allFavourits.length, (i) => true.obs));
         print("sopaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
       }
@@ -70,7 +70,8 @@ class FavouritesController extends GetxController {
             desc: fav.desc,
             image: fav.image,
             lat: fav.lat,
-            lng: fav.lng, categories: fav.categories,
+            lng: fav.lng,
+            categories: fav.categories,
           ),
         );
         print(fav.image);
@@ -106,7 +107,6 @@ class FavouritesController extends GetxController {
       );
     }
   }
-
 
   void filterFavorites(String query) {
     if (query.isEmpty) {

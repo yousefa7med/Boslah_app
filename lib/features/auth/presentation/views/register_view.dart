@@ -48,7 +48,6 @@ class RegisterView extends GetView<RegisterController> {
                       children: [
                         Text('UserName', style: AppTextStyle.regular18),
                         const Gap(4),
-
                         AppTextFormField(
                           controller: controller.nameController,
                           hintText: 'Enter your username',
@@ -57,7 +56,6 @@ class RegisterView extends GetView<RegisterController> {
                         const Gap(15),
                         Text('Email', style: AppTextStyle.regular18),
                         const Gap(4),
-
                         AppTextFormField(
                           controller: controller.gmailController,
                           hintText: 'Enter your email',
@@ -66,16 +64,15 @@ class RegisterView extends GetView<RegisterController> {
                         const Gap(15),
                         Text('Password', style: AppTextStyle.regular18),
                         const Gap(4),
-
                         PasswordTextField(
                           controller: controller.passwordController,
                           hintText: 'Enter your password',
                           validator: Validator.signupPasswordValidator(),
                         ),
                         const Gap(15),
-                        Text('Password', style: AppTextStyle.regular18),
+                        // <-- fixed label here
+                        Text('Confirm Password', style: AppTextStyle.regular18),
                         const Gap(4),
-
                         PasswordTextField(
                           controller: controller.confirmPasswordController,
                           hintText: 'Confirm your password',
@@ -90,38 +87,46 @@ class RegisterView extends GetView<RegisterController> {
                             onPressed: controller.isLoading.value
                                 ? null
                                 : () async {
-                              if (controller.formKey.currentState!.validate()) {
-                                try {
-                                  await controller.registerUser(
-                                    fullName: controller.nameController.text,
-                                    email: controller.gmailController.text,
-                                    password: controller.passwordController.text,
-                                  );
+                                    if (controller.formKey.currentState!
+                                        .validate()) {
+                                      try {
+                                        await controller.registerUser(
+                                          fullName:
+                                              controller.nameController.text,
+                                          email:
+                                              controller.gmailController.text,
+                                          password: controller
+                                              .passwordController
+                                              .text,
+                                        );
 
-                                  Get.back();
+                                        Get.back();
 
-                                  showSnackBar(context, "Account created successfully!");
-                                } on AppException catch (e) {
-                                  showSnackBar(context, e.msg);
-                                }
-                              }
-                            },
+                                        showSnackBar(
+                                          context,
+                                          "Account created successfully!",
+                                        );
+                                      } on AppException catch (e) {
+                                        showSnackBar(context, e.msg);
+                                      }
+                                    }
+                                  },
                             child: controller.isLoading.value
                                 ? const SizedBox(
-                              height: 22,
-                              width: 22,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                color: Colors.white,
-                              ),
-                            )
+                                    height: 22,
+                                    width: 22,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: Colors.white,
+                                    ),
+                                  )
                                 : Text(
-                              'Register',
-                              style: TextStyle(
-                                fontSize: 20.sp,
-                                color: Colors.white,
-                              ),
-                            ),
+                                    'Register',
+                                    style: TextStyle(
+                                      fontSize: 20.sp,
+                                      color: Colors.white,
+                                    ),
+                                  ),
                           );
                         }),
                         const Gap(20),

@@ -1,6 +1,6 @@
+
 import 'package:depi_graduation_project/core/helper/theme_manager.dart';
 import 'package:depi_graduation_project/core/services/supabase_services/auth_service.dart';
-import 'package:depi_graduation_project/core/utilities/app_colors.dart';
 import 'package:depi_graduation_project/core/widgets/app_button.dart';
 import 'package:depi_graduation_project/features/profile/controllers/profile_controller.dart';
 import 'package:depi_graduation_project/features/profile/presentation/widgets/account_info.dart';
@@ -10,6 +10,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
+import '../../../../core/utilities/app_colors.dart';
 import '../../../../core/utilities/app_text_style.dart';
 
 class ProfileView extends GetView<ProfileController> {

@@ -22,4 +22,7 @@ class Schedule extends ScheduleModel {
     required super.image,
     required super.hour,
   });
+
+  @override
+  set note(String note) {}
 }

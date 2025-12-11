@@ -1,11 +1,20 @@
 import 'package:depi_graduation_project/features/favourite/controller/favourite_controller.dart';
 import 'package:depi_graduation_project/features/schedule/controllers/schedule_controller.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 
 class MainController extends GetxController {
-  final favControoller = FavouritesController();
-  final scheduleController = ScheduleController();
+  final favControoller = Get.put(FavouritesController());
+  final scheduleController = Get.put(ScheduleController());
   bool isFavPage = false;
+  @override
+  Future<void> onInit() async {
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+    }
+    super.onInit();
+  }
 
   void removeFavFromDB() {
     if (isFavPage) {

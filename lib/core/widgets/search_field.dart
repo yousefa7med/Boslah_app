@@ -5,7 +5,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../utilities/app_colors.dart';
 
 class SearchField extends StatelessWidget {
-  const SearchField({super.key, required this.controller, required this.onPressed,});
+  const SearchField({
+    super.key,
+    required this.controller,
+    required this.onPressed,
+  });
   final TextEditingController controller;
   final void Function() onPressed;
   @override
@@ -25,9 +29,7 @@ class SearchField extends StatelessWidget {
         hintText: 'Search for attractions...',
         hintStyle: TextStyle(color: Colors.grey, fontSize: 17.sp),
         filled: true,
-        fillColor: isDark()
-            ? const Color(0xff2A2A2A)
-            : AppColors.fillTextField,
+        fillColor: isDark() ? const Color(0xff2A2A2A) : AppColors.fillTextField,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide.none,
@@ -42,6 +44,5 @@ class SearchField extends StatelessWidget {
         ),
       ),
     );
-    
   }
 }

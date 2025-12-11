@@ -231,7 +231,12 @@ class ScheduleForm extends StatelessWidget {
                 showSnackBar(context, 'please fill Data and Time');
                 return;
               }
-              await controller.addSchdule();
+              try {
+                await controller.addSchdule();
+                showSnackBar(context, 'Schedule Added Successfully');
+              } catch (e) {
+                showSnackBar(context, e.toString());
+              }
               Get.back();
             },
 

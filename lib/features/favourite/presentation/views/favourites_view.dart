@@ -10,6 +10,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../../../core/functions/is_dark.dart';
 import '../../../../core/utilities/app_colors.dart';
 
 class FavouritesView extends GetView<FavouritesController> {

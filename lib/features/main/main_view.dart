@@ -1,7 +1,7 @@
+
 import 'package:depi_graduation_project/core/errors/app_exception.dart';
 import 'package:depi_graduation_project/core/functions/is_dark.dart';
 import 'package:depi_graduation_project/core/functions/snack_bar.dart';
-import 'package:depi_graduation_project/core/utilities/app_colors.dart';
 import 'package:depi_graduation_project/features/favourite/presentation/views/favourites_view.dart';
 import 'package:depi_graduation_project/features/home/controllers/home_controller.dart';
 import 'package:depi_graduation_project/features/home/presentation/views/home_view.dart';
@@ -15,6 +15,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
+import '../../core/utilities/app_colors.dart';
 import '../favourite/controller/favourite_controller.dart';
 
 class MainView extends GetView<MainController> {

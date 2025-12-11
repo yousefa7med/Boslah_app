@@ -17,13 +17,17 @@ class ScheduleController extends GetxController {
   final allSchedules = <ScheduleModel>[].obs;
 
   final error = RxnString();
-  final selectedCard = 1.obs;
   final List<FilterModel> filterList = [];
   var today = DateTime.now().obs;
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     print('initttttt');
+    try {
+      await loadData();
+    } catch (e) {
+      error.value = e.toString();
+    }
     ever(today, (_) => update());
     filterList.addAll([
       FilterModel(
@@ -38,6 +42,9 @@ class ScheduleController extends GetxController {
         icon: Icons.pending_outlined,
         onTap: () {
           viewedSchedules.clear();
+          allSchedules.forEach((s) {
+            print('Schedule date raw: "${s.date}"');
+          });
           viewedSchedules.addAll(
             allSchedules.where((s) {
               final status = getStatus(s.date);
@@ -66,44 +73,45 @@ class ScheduleController extends GetxController {
       updateIsDoneForSchedules();
     });
 
+    // try {
+    //   loadData();
+    // } on Exception catch (e) {
+    //   error.value = e.toString();
+    // }
     try {
-      loadData();
-    } on Exception catch (e) {
+      await loadData();
+    } catch (e) {
       error.value = e.toString();
     }
-
     super.onInit();
   }
 
   Future<void> loadData() async {
     try {
-    final userId = cloud.auth.currentUser!.id;
-    final localList = await database.scheduledao.selectSchedules(userId);
+      final userId = cloud.auth.currentUser!.id;
+      final localList = await database.scheduledao.selectSchedules(userId);
 
-    localList.sort((a, b) {
-      final dtA = combineDateAndTime(a.date, a.hour);
-      final dtB = combineDateAndTime(b.date, b.hour);
-      log('uuuuuuuuuuuuuuuuuuuuuuuuuuuuu');
-      return dtA.compareTo(dtB);
-    });
-    if (localList.isNotEmpty) {
-      allSchedules.value = localList;
-      viewedSchedules.value = localList;
-    await updateIsDoneForSchedules();
+      // localList.sort((a, b) {
+      //   final dtA = combineDateAndTime(a.date, a.hour);
+      //   final dtB = combineDateAndTime(b.date, b.hour);
+      //   log('uuuuuuuuuuuuuuuuuuuuuuuuuuuuu');
+      //   return dtA.compareTo(dtB);
+      // });
+      if (localList.isNotEmpty) {
+        allSchedules.value = localList;
+        viewedSchedules.value = localList;
+        await updateIsDoneForSchedules();
 
+        return;
+      } else {
+        final remote = await ScheduleServiceSupabase().getSchedules(userId);
+        allSchedules.value = remote;
+        viewedSchedules.value = remote;
+      }
 
- 
-      return;
-    } else {
-final remote =await ScheduleServiceSupabase().getSchedules(userId);
-      allSchedules.value = remote;
-      viewedSchedules.value = remote;
-        
-    }
-
-    log('doneeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
+      log('doneeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
     } catch (e) {
-    throw AppException(msg: "Failed to load schedules");
+      throw AppException(msg: "Failed to load schedules");
     }
   }
 
@@ -115,6 +123,38 @@ final remote =await ScheduleServiceSupabase().getSchedules(userId);
       int.parse(parts[2]),
     );
   }
+  // DateTime parseDate(String dateStr) {
+  //   return DateTime.parse(dateStr.split(" ").first);
+  // }
+  // DateTime parseDate(String dateStr) {
+  //   try {
+  //     return DateTime.parse(dateStr);
+  //   } catch (_) {
+  //     return DateTime.parse(dateStr.split(" ").first);
+  //   }
+  // }
+  // DateTime parseDate(String dateStr) {
+  //   try {
+  //     // Try parsing full date/time string directly
+  //     return DateTime.parse(dateStr);
+  //   } catch (_) {
+  //     // If fails, try parsing only the date part (before space)
+  //     return DateTime.parse(dateStr.split(" ").first);
+  //   }
+  // }
+  // DateTime parseDate(String dateStr) {
+  //   try {
+  //     return DateTime.parse(dateStr);
+  //   } catch (e) {
+  //     try {
+  //       final dateOnly = dateStr.split(" ").first;
+  //       return DateTime.parse(dateOnly);
+  //     } catch (e2) {
+  //       print("Failed to parse dateStr: $dateStr");
+  //       rethrow;
+  //     }
+  //   }
+  // }
 
   String getStatus(String date) {
     final d = parseDate(date);

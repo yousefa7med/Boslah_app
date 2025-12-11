@@ -81,8 +81,8 @@ class PlaceCard extends GetView<searchController> {
                 topRight: Radius.circular(12),
               ),
               child: controller.searchList[index].image != null
-                  ?    CachedNetworkImage(imageUrl: 
-                      controller.searchList[index].image!,
+                  ? CachedNetworkImage(
+                      imageUrl: controller.searchList[index].image!,
                       width: double.infinity,
                       height: 180,
                       fit: BoxFit.fill,

@@ -5,7 +5,6 @@ import 'package:depi_graduation_project/core/database/tourApp_database.dart';
 import 'package:depi_graduation_project/core/helper/casheHelper.dart';
 import 'package:depi_graduation_project/core/helper/theme_manager.dart';
 import 'package:depi_graduation_project/core/services/api_services/api_services1.1.dart';
-import 'package:depi_graduation_project/core/services/api_services/geoapify_services.dart';
 import 'package:depi_graduation_project/core/services/notification_service.dart';
 import 'package:depi_graduation_project/core/services/supabase_services/auth_service.dart';
 import 'package:depi_graduation_project/core/utilities/app_themes.dart';
@@ -29,8 +28,8 @@ import 'package:depi_graduation_project/features/main/main_view.dart';
 import 'package:depi_graduation_project/features/profile/controllers/profile_controller.dart';
 import 'package:depi_graduation_project/features/profile/presentation/views/profile_view.dart';
 import 'package:depi_graduation_project/features/schedule/controllers/schedule_controller.dart';
-import 'package:depi_graduation_project/features/schedule/controllers/schedule_place_controller.dart';
-import 'package:depi_graduation_project/features/schedule/presentation/view/schedule_place_view.dart';
+import 'package:depi_graduation_project/features/schedule/controllers/schedule_details_controller.dart';
+import 'package:depi_graduation_project/features/schedule/presentation/view/schedule_details.dart';
 import 'package:depi_graduation_project/features/schedule/presentation/view/schedule_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -42,10 +41,9 @@ import 'package:path/path.dart';
 import 'core/utilities/routes.dart';
 import 'package:sqflite/sqflite.dart';
 
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Gemini.init(apiKey: 'AIzaSyCsiZ3YneeGOqFzMAD6Qj9gKybnx6h8WM4');
+  Gemini.init(apiKey: 'AIzaSyDudJChclladS_XBDkW3k1BBZLIoVwbSjU');
 
   await CasheHelper().init();
   await SystemChrome.setPreferredOrientations([
@@ -124,7 +122,9 @@ class MyApp extends StatelessWidget {
           // initialRoute: Routes.chatbot,
           initialBinding: BindingsBuilder(() {
             Get.put(ApiServices());
-            Get.put(GeoapifyService());
+
+            Get.put(ScheduleController());
+
           }),
           getPages: [
             GetPage(
@@ -192,9 +192,9 @@ class MyApp extends StatelessWidget {
             ),
             GetPage(
               name: Routes.schedulePlace,
-              page: () => const SchedulePlaceView(),
+              page: () => const ScheduleDetails(),
               binding: BindingsBuilder(() {
-                Get.lazyPut(() => SchedulePlaceController());
+                Get.lazyPut(() => ScheduleDetailsController());
               }),
             ),
             GetPage(
@@ -211,3 +211,5 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+

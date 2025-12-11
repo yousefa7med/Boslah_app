@@ -8,7 +8,6 @@ class RegionPlace extends PlaceModel {
   final int regionId;
   final int? searchId;
 
-
   RegionPlace({
     this.id,
     required this.regionId,
@@ -16,7 +15,7 @@ class RegionPlace extends PlaceModel {
     super.lat,
     super.lng,
     super.desc,
-   required super.categories,
+    required super.categories,
     super.image,
     this.searchId,
     required super.name,

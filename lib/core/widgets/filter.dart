@@ -40,9 +40,7 @@ class _FilterState extends State<Filter> {
               ),
               color: selectedIndex == index
                   ? AppColors.main
-                  : (isDark()
-                        ? AppColors.darkSurface
-                        : Colors.grey.shade300),
+                  : (isDark() ? AppColors.darkSurface : Colors.grey.shade300),
               child: Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16.0,
@@ -57,9 +55,7 @@ class _FilterState extends State<Filter> {
                                 widget.filterList[index].icon,
                                 color: selectedIndex == index
                                     ? (Colors.white)
-                                    : (isDark()
-                                          ? Colors.white
-                                          : Colors.black),
+                                    : (isDark() ? Colors.white : Colors.black),
                               ),
                               const Gap(10),
                             ],

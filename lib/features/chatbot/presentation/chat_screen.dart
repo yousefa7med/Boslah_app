@@ -12,7 +12,6 @@ class ChatScreen extends GetView<ChatController> {
 
   @override
   Widget build(BuildContext context) {
-    // final ChatController controller = Get.find();
 
     return Scaffold(
       appBar: AppBar(

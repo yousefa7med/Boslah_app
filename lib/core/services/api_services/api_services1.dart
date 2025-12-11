@@ -11,7 +11,7 @@ class ApiServices1 {
   }) async {
     Response<dynamic>? response;
     try {
-       response = await dio.get(
+      response = await dio.get(
         "categories=$catagory&filter=circle:$long,$lat,5000&bias=proximity:$long,$lat&limit=80&apiKey=${EndPoints.apiKey}",
       );
     } on DioException catch (e) {
@@ -34,10 +34,10 @@ class ApiServices1 {
     Response<dynamic>? response;
 
     try {
-   response = await dio.get(
-    "categories=$catPram&filter=circle:$long,$lat,5000&bias=proximity:$long,$lat&limit=80&apiKey=${EndPoints.apiKey}",
-  );
-   } on DioException catch (e) {
+      response = await dio.get(
+        "categories=$catPram&filter=circle:$long,$lat,5000&bias=proximity:$long,$lat&limit=80&apiKey=${EndPoints.apiKey}",
+      );
+    } on DioException catch (e) {
       if (e.type == DioExceptionType.badResponse) {
         throw AppException(
           msg: " error ${e.response!.statusCode} please try again leter",

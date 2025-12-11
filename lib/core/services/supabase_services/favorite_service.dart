@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:depi_graduation_project/core/errors/app_exception.dart';
@@ -8,7 +7,7 @@ import '../../../main.dart';
 import '../../../models/favorite_supabase.dart';
 
 class FavoritesService {
-    static final FavoritesService _instance = FavoritesService._internal();
+  static final FavoritesService _instance = FavoritesService._internal();
   FavoritesService._internal();
   factory FavoritesService() => _instance;
   Future<void> addFavorite(FavoriteSupabase fav) async {
