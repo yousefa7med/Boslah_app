@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import 'package:Boslah/core/database/models/schedules.dart';
+import 'package:Boslah/core/functions/has_internet.dart';
 import 'package:Boslah/core/services/supabase_services/schedule_service_supabase.dart';
 import 'package:Boslah/models/schedule_model.dart';
 import 'package:Boslah/models/filter_model.dart';
@@ -99,7 +101,6 @@ class ScheduleController extends GetxController {
     try {
       isLoading.value=true;
       final userId = cloud.auth.currentUser!.id;
-      final localList = await database.scheduledao.selectSchedules(userId);
 
       // localList.sort((a, b) {
       //   final dtA = combineDateAndTime(a.date, a.hour);
@@ -107,16 +108,35 @@ class ScheduleController extends GetxController {
       //   log('uuuuuuuuuuuuuuuuuuuuuuuuuuuuu');
       //   return dtA.compareTo(dtB);
       // });
-      if (localList.isNotEmpty) {
-        allSchedules.value = localList;
-        viewedSchedules.value = localList;
-        await updateIsDoneForSchedules();
-
-        return;
-      } else {
+      final hasInt = await hasInternet();
+      if (hasInt) {
         final remote = await ScheduleServiceSupabase().getSchedules(userId);
         allSchedules.value = remote;
         viewedSchedules.value = remote;
+        await database.scheduledao.deleteAllSchedules(userId);
+        for (var value in remote) {
+          print('11111111111');
+          try {
+            await database.scheduledao.insertSchedule(
+              Schedule(
+                placeId: value.placeId,
+                date: value.date,
+                note: value.note,
+                image: value.image,
+                hour: value.hour,
+                isDone: value.isDone,
+                userId: value.userId,
+                name: value.name,
+                lat: value.lat,
+                lng: value.lng,
+              ),
+            );
+          } catch (_) {}
+        }
+      } else {
+        final localList = await database.scheduledao.selectSchedules(userId);
+        allSchedules.value = localList;
+        viewedSchedules.value = localList;
       }
 
       log('doneeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
