@@ -2,7 +2,6 @@ import 'package:depi_graduation_project/core/functions/get_postion.dart';
 import 'package:depi_graduation_project/core/widgets/app_dialog.dart';
 import 'package:depi_graduation_project/models/filter_model.dart';
 import 'package:depi_graduation_project/models/place_model.dart';
-import 'package:depi_graduation_project/main.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -10,11 +9,9 @@ import 'package:get/get.dart';
 import '../../../core/services/api_services/api_services1.1.dart';
 
 class HomeController extends GetxController {
-
-
   final searchController = TextEditingController();
   final allPlaces = <PlaceModel>[].obs;
-  final viewedPlaces=<PlaceModel>[].obs;
+  final viewedPlaces = <PlaceModel>[].obs;
   final museums = <PlaceModel>[].obs;
   final restaurant = <PlaceModel>[].obs;
   final List<FilterModel> filterList = [];
@@ -23,72 +20,68 @@ class HomeController extends GetxController {
 
   RxBool isLoading = true.obs;
 
-
-
   @override
   void onInit() {
     print('init');
     loadAll();
 
     super.onInit();
-    filterList.addAll(
-    [
-        FilterModel(
-            text: 'All',
-            onTap: (){
-              viewedPlaces.value=allPlaces;
-            }
-        ),
-        FilterModel(
+    filterList.addAll([
+      FilterModel(
+        text: 'All',
+        onTap: () {
+          viewedPlaces.value = allPlaces;
+        },
+      ),
+      FilterModel(
         text: 'Tourism',
         icon: Icons.museum,
-          onTap: () {
-            viewedPlaces.value = allPlaces.where((p) {
-              final isWikipedia = p.categories.contains('Tourism');
-              final isTourism = p.categories.contains('entertainment');
-              return isWikipedia || isTourism;
-            }).toList();
-          },
-        ),
+        onTap: () {
+          viewedPlaces.value = allPlaces.where((p) {
+            final isWikipedia = p.categories.contains('Tourism');
+            final isTourism = p.categories.contains('entertainment');
+            return isWikipedia || isTourism;
+          }).toList();
+        },
+      ),
 
-        FilterModel(
+      FilterModel(
         text: 'Hotels',
         icon: Icons.apartment,
-        onTap: (){
-          viewedPlaces.value=allPlaces.where(
-              (p)=>p.categories.contains('accommodation')
-            ).toList();
-          }
-        ),
-        FilterModel(
+        onTap: () {
+          viewedPlaces.value = allPlaces
+              .where((p) => p.categories.contains('accommodation'))
+              .toList();
+        },
+      ),
+      FilterModel(
         text: 'Restaurants&cafe',
         icon: Icons.restaurant_sharp,
-        onTap: (){
-          viewedPlaces.value=allPlaces.where(
-              (p)=>p.categories.contains('catering')
-            ).toList();
-          }
-        ),
-        FilterModel(
-            text: 'AirPort',
-            icon: Icons.airplanemode_active,
-            onTap: (){
-              viewedPlaces.value=allPlaces.where(
-                      (p)=>p.categories.contains('airport')
-              ).toList();
-            }
-        ),
-        FilterModel(
-            text: 'religion',
-            icon: Icons.mosque,
-            onTap: (){
-              viewedPlaces.value=allPlaces.where(
-                      (p)=>p.categories.contains('religion')
-              ).toList();
-            }
-        ),
-    ]
-    );
+        onTap: () {
+          viewedPlaces.value = allPlaces
+              .where((p) => p.categories.contains('catering'))
+              .toList();
+        },
+      ),
+      FilterModel(
+        text: 'AirPort',
+        icon: Icons.airplanemode_active,
+        onTap: () {
+          viewedPlaces.value = allPlaces
+              .where((p) => p.categories.contains('airport'))
+              .toList();
+        },
+      ),
+      FilterModel(
+        text: 'religion',
+        icon: Icons.mosque,
+        onTap: () {
+          viewedPlaces.value = allPlaces
+              .where((p) => p.categories.contains('religion'))
+              .toList();
+        },
+      ),
+    ]);
 
     loadAll();
   }
@@ -102,7 +95,6 @@ class HomeController extends GetxController {
   Future<void> loadAll() async {
     final Position? position;
     try {
-
       position = await getPosition();
       isLoading.value = true;
 
@@ -112,42 +104,46 @@ class HomeController extends GetxController {
       );
       print("pppppppppppppppppppp");
 
-      allPlaces.value = data?.where((p) {
+      allPlaces.value =
+          data?.where((p) {
             // 1) لازم Description وصورة
             if (p.desc == null || p.desc!.trim().isEmpty || p.image == null) {
               return false;
             }
-              return true;
-          }).toList() ?? [];
-      viewedPlaces.value=allPlaces;
-      // final regionId = await database.regionrequestdao.insertRegionRequest(
-      //       RegionRequest(lat: 29.979235, lng: 31.134202),
-      //     );
-
-      // List<RegionPlace> list = [];
-      // for (var element in data!) {
-      //       list.add(
-      //         RegionPlace(
-      //           name: element.name,
-      //           regionId: regionId,
-      //           placeId: element.placeId,
-      //           lat: element.lat,
-      //           lng: element.lng,
-      //           image: element.image,
-      //           desc: element.desc,
-      //           categories: element.categories,
-      //         ),
-      //       );
-      //     }
-      // await database.regionplacedao.insertRespPlaces(list);
+            return true;
+          }).toList() ??
+          [];
+      viewedPlaces.value = allPlaces;
+    } on String catch (e) {
+      appDialog(msg: e);
+      Future.delayed(const Duration(seconds: 10), () async {
+        await loadAll();
+      });
     } finally {
       isLoading.value = false;
-    }
+    } // final regionId = await database.regionrequestdao.insertRegionRequest(
+    //       RegionRequest(lat: 29.979235, lng: 31.134202),
+    //     );
+
+    // List<RegionPlace> list = [];
+    // for (var element in data!) {
+    //       list.add(
+    //         RegionPlace(
+    //           name: element.name,
+    //           regionId: regionId,
+    //           placeId: element.placeId,
+    //           lat: element.lat,
+    //           lng: element.lng,
+    //           image: element.image,
+    //           desc: element.desc,
+    //           categories: element.categories,
+    //         ),
+    //       );
+    //     }
+    // await database.regionplacedao.insertRespPlaces(list);
   }
 
   Future<void> refreshPlaces() async {
     await loadAll();
   }
-
-
 }
