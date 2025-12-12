@@ -53,6 +53,7 @@ class ChatScreen extends GetView<ChatController> {
         children: [
           Obx(
             () => Chat(
+              // ignore: invalid_use_of_protected_member
               messages: controller.messages.value,
               onSendPressed: (types.PartialText msg) {
                 controller.sendUserMessage(msg.text);

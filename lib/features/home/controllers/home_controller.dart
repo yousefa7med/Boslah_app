@@ -174,8 +174,9 @@ class HomeController extends GetxController {
       }
 
       final data = await api.getPlaces(
-        lat: 24.0889,
-        long: 32.8998,
+        lat:    position.latitude,
+       
+        long: position.longitude, 
       );
       print("pppppppppppppppppppp");
 
