@@ -64,21 +64,7 @@ class ScheduleForm extends StatelessWidget {
                     ],
                   ),
                   onPressed: () async {
-                    // final picked = await showDatePicker(
-                    //   context: context,
-                    //   initialDate: DateTime.now(),
-                    //   firstDate: DateTime(2020),
-                    //   lastDate: DateTime(2050),
-                    // );
-                    // if (picked != null) {
-                    //   controller.dateController.text =
-                    //       "${picked.year}-${picked.month}-${picked.day}";
-                    //   print(controller.dateController.text);
-                    //   // controller.dateController.text =
-                    //   //     "${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";
-                    //   // print('Date: ${controller.dateController.text}');
-                    //   // print('Time: ${controller.timeController.text}');
-                    // }
+           
                     final picked = await showDatePicker(
                       context: context,
                       initialDate: DateTime.now(),
@@ -180,17 +166,10 @@ class ScheduleForm extends StatelessWidget {
                           );
 
                           if (pickedDateTime.isBefore(now)) {
-                            // Get.snackbar(
-                            //   "Invalid time",
-                            //   "You cannot choose a past time for today. Please select another time.",
-                            //   snackPosition: SnackPosition.BOTTOM,
-                            //   // backgroundColor: Colors.redAccent,
-                            //   // colorText: Colors.white,
-                            // );
-                            // // showSnackBar(
-                            // //   context,
-                            //   "You cannot choose a past time for today. Please select another time.",
-                            // );
+                   
+                            showSnackBar(
+                              "You cannot choose a past time for today. Please select another time.",
+                            );
                             return; // exit without assigning the time
                           }
                         }
@@ -207,7 +186,7 @@ class ScheduleForm extends StatelessWidget {
               ),
             ],
           ),
-          const Gap(50),
+           Gap(50.h),
           AppButton(
             onPressed: () async {
               if (controller.dateController.text.isEmpty ||
@@ -218,10 +197,10 @@ class ScheduleForm extends StatelessWidget {
                 showSnackBar('please fill Data and Time');
                 return;
               }
-              try {
+              try {  Get.back();
                 print('11111111111111111111111');
                 await controller.addSchdule();
-                Get.back();
+              
 
                 print('2222222222222222222222222');
                 showSnackBar('Schedule Added Successfully');
@@ -236,7 +215,7 @@ class ScheduleForm extends StatelessWidget {
             child: const Text('confirm', style: TextStyle(color: Colors.white)),
           ),
 
-          const Gap(25),
+           Gap(25.h),
         ],
       ),
     );

@@ -18,8 +18,7 @@ class NotificationService {
           channelDescription: 'Notifications for scheduled visits',
           importance: NotificationImportance.Max,
           channelShowBadge: true,
-          // defaultColor: const Color(0xFF0057FF),
-          // ledColor: const Color(0xFFFFFFFF),
+
         ),
       ],
       debug: true,

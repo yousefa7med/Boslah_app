@@ -8,12 +8,12 @@ class SearchHistory {
   final String query;
   final int timestamp;
 
-  final String? userId;
+  final String userId;
 
   SearchHistory({
     this.seachId,
     required this.query,
     required this.timestamp,
-    this.userId
+    required this.userId
   });
 }

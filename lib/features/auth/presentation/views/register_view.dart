@@ -107,6 +107,8 @@ class RegisterView extends GetView<RegisterController> {
                                         );
                                       } on AppException catch (e) {
                                         showSnackBar(e.msg);
+                                      } catch (e) {
+                                        showSnackBar(e.toString());
                                       }
                                     }
                                   },

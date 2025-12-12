@@ -114,7 +114,7 @@ class _$tourDatabase extends tourDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `schedules` (`placeId` INTEGER NOT NULL, `scheduleId` INTEGER PRIMARY KEY AUTOINCREMENT, `date` TEXT NOT NULL, `hour` TEXT NOT NULL, `note` TEXT NOT NULL, `name` TEXT, `isDone` INTEGER, `createdAt` INTEGER, `userId` TEXT, `lat` REAL, `lng` REAL, `image` TEXT)');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `search_history` (`seachId` INTEGER PRIMARY KEY AUTOINCREMENT, `query` TEXT NOT NULL, `timestamp` INTEGER NOT NULL, `userId` TEXT)');
+            'CREATE TABLE IF NOT EXISTS `search_history` (`seachId` INTEGER PRIMARY KEY AUTOINCREMENT, `query` TEXT NOT NULL, `timestamp` INTEGER NOT NULL, `userId` TEXT NOT NULL)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `profile` (`userId` TEXT NOT NULL, `username` TEXT, `gmail` TEXT, `image` TEXT, PRIMARY KEY (`userId`))');
         await database.execute(
@@ -184,11 +184,14 @@ class _$RegionRequestDao extends RegionRequestDao {
   final InsertionAdapter<RegionRequest> _regionRequestInsertionAdapter;
 
   @override
-  Future<RegionRequest?> selectLastRequest(String uid) async {
+  Future<RegionRequest?> selectLastRequest() async {
     return _queryAdapter.query(
-        'SELECT * FROM region_requests WHERE user_id = ?1 ORDER BY timestamp DESC LIMIT 1',
-        mapper: (Map<String, Object?> row) => RegionRequest(region_id: row['region_id'] as int?, lat: row['lat'] as double, lng: row['lng'] as double, timestamp: row['timestamp'] as int?),
-        arguments: [uid]);
+        'SELECT * FROM region_requests ORDER BY region_id DESC LIMIT 1',
+        mapper: (Map<String, Object?> row) => RegionRequest(
+            region_id: row['region_id'] as int?,
+            lat: row['lat'] as double,
+            lng: row['lng'] as double,
+            timestamp: row['timestamp'] as int?));
   }
 
   @override
@@ -557,7 +560,7 @@ class _$SearchHistoryDao extends SearchHistoryDao {
   Future<List<SearchHistory>> selectHistory(String uid) async {
     return _queryAdapter.queryList(
         'SELECT * FROM search_history WHERE userId = ?1 ORDER BY timestamp DESC',
-        mapper: (Map<String, Object?> row) => SearchHistory(seachId: row['seachId'] as int?, query: row['query'] as String, timestamp: row['timestamp'] as int, userId: row['userId'] as String?),
+        mapper: (Map<String, Object?> row) => SearchHistory(seachId: row['seachId'] as int?, query: row['query'] as String, timestamp: row['timestamp'] as int, userId: row['userId'] as String),
         arguments: [uid]);
   }
 

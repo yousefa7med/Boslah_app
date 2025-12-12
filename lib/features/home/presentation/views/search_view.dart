@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
+import '../../../../core/utilities/app_colors.dart';
 import '../../../../core/utilities/app_text_style.dart';
 import '../../controllers/search_controller.dart';
 
@@ -22,31 +23,94 @@ class SearchView extends GetView<searchController> {
             child: Column(
               children: [
                 SearchField(
+                  onChange: (a){
+                    controller.onchange(a);
+                  },
                   controller: controller.sController,
                   onPressed: () {
+                    print(";;;;;;;;;");
                     if (controller.sController.text.isNotEmpty) {
+                      print(";;;;;;;;;");
+
                       controller.loadData();
+                      print(";;;;;;;;;");
                     }
                   },
                 ),
                 Gap(15.h),
-                Align(
-                  alignment: const Alignment(-0.9, 1),
-                  child: Text('Results', style: AppTextStyle.bold26),
-                ),
+                // Align(
+                //   alignment: const Alignment(-0.9, 1),
+                //   child: Text('Results', style: AppTextStyle.bold26),
+                // ),
                 Gap(10.h),
                 Expanded(
                   child: Obx(() {
-                    return controller.searchList.isEmpty
-                        ? const Center(child: Text('No place'))
-                        : ListView.separated(
+                    if(controller.historySearch.isEmpty && controller.searchList.isEmpty ){
+                      return const Center(child: Text('No search history yet'));
+                    }if(controller.historySearch.isNotEmpty && controller.searchList.isEmpty){
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('Recent Search', style: AppTextStyle.semiBold24.copyWith(color: Colors.white),),
+                              TextButton.icon(onPressed: (){
+                                  controller.clearHistory();
+                              }, label: const Text('Clear all'),icon: const Icon(Icons.delete),
+                              )
+                            ],
+                          ),
+                          Gap(10.h),
+                          Expanded(
+                            child: ListView.builder(
+                                itemCount: controller.historySearch.length
+                                ,itemBuilder: (ctx,index)=>
+                                SizedBox(
+                                  height: 60
+                                  ,child: Card(
+                                    elevation: 3,
+                                    color: AppColors.darkSurface,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        children: [
+                                          const Icon(Icons.history, color: AppColors.main,size: 25,),
+                                          Gap(10.w)
+                                          ,Text(controller.historySearch[index].query,style: AppTextStyle.medium20,),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                )
+                            ),
+                          )
+                        ],
+                      );
+                    }
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Result', style: AppTextStyle.semiBold24.copyWith(color: Colors.white),),
+                        Gap(10.h),
+                        controller.searchList.isEmpty
+                        ?  Center(child: Text('No place',              style: AppTextStyle.bold26.copyWith(
+                                color: const Color.fromARGB(147, 158, 158, 158),
+                                fontSize: 30.sp,
+                              ),))
+                            :
+                        Expanded(
+                          child: ListView.separated(
                             itemCount: controller.searchList.length,
                             itemBuilder: (ctx, index) => PlaceCard(index),
                             separatorBuilder:
-                                (BuildContext context, int index) {
-                                  return const Gap(10);
-                                },
-                          );
+                            (BuildContext context, int index) {
+                            return const Gap(10);
+                            },
+                          ),
+                        ),
+                      ],
+                    );
                   }),
                 ),
               ],
@@ -80,23 +144,20 @@ class PlaceCard extends GetView<searchController> {
                 topLeft: Radius.circular(12),
                 topRight: Radius.circular(12),
               ),
-              child: controller.searchList[index].image != null
-                  ? CachedNetworkImage(
-                      imageUrl: controller.searchList[index].image!,
+              child: controller.searchList[index].isAssetPath(controller.searchList[index].image!)
+                  ? Image.asset(
+                      controller.searchList[index].image!,
                       width: double.infinity,
-                      height: 180,
+                      height: 180.h,
                       fit: BoxFit.fill,
                     )
-                  : Container(
-                      width: double.infinity,
-                      height: 180,
-                      color: Colors.grey[300],
-                      child: const Icon(
-                        Icons.image_not_supported,
-                        size: 50,
-                        color: Colors.grey,
-                      ),
-                    ),
+                  : CachedNetworkImage(
+                imageUrl: controller.searchList[index].image!,
+                width: double.infinity,
+                height: 180,
+                fit: BoxFit.fill,
+              )
+                 
             ),
             const Gap(10),
             Padding(

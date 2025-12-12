@@ -1,6 +1,6 @@
+import 'package:Boslah/core/errors/app_exception.dart';
 import 'package:Boslah/core/functions/snack_bar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:Boslah/core/utilities/app_colors.dart';
 import 'package:Boslah/core/utilities/app_text_style.dart';
 import 'package:Boslah/core/widgets/app_button.dart';
 import 'package:Boslah/features/details/controllers/details_controller.dart';
@@ -47,8 +47,8 @@ class DetailsView extends GetView<DetailsController> {
                       bottom: 8,
                       right: 9,
                       child: Container(
-                        width: 70,
-                        height: 70,
+                        width: 65.r,
+                        height: 65.r,
                         decoration: const BoxDecoration(
                           color: Colors.white,
                           shape: BoxShape.circle,
@@ -57,30 +57,53 @@ class DetailsView extends GetView<DetailsController> {
                           return IconButton(
                             onPressed: () async {
                               try {
-                              if (controller.favorite.value) {
-                                await controller.removeFromFav();
-                              } else {
-                                await controller.addToFav();
-                              }
-
-                              controller.favorite.toggle();
+                                controller.favorite.toggle();
+                                if (!controller.favorite.value) {
+                                  await controller.removeFromFav();
+                                } else {
+                                  await controller.addToFav();
+                                }
+                              } on AppException catch (e) {
+                                showSnackBar(e.msg);
                               } catch (e) {
-                                showSnackBar( e.toString());
+                                showSnackBar(e.toString());
                               }
                             },
                             icon: controller.favorite.value
-                                ? const Icon(
+                                ? Icon(
                                     Icons.favorite,
                                     color: Colors.red,
-                                    size: 30,
+                                    size: 30.r,
                                   )
-                                : const Icon(
+                                : Icon(
                                     Icons.favorite_border,
                                     color: Colors.red,
-                                    size: 30,
+                                    size: 30.r,
                                   ),
                           );
                         }),
+                      ),
+                    ),
+                    Positioned(
+                      left: 6,
+                      top: 6,
+                      child: Container(
+                        width: 65.r,
+                        height: 65.r,
+                        decoration: const BoxDecoration(
+                          color: Color.fromRGBO(255, 255, 255, 1),
+                          shape: BoxShape.circle,
+                        ),
+                        child: IconButton(
+                          onPressed: () {
+                            Get.back();
+                          },
+                          icon: Icon(
+                            Icons.arrow_back,
+                            color: Colors.black,
+                            size: 34.r,
+                          ),
+                        ),
                       ),
                     ),
                   ],
@@ -88,9 +111,9 @@ class DetailsView extends GetView<DetailsController> {
                 Gap(56.h),
                 Text(
                   controller.place.name,
-                  style: AppTextStyle.bold26.copyWith(fontSize: 30),
+                  style: AppTextStyle.bold26.copyWith(fontSize: 30.sp),
                 ),
-                const Gap(20),
+                Gap(20.h),
                 controller.place.desc != null
                     ? Text(
                         ' ${controller.place.desc}. ',
@@ -99,32 +122,15 @@ class DetailsView extends GetView<DetailsController> {
                         ),
                       )
                     : const SizedBox.shrink(),
-                const Gap(20),
-                const Divider(),
-                const Gap(20),
-                Row(
-                  children: [
-                    Text(
-                      'OpeningHours',
-                      style: AppTextStyle.regular20.copyWith(
-                        color: AppColors.main,
-                      ),
-                    ),
-                    const SizedBox(width: 20),
-                    Text('9:00AM-11:00PM', style: AppTextStyle.regular18),
-                  ],
-                ),
-                const Gap(18),
-                const Divider(),
-                const Gap(50),
+                Gap(100.h),
 
                 Center(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(
-                        height: 50,
-                        width: 250,
+                        height: 50.h,
+                        width: 250.w,
                         child: AppButton(
                           child: Text(
                             'Open Location',
@@ -143,11 +149,11 @@ class DetailsView extends GetView<DetailsController> {
                           },
                         ),
                       ),
-                      const Gap(8),
+                      Gap(8.h),
 
                       SizedBox(
-                        height: 50,
-                        width: 70,
+                        height: 50.h,
+                        width: 70.w,
                         child: ElevatedButton(
                           onPressed: () {
                             showModalBottomSheet(
@@ -170,42 +176,16 @@ class DetailsView extends GetView<DetailsController> {
                               borderRadius: BorderRadius.circular(8),
                             ),
                           ),
-                          child: const Icon(
+                          child: Icon(
                             Icons.calendar_month,
                             color: Colors.black,
-                            size: 25,
+                            size: 25.r,
                           ),
                         ),
                       ),
                     ],
                   ),
                 ),
-
-                // const Gap(20),
-
-                // Center(
-                //   child: SizedBox(
-                //     height: 50,
-                //     width: 250,
-                //     child: AppButton(
-                //       child: Text(
-                //         'Schedule Visit',
-                //         style: AppTextStyle.regular18.copyWith(
-                //           color: Colors.white,
-                //         ),
-                //       ),
-                //         onPressed: () {
-                //
-                //           showModalBottomSheet(
-                //             context: context,
-                //             isScrollControlled: true,
-                //             backgroundColor: Colors.transparent,
-                //             builder: (_) => const ScheduleBottomSheet(),
-                //           );
-                //         }
-                //     ),
-                //   ),
-                // ),
               ],
             ),
           ),

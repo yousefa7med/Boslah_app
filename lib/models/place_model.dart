@@ -76,37 +76,54 @@ class PlaceModel {
     return PlaceModel(placeId: 0, name: "Unknown", categories: []);
   }
   static String getDefaultPhoto(final List<String> categories) {
-    switch (categories[0]) {
-      case 'airport':
-        return Assets.imagesDefaultPhotosAirport;
-      case 'commercial':
-        return Assets.imagesDefaultPhotosShoppingMall;
 
-      case 'catering':
-        if (categories[1] == 'catering.cafe') {
-          return Assets.imagesDefaultPhotosCafe;
-        } else {
-          return Assets.imagesDefaultPhotosRestaurant;
-        }
-      case 'accommodation':
-        return Assets.imagesDefaultPhotosHotel;
-      case 'national_park':
-        return Assets.imagesDefaultPhotosNationalPark;
-      case 'entertainment':
-        return Assets.imagesDefaultPhotosEntertainment;
-      case 'sport':
-        return Assets.imagesDefaultPhotosSport;
-      case 'beach':
-        return Assets.imagesDefaultPhotosBeach;
-      case 'religion':
-        return Assets.imagesDefaultPhotosReligion;
-      case 'natural':
-        return Assets.imagesDefaultPhotosNatural;
-
-      default:
-        return Assets.imagesDefaultPhotosNoImageAvailable;
+    if (categories.contains('airport')) {
+      return Assets.imagesDefaultPhotosAirport;
     }
+
+    if (categories.contains('commercial')) {
+      return Assets.imagesDefaultPhotosShoppingMall;
+    }
+
+    if (categories.contains('catering')) {
+      if (categories.contains('catering.cafe')) {
+        return Assets.imagesDefaultPhotosCafe;
+      } else {
+        return Assets.imagesDefaultPhotosRestaurant;
+      }
+    }
+
+    if (categories.contains('accommodation')) {
+      return Assets.imagesDefaultPhotosHotel;
+    }
+
+    if (categories.contains('national_park')) {
+      return Assets.imagesDefaultPhotosNationalPark;
+    }
+
+    if (categories.contains('entertainment')) {
+      return Assets.imagesDefaultPhotosEntertainment;
+    }
+
+    if (categories.contains('sport')) {
+      return Assets.imagesDefaultPhotosSport;
+    }
+
+    if (categories.contains('beach')) {
+      return Assets.imagesDefaultPhotosBeach;
+    }
+
+    if (categories.contains('religion')) {
+      return Assets.imagesDefaultPhotosReligion;
+    }
+
+    if (categories.contains('natural')) {
+      return Assets.imagesDefaultPhotosNatural;
+    }
+
+    return Assets.imagesDefaultPhotosNoImageAvailable;
   }
+
 
   bool isAssetPath(String path) {
     // يبدأ بـ assets/

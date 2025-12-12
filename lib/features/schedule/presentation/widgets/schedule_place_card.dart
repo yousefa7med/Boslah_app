@@ -39,13 +39,13 @@ class SchedulePlaceCard extends GetView<ScheduleController> {
                           item.image!,
                           width: double.infinity,
                           height: 180.h,
-                          fit: BoxFit.cover,
+                          fit: BoxFit.fill,
                         )
                       : CachedNetworkImage(
                           imageUrl: item.image!,
                           height: 150,
                           width: double.infinity,
-                          fit: BoxFit.cover,
+                          fit: BoxFit.fill,
                         ),
                 ),
 

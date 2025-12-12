@@ -19,7 +19,7 @@ class _FilterState extends State<Filter> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 50.h,
+      height: 60.h,
       child: ListView(
         scrollDirection: Axis.horizontal,
         children: List.generate(widget.filterList.length, (index) {

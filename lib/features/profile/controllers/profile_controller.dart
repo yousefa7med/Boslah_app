@@ -11,9 +11,9 @@ class ProfileController extends GetxController {
   final isLoading = false.obs;
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
-    loadUserName();
+  await  loadUserName();
   }
 
   Future<void> loadUserName() async {

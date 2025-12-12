@@ -80,10 +80,9 @@ class HomeView extends GetView<HomeController> {
                     child: Center(
                       child: Text(
                         'No data available',
-                        style: TextStyle(
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey,
+                        style: AppTextStyle.bold26.copyWith(
+                          color: const Color.fromARGB(147, 158, 158, 158),
+                          fontSize: 30.sp,
                         ),
                       ),
                     ),

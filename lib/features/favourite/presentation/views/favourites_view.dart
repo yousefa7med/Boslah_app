@@ -1,3 +1,4 @@
+import 'package:Boslah/core/errors/app_exception.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:Boslah/core/functions/snack_bar.dart';
 import 'package:Boslah/core/utilities/app_text_style.dart';
@@ -42,9 +43,15 @@ class FavouritesView extends GetView<FavouritesController> {
                 const Gap(15),
                 SearchField(
                   controller: controller.sController,
-                  onPressed: () {
+                  onPressed: () async {
                     if (controller.sController.text.isNotEmpty) {
-                      controller.loadData();
+                      try {
+                        await controller.loadData();
+                      } on AppException catch (e) {
+                        showSnackBar(e.msg);
+                      } catch (e) {
+                        showSnackBar(e.toString());
+                      }
                     }
                   },
                 ),
@@ -54,7 +61,15 @@ class FavouritesView extends GetView<FavouritesController> {
                     final allFav = controller.filteredFav;
 
                     if (allFav.isEmpty) {
-                      return const Center(child: Text('No favorites yet'));
+                      return Center(
+                        child: Text(
+                          'No favorites yet',
+                          style: AppTextStyle.bold26.copyWith(
+                            color: const Color.fromARGB(147, 158, 158, 158),
+                            fontSize: 30.sp,
+                          ),
+                        ),
+                      );
                     }
 
                     return ListView.builder(
@@ -107,7 +122,7 @@ class FavouritesView extends GetView<FavouritesController> {
                                               ),
                                             )
                                           : CachedNetworkImage(
-                                              imageUrl: fav.image ?? '',
+                                              imageUrl: fav.image!,
                                               imageBuilder:
                                                   (
                                                     context,

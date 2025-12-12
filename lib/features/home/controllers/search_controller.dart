@@ -1,3 +1,5 @@
+import 'package:Boslah/core/database/models/search_history.dart';
+import 'package:Boslah/main.dart';
 import 'package:Boslah/models/place_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,6 +10,8 @@ class searchController extends GetxController {
   final searchList = <PlaceModel>[].obs;
   var sController = TextEditingController();
   final api = Get.find<ApiServices>();
+
+  final historySearch = <SearchHistory>[].obs;
 
   Future<void> loadData() async {
     final data = await api.searchPlacesWithImages(sController.text);
@@ -26,6 +30,39 @@ class searchController extends GetxController {
           // });
         }).toList() ??
         [];
+
+    final history = SearchHistory(
+      query: sController.text,
+      timestamp: 1,
+      userId: cloud.auth.currentUser!.id,
+    );
+    database.searchhistorydao.insertHistory(history);
+  }
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    HistorySearch();
+  }
+
+  Future<void> HistorySearch() async {
+    final data = await database.searchhistorydao.selectHistory(
+      cloud.auth.currentUser!.id,
+    );
+    historySearch.value = data ;
+  }
+
+  Future<void> clearHistory() async {
+    historySearch.clear();
+    await database.searchhistorydao.clearAll();
+  }
+
+  Future<void> onchange(String a) async {
+    if (a.trim().isEmpty) {
+      searchList.clear();
+      await HistorySearch();
+    }
   }
 
   @override

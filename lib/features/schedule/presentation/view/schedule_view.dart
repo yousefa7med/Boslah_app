@@ -1,3 +1,4 @@
+import 'package:Boslah/core/utilities/app_text_style.dart';
 import 'package:Boslah/core/widgets/filter.dart';
 import 'package:Boslah/features/schedule/controllers/schedule_controller.dart';
 import 'package:Boslah/features/schedule/presentation/widgets/schedule_place_card.dart';
@@ -23,52 +24,57 @@ class ScheduleView extends GetView<ScheduleController> {
 
     return Scaffold(
       body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  'Your Scheduling',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 30.sp,
-                  ),
-                ),
-                const Gap(32),
-                Filter(filterList: controller.filterList),
-                const Gap(20),
-                Obx(() {
-                  if(controller.isLoading.value){
-                    return Expanded(
-                      child: ListView.separated(
-                          itemCount: 5,
-                          itemBuilder: (_, index) =>shimmerItem(),
-                          separatorBuilder: (BuildContext context, int index) => const Gap(10)
-                      ),
-                    );
-                  }
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Your Schedules',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30.sp),
+              ),
+              const Gap(32),
+              Filter(filterList: controller.filterList),
+              const Gap(20),
+              Obx(() {
+                if (controller.isLoading.value) {
                   return Expanded(
-                    child: controller.viewedSchedules.isEmpty
-                        ? const Center(
-                      child: Text('No schedules for this filter'),
-                    )
-                        : ListView.separated(
-                      itemCount: controller.viewedSchedules.length,
-                      itemBuilder: (_, index) =>
-                          Column(children: [SchedulePlaceCard(index)]),
+                    child: ListView.separated(
+                      itemCount: 5,
+                      itemBuilder: (_, index) => shimmerItem(),
                       separatorBuilder: (BuildContext context, int index) =>
-                      const Gap(10),
+                          const Gap(10),
                     ),
                   );
-                }),
-              ],
-            ),
-          )
+                }
+                return Expanded(
+                  child: controller.viewedSchedules.isEmpty
+                      ? Center(
+                          child: Text(
+                            'No schedules for this filter',
+                            style: AppTextStyle.bold26.copyWith(
+                              color: const Color.fromARGB(147, 158, 158, 158),
+                              fontSize: 30.sp,
+                            ),
+                          ),
+                        )
+                      : ListView.separated(
+                          itemCount: controller.viewedSchedules.length,
+                          itemBuilder: (_, index) =>
+                              Column(children: [SchedulePlaceCard(index)]),
+                          separatorBuilder: (BuildContext context, int index) =>
+                              const Gap(10),
+                        ),
+                );
+              }),
+            ],
+          ),
+        ),
       ),
     );
   }
+
   Widget shimmerItem() {
     return Shimmer.fromColors(
       baseColor: Colors.grey.shade300,
@@ -106,5 +112,4 @@ class ScheduleView extends GetView<ScheduleController> {
       ),
     );
   }
-
 }

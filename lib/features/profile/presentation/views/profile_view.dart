@@ -10,7 +10,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
-import '../../../../core/utilities/app_colors.dart';
 import '../../../../core/utilities/app_text_style.dart';
 
 class ProfileView extends GetView<ProfileController> {
@@ -47,7 +46,7 @@ class ProfileView extends GetView<ProfileController> {
           title: FittedBox(
             child: Text(
               'Profile',
-              style: AppTextStyle.bold24.copyWith(fontSize: 30),
+              style: AppTextStyle.bold24.copyWith(fontSize: 30.r),
             ),
           ),
         ),
@@ -64,10 +63,10 @@ class ProfileView extends GetView<ProfileController> {
               AppButton(
                 child: Obx(() {
                   return controller.isLoading.value
-                      ? const SizedBox(
-                          height: 22,
-                          width: 22,
-                          child: CircularProgressIndicator(
+                      ? SizedBox(
+                          height: 22.r,
+                          width: 22.r,
+                          child: const CircularProgressIndicator(
                             strokeWidth: 2,
                             color: Colors.white,
                           ),
@@ -98,35 +97,4 @@ class ProfileView extends GetView<ProfileController> {
     );
   }
 
-  Row buildRow(IconData icon, {String? massage, String? des}) {
-    return Row(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: SizedBox(
-            width: 50.w,
-            height: 50.h,
-            child: Card(
-              elevation: 4,
-              color: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Icon(icon, color: AppColors.main, size: 30),
-            ),
-          ),
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              massage!,
-              style: AppTextStyle.regular20.copyWith(color: Colors.grey),
-            ),
-            Text(des!, style: AppTextStyle.regular18),
-          ],
-        ),
-      ],
-    );
-  }
 }

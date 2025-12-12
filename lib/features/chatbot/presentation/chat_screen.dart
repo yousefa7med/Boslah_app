@@ -53,6 +53,7 @@ class ChatScreen extends GetView<ChatController> {
         children: [
           Obx(
             () => Chat(
+              // ignore: invalid_use_of_protected_member
               messages: controller.messages.value,
               onSendPressed: (types.PartialText msg) {
                 controller.sendUserMessage(msg.text);
@@ -70,10 +71,10 @@ class ChatScreen extends GetView<ChatController> {
                   color: Colors.black87,
                   fontSize: 16,
                 ),
-                inputBackgroundColor: Colors.blueGrey,
+                inputBackgroundColor: AppColors.main,
                 inputTextColor: Colors.white,
                 inputMargin: EdgeInsets.all(12),
-                inputBorderRadius: BorderRadius.all(Radius.circular(25)),
+                inputBorderRadius: BorderRadius.all(Radius.circular(16)),
                 messageInsetsVertical: 16,
                 messageInsetsHorizontal: 16,
               ),
