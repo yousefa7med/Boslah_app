@@ -184,11 +184,14 @@ class _$RegionRequestDao extends RegionRequestDao {
   final InsertionAdapter<RegionRequest> _regionRequestInsertionAdapter;
 
   @override
-  Future<RegionRequest?> selectLastRequest(String uid) async {
+  Future<RegionRequest?> selectLastRequest() async {
     return _queryAdapter.query(
-        'SELECT * FROM region_requests WHERE user_id = ?1 ORDER BY timestamp DESC LIMIT 1',
-        mapper: (Map<String, Object?> row) => RegionRequest(region_id: row['region_id'] as int?, lat: row['lat'] as double, lng: row['lng'] as double, timestamp: row['timestamp'] as int?),
-        arguments: [uid]);
+        'SELECT * FROM region_requests ORDER BY region_id DESC LIMIT 1',
+        mapper: (Map<String, Object?> row) => RegionRequest(
+            region_id: row['region_id'] as int?,
+            lat: row['lat'] as double,
+            lng: row['lng'] as double,
+            timestamp: row['timestamp'] as int?));
   }
 
   @override

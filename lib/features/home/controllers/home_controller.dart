@@ -4,10 +4,12 @@ import 'package:Boslah/core/functions/get_postion.dart';
 import 'package:Boslah/core/widgets/app_dialog.dart';
 import 'package:Boslah/models/filter_model.dart';
 import 'package:Boslah/models/place_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 
+import '../../../core/database/models/region_places.dart';
 import '../../../core/database/models/region_requests.dart';
 import '../../../core/services/api_services/api_services.dart';
 import '../../../main.dart';
@@ -178,7 +180,6 @@ class HomeController extends GetxController {
 
       allPlaces.value =
           data?.where((p) {
-            // 1) لازم Description وصورة
             if (p.desc == null || p.desc!.trim().isEmpty || p.image == null) {
               return false;
             }
@@ -186,6 +187,63 @@ class HomeController extends GetxController {
           }).toList() ??
           [];
       viewedPlaces.value = allPlaces;
+
+      if (viewedPlaces.isEmpty) {
+        final lastReq = await database.regionrequestdao.selectLastRequest();
+
+        if (lastReq != null) {
+          print("Loading last cached DB request...");
+
+          allPlaces.value = await database.regionplacedao
+              .selectRegionPlaces(lastReq.region_id!);
+
+          viewedPlaces.value = List.from(allPlaces.value);
+          return;
+        }
+      }
+
+
+      if (viewedPlaces.isEmpty) {
+        print("Using fallback: pyramids latitude/longitude");
+
+        final fallbackData = await api.getPlaces(
+          lat: 29.979235,
+          long: 31.134202,
+        );
+
+        allPlaces.value = fallbackData
+            ?.where((p) =>
+        p.desc != null &&
+            p.desc!.trim().isNotEmpty &&
+            p.image != null)
+            .toList() ??
+            [];
+
+        viewedPlaces.value = List.from(allPlaces.value);
+        return;
+      }
+
+      final regionId = await database.regionrequestdao.insertRegionRequest(
+        RegionRequest(lat: position.latitude, lng: position.longitude),
+      );
+
+      List<RegionPlace> list = [];
+      for (var element in data!) {
+        list.add(
+          RegionPlace(
+            name: element.name,
+            regionId: regionId,
+            placeId: element.placeId,
+            lat: element.lat,
+            lng: element.lng,
+            image: element.image,
+            desc: element.desc,
+            categories: element.categories,
+          ),
+        );
+      }
+      await database.regionplacedao.insertRespPlaces(list);
+
     } on String catch (e) {
       appDialog(msg: e);
       Future.delayed(const Duration(seconds: 10), () async {
@@ -193,26 +251,8 @@ class HomeController extends GetxController {
       });
     } finally {
       isLoading.value = false;
-    } // final regionId = await database.regionrequestdao.insertRegionRequest(
-    //       RegionRequest(lat: 29.979235, lng: 31.134202),
-    //     );
+    }
 
-    // List<RegionPlace> list = [];
-    // for (var element in data!) {
-    //       list.add(
-    //         RegionPlace(
-    //           name: element.name,
-    //           regionId: regionId,
-    //           placeId: element.placeId,
-    //           lat: element.lat,
-    //           lng: element.lng,
-    //           image: element.image,
-    //           desc: element.desc,
-    //           categories: element.categories,
-    //         ),
-    //       );
-    //     }
-    // await database.regionplacedao.insertRespPlaces(list);
   }
 
   Future<void> refreshPlaces() async {
