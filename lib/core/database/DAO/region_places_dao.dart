@@ -17,4 +17,7 @@ abstract class RegionPlacesDao {
 
   @Query('DELETE FROM region_places WHERE regionId = :regionId')
   Future<void> deletePlacesByRegion(int regionId);
+
+  @Query('Select * from region_places where searchId = :srchid')
+  Future<List<RegionPlace>?> selectplacesbysearchid(int srchid);
 }

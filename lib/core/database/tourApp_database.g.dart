@@ -294,6 +294,25 @@ class _$RegionPlacesDao extends RegionPlacesDao {
   }
 
   @override
+  Future<List<RegionPlace>?> selectplacesbysearchid(int srchid) async {
+    return _queryAdapter.queryList(
+        'Select * from region_places where searchId = ?1',
+        mapper: (Map<String, Object?> row) => RegionPlace(
+            id: row['id'] as int?,
+            regionId: row['regionId'] as int,
+            placeId: row['placeId'] as int,
+            lat: row['lat'] as double?,
+            lng: row['lng'] as double?,
+            desc: row['desc'] as String?,
+            categories:
+                _categoriesConverter.decode(row['categories'] as String),
+            image: row['image'] as String?,
+            searchId: row['searchId'] as int?,
+            name: row['name'] as String),
+        arguments: [srchid]);
+  }
+
+  @override
   Future<int> insertPlace(RegionPlace place) {
     return _regionPlaceInsertionAdapter.insertAndReturnId(
         place, OnConflictStrategy.replace);
@@ -571,6 +590,14 @@ class _$SearchHistoryDao extends SearchHistoryDao {
   @override
   Future<void> clearAll() async {
     await _queryAdapter.queryNoReturn('DELETE FROM search_history');
+  }
+
+  @override
+  Future<int?> selectId(String name) async {
+    return _queryAdapter.query(
+        'Select searchId from search_history where query= ?1',
+        mapper: (Map<String, Object?> row) => row.values.first as int,
+        arguments: [name]);
   }
 
   @override

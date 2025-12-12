@@ -17,4 +17,7 @@ abstract class SearchHistoryDao{
   @Query('DELETE FROM search_history')
   Future<void> clearAll();
 
+  @Query('Select searchId from search_history where query= :name')
+  Future<int?> selectId(String name);
+
 }
