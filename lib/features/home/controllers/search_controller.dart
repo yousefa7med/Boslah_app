@@ -1,3 +1,5 @@
+import 'package:Boslah/core/errors/app_exception.dart';
+import 'package:Boslah/core/functions/snack_bar.dart';
 import 'package:Boslah/models/place_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,21 +13,21 @@ class searchController extends GetxController {
 
   Future<void> loadData() async {
     print('gooooooooooo');
-    final data = await api.searchPlacesWithImages(sController.text);
-    searchList.value =
-        data?.where((p) {
-          if (p.image == null) {
-            return false;
-          }
-          return true;
-          // final title = p.title.toLowerCase();
-          // final desc = p.description!.toLowerCase();
-          // return keywords.any((k) {
-          //   final key = k.toLowerCase();
-          //   return title.toLowerCase().contains(key) || desc.toLowerCase().contains(key);
-          // });
-        }).toList() ??
-        [];
+    try {
+      final data = await api.searchPlacesWithImages(sController.text);
+      searchList.value =
+          data?.where((p) {
+            if (p.image == null) {
+              return false;
+            }
+            return true;
+          }).toList() ??
+          [];
+    } on AppException catch (e) {
+      showSnackBar(e.msg);
+    } catch (e) {
+      showSnackBar(e.toString());
+    }
   }
 
   @override

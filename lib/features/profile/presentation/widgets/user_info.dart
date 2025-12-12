@@ -24,7 +24,7 @@ class UserInfo extends GetView<ProfileController> {
             children: [
               Obx(() {
                 return CircleAvatar(
-                  radius: 55,
+                  radius: 55.r,
                   backgroundColor: AppColors.main,
                   child: Text(
                     controller.splitName(controller.fullName.value),

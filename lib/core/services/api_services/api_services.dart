@@ -27,8 +27,6 @@ class ApiServices {
     cancelToken.cancel();
   }
 
-  // final rest = "https://en.wikipedia.org/api/rest_v1/page/summary/";
-
   Future<List<PlaceModel>?> getPlaces({
     required double lat,
     required double long,

@@ -11,7 +11,6 @@ import 'package:Boslah/features/schedule/controllers/schedule_controller.dart';
 import 'package:Boslah/features/schedule/presentation/view/schedule_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
 import '../../core/utilities/app_colors.dart';
@@ -33,7 +32,7 @@ class MainView extends GetView<MainController> {
       ),
       handleAndroidBackButtonPress: true,
       resizeToAvoidBottomInset: true,
-      onTabChanged: (value) {
+      onTabChanged: (value) async {
         print(value);
         if (value == 1) {
           controller.isFavPage = true;
@@ -41,7 +40,7 @@ class MainView extends GetView<MainController> {
           if (controller.isFavPage &&
               controller.favControoller.deleted.isNotEmpty) {
             try {
-              controller.removeFavFromDB();
+            await  controller.removeFavFromDB();
               controller.favControoller.deleted.clear();
             } on AppException catch (e) {
               showSnackBar(e.msg);
@@ -59,17 +58,7 @@ class MainView extends GetView<MainController> {
           }
         }
 
-        // controller.
-        // if (value != 1) {
-        //   for (var place in cont.deleted) {
-        //     cont.removeFavoriteFromDB(place);
-        //   }
-        // } else {
-        //   cont.isFav.clear();
-        //   cont.isFav.addAll(
-        //     List.generate(cont.allFavourits.length, (i) => true.obs),
-        //   );
-        // }
+   
       },
       tabs: [
         PersistentTabConfig(

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:Boslah/core/errors/app_exception.dart';
+import 'package:Boslah/core/functions/snack_bar.dart';
 import 'package:Boslah/core/services/supabase_services/favorite_service.dart';
 import 'package:Boslah/main.dart';
 import 'package:Boslah/models/favorite_supabase.dart';
@@ -19,12 +20,14 @@ class FavouritesController extends GetxController {
   var sController = TextEditingController();
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     sController.addListener(() {
       filterFavorites(sController.text);
     });
     try {
-      loadData();
+     await loadData();
+    } on AppException catch (e) {
+      showSnackBar(e.msg);
     } on Exception catch (e) {
       error.value = e.toString();
     }
@@ -46,10 +49,10 @@ class FavouritesController extends GetxController {
 
       isFav.addAll(List.generate(allFavourits.length, (i) => true.obs));
 
-      final hasInt = await hasInternet();
-      if (hasInt) {
+      if (await hasInternet()) {
         final remote = await FavoritesService().getFavorites();
         allFavourits.value = remote;
+        filteredFav.value = remote;
         isFav.addAll(List.generate(allFavourits.length, (i) => true.obs));
         await database.favoritedao.deleteAllFavoritesByUser(userId);
         for (var fav in remote) {
@@ -73,11 +76,12 @@ class FavouritesController extends GetxController {
       } else {
         final localList = await database.favoritedao.selectFavorites(userId);
         allFavourits.value = localList;
+      filteredFav.value = localList;
+
+        throw AppException(msg: 'No internet Connection');
       }
 
-      filteredFav.value = allFavourits;
       if (allFavourits.isNotEmpty) {
-        filteredFav.value = allFavourits;
         isFav.addAll(List.generate(allFavourits.length, (i) => true.obs));
         print("sopaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
       }

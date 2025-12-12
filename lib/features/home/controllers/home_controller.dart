@@ -1,6 +1,8 @@
 import 'dart:math';
 
+import 'package:Boslah/core/errors/app_exception.dart';
 import 'package:Boslah/core/functions/get_postion.dart';
+import 'package:Boslah/core/functions/snack_bar.dart';
 import 'package:Boslah/core/widgets/app_dialog.dart';
 import 'package:Boslah/models/filter_model.dart';
 import 'package:Boslah/models/place_model.dart';
@@ -16,8 +18,7 @@ class HomeController extends GetxController {
   final searchController = TextEditingController();
   final allPlaces = <PlaceModel>[].obs;
   final viewedPlaces = <PlaceModel>[].obs;
-  final museums = <PlaceModel>[].obs;
-  final restaurant = <PlaceModel>[].obs;
+
   final List<FilterModel> filterList = [];
 
   final api = Get.find<ApiServices>();
@@ -102,7 +103,8 @@ class HomeController extends GetxController {
     final dLat = _degToRad(lat2 - lat1);
     final dLon = _degToRad(lon2 - lon1);
 
-    final a = sin(dLat / 2) * sin(dLat / 2) +
+    final a =
+        sin(dLat / 2) * sin(dLat / 2) +
         cos(_degToRad(lat1)) *
             cos(_degToRad(lat2)) *
             sin(dLon / 2) *
@@ -115,12 +117,11 @@ class HomeController extends GetxController {
 
   double _degToRad(double deg) => deg * pi / 180;
 
-
   Future<RegionRequest?> getNearbyRequest(
-      double lat,
-      double lng,
-      double thresholdMeters,
-      ) async {
+    double lat,
+    double lng,
+    double thresholdMeters,
+  ) async {
     final all = await database.regionrequestdao.selectRequests();
 
     print('Found ${all.length} region_requests in DB');
@@ -130,11 +131,11 @@ class HomeController extends GetxController {
       print('Request ${r.region_id} distance = $dist');
 
       if (dist < thresholdMeters) {
-        final placesForReq =
-        await database.regionplacedao.selectRegionPlaces(r.region_id!);
+        final placesForReq = await database.regionplacedao.selectRegionPlaces(
+          r.region_id!,
+        );
 
-        print(
-            'Request ${r.region_id} has ${placesForReq.length} places in DB');
+        print('Request ${r.region_id} has ${placesForReq.length} places in DB');
 
         if (placesForReq.isNotEmpty) {
           return r;
@@ -145,30 +146,30 @@ class HomeController extends GetxController {
     return null;
   }
 
-
-
   Future<void> loadAll() async {
     final Position? position;
     try {
       position = await getPosition();
       isLoading.value = true;
 
-      final nearbyRequest = await getNearbyRequest(position.latitude, position.longitude, 500);
+      final nearbyRequest = await getNearbyRequest(
+        position.latitude,
+        position.longitude,
+        500,
+      );
 
       if (nearbyRequest != null) {
         print("Using cached data from request ${nearbyRequest.region_id}");
 
-        viewedPlaces.value = await database.regionplacedao
-            .selectRegionPlaces(nearbyRequest.region_id!);
+        viewedPlaces.value = await database.regionplacedao.selectRegionPlaces(
+          nearbyRequest.region_id!,
+        );
 
         allPlaces.value = viewedPlaces;
 
-        print('Loaded ${viewedPlaces.value.length} places from cache');
         isLoading.value = false;
         return;
       }
-
-
 
       final data = await api.getPlaces(
         lat: position.latitude,
@@ -186,33 +187,18 @@ class HomeController extends GetxController {
           }).toList() ??
           [];
       viewedPlaces.value = allPlaces;
+    } on AppException catch (e) {
+      showSnackBar(e.msg);
     } on String catch (e) {
       appDialog(msg: e);
       Future.delayed(const Duration(seconds: 10), () async {
         await loadAll();
       });
+    } catch (e) {
+      showSnackBar(e.toString());
     } finally {
       isLoading.value = false;
-    } // final regionId = await database.regionrequestdao.insertRegionRequest(
-    //       RegionRequest(lat: 29.979235, lng: 31.134202),
-    //     );
-
-    // List<RegionPlace> list = [];
-    // for (var element in data!) {
-    //       list.add(
-    //         RegionPlace(
-    //           name: element.name,
-    //           regionId: regionId,
-    //           placeId: element.placeId,
-    //           lat: element.lat,
-    //           lng: element.lng,
-    //           image: element.image,
-    //           desc: element.desc,
-    //           categories: element.categories,
-    //         ),
-    //       );
-    //     }
-    // await database.regionplacedao.insertRespPlaces(list);
+    }
   }
 
   Future<void> refreshPlaces() async {

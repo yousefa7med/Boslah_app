@@ -11,7 +11,6 @@ class LoginController extends GetxController {
 
   final passwordController = TextEditingController();
 
-  final see = true.obs;
   final auth = AuthService();
   final formKey = GlobalKey<FormState>();
 

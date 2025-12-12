@@ -8,27 +8,7 @@ class AuthService {
   AuthService._internal();
   factory AuthService() => _instance;
 
-  // Future<void> register(String fullName, String email, String password) async {
-  //   try {
-  //     final response = await cloud.auth.signUp(
-  //       password: password,
-  //       email: email,
-  //     );
-  //     final user = response.user;
-  //
-  //     if (user != null) {
-  //       await cloud.from('profiles').insert({
-  //         'id': user.id,
-  //         'full_name': fullName,
-  //       });
-  //     }
-  //   } catch (e) {
-  //     print("ERROR TYPE: ${e.runtimeType}");
-  //     print("ERROR: $e");
-  //     throw AppException(msg: "Registration failed, please try again");
-  //   }
-  // }
-
+ 
   Future<void> register(String fullName, String email, String password) async {
     try {
       final response = await Supabase.instance.client.auth.signUp(
@@ -92,9 +72,7 @@ class AuthService {
     return fullName['full_name'] as String;
   }
 
-  Future<String?> getCurrentEmail() async {
-    return cloud.auth.currentUser!.email;
-  }
+
 
   bool isLogin() => cloud.auth.currentSession != null;
 }

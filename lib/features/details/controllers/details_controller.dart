@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:Boslah/core/database/models/favorites.dart';
 import 'package:Boslah/core/database/models/schedules.dart';
+import 'package:Boslah/core/errors/app_exception.dart';
+import 'package:Boslah/core/functions/snack_bar.dart';
 import 'package:Boslah/core/services/notification_service.dart';
 import 'package:Boslah/core/services/supabase_services/favorite_service.dart';
 import 'package:Boslah/core/services/supabase_services/schedule_service_supabase.dart';
@@ -14,10 +16,8 @@ import 'package:Boslah/models/schedule_supabase.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-
-
 class DetailsController extends GetxController {
-  RxBool favorite = false.obs; // initialize here
+  RxBool favorite = false.obs;
   late PlaceModel place;
   //? for schedule
   final dateController = TextEditingController();
@@ -50,7 +50,6 @@ class DetailsController extends GetxController {
       categories: place.categories,
     );
     await FavoritesService().addFavorite(favoriteSupa);
-    // await FavoritesService().addFavorite(addFavorite);
 
     await database.favoritedao.insertFavorite(addFavorite);
 
@@ -73,16 +72,11 @@ class DetailsController extends GetxController {
     try {
       final favController = Get.find<FavouritesController>();
       await favController.loadData();
-    } catch (_) {}
+    } on AppException catch (e) {
+      showSnackBar(e.msg);
+    }
   }
 
-  // Future<bool> isFavorite() async {
-  //   final result = await database.favoritedao.selectOneFavPlace(
-  //     cloud.auth.currentUser!.id,
-  //     place.pageid,
-  //   );
-  //   return result != null;
-  // }
   Future<bool> isFavorite() async {
     final userId = cloud.auth.currentUser!.id;
 
@@ -93,34 +87,8 @@ class DetailsController extends GetxController {
     );
 
     if (localResult != null) {
-      return true; // لقاها محليًا
-    }
-
-    // 2) لو مش موجودة محليًا → دور في Supabase
-    final supabaseResult = await FavoritesService().getFavoriteByPlaceId(
-      place.placeId,
-      userId,
-    );
-
-    // لو لقاها في السوبا بيز → خزنها محليًا عشان المرة الجاية
-    if (supabaseResult != null) {
-      await database.favoritedao.insertFavorite(
-        Favorite(
-          name: supabaseResult.name,
-          userId: supabaseResult.userId,
-          placeId: supabaseResult.placeId,
-          addedAt: supabaseResult.addedAt,
-          desc: supabaseResult.desc,
-          image: supabaseResult.image,
-          lat: supabaseResult.lat,
-          lng: supabaseResult.lng,
-          categories: supabaseResult.categories,
-        ),
-      );
       return true;
     }
-
-    // لو ملقاش في الاتنين
     return false;
   }
 
@@ -162,10 +130,9 @@ class DetailsController extends GetxController {
     noteController.clear();
     timeController.clear();
     debugPrint('schedule object: ${sch.date}');
-    // try {
-
-    await schController.loadData();
-    // } catch (_) {}
+    try {
+      await schController.loadData();
+    } catch (_) {}
   }
 
   @override

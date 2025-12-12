@@ -42,7 +42,15 @@ class SearchView extends GetView<searchController> {
                 Expanded(
                   child: Obx(() {
                     return controller.searchList.isEmpty
-                        ? const Center(child: Text('No place'))
+                        ? Center(
+                            child: Text(
+                              'No place',
+                              style: AppTextStyle.bold26.copyWith(
+                                color: const Color.fromARGB(147, 158, 158, 158),
+                                fontSize: 30.sp,
+                              ),
+                            ),
+                          )
                         : ListView.separated(
                             itemCount: controller.searchList.length,
                             itemBuilder: (ctx, index) => PlaceCard(index),
@@ -88,16 +96,16 @@ class PlaceCard extends GetView<searchController> {
                   ? CachedNetworkImage(
                       imageUrl: controller.searchList[index].image!,
                       width: double.infinity,
-                      height: 180,
+                      height: 180.h,
                       fit: BoxFit.fill,
                     )
                   : Container(
                       width: double.infinity,
-                      height: 180,
+                      height: 180.h,
                       color: Colors.grey[300],
-                      child: const Icon(
+                      child:  Icon(
                         Icons.image_not_supported,
-                        size: 50,
+                        size: 50.r,
                         color: Colors.grey,
                       ),
                     ),

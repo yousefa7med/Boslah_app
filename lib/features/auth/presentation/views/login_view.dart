@@ -68,17 +68,17 @@ class LoginView extends GetView<LoginController> {
                         ),
 
                         const Gap(10),
-                        TextButton(
-                          onPressed: () {
-                            //!forget password func
-                          },
-                          child: Text(
-                            'Forget Password?',
-                            style: AppTextStyle.regular16.copyWith(
-                              color: AppColors.main,
-                            ),
-                          ),
-                        ),
+                        // TextButton(
+                        //   onPressed: () {
+                        //     //!forget password func
+                        //   },
+                        //   child: Text(
+                        //     'Forget Password?',
+                        //     style: AppTextStyle.regular16.copyWith(
+                        //       color: AppColors.main,
+                        //     ),
+                        //   ),
+                        // ),
                         Obx(() {
                           return AppButton(
                             onPressed: controller.isLoading.value
@@ -106,6 +106,8 @@ class LoginView extends GetView<LoginController> {
                                         showSnackBar("Logged in successfully!");
                                       } on AppException catch (e) {
                                         showSnackBar(e.msg);
+                                      } catch (e) {
+                                        showSnackBar(e.toString());
                                       }
 
                                       print(cloud.auth.currentUser);
@@ -128,7 +130,7 @@ class LoginView extends GetView<LoginController> {
                                   ),
                           );
                         }),
-                        const Gap(20),
+                        Gap(20.h),
 
                         AppButton(
                           onPressed: () {

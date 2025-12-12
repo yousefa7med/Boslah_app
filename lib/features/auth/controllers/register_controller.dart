@@ -12,7 +12,6 @@ class RegisterController extends GetxController {
   final passwordController = TextEditingController();
 
   final confirmPasswordController = TextEditingController();
-  final see = true.obs;
   final auth = AuthService();
   final formKey = GlobalKey<FormState>();
 

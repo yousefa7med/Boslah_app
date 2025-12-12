@@ -64,21 +64,7 @@ class ScheduleForm extends StatelessWidget {
                     ],
                   ),
                   onPressed: () async {
-                    // final picked = await showDatePicker(
-                    //   context: context,
-                    //   initialDate: DateTime.now(),
-                    //   firstDate: DateTime(2020),
-                    //   lastDate: DateTime(2050),
-                    // );
-                    // if (picked != null) {
-                    //   controller.dateController.text =
-                    //       "${picked.year}-${picked.month}-${picked.day}";
-                    //   print(controller.dateController.text);
-                    //   // controller.dateController.text =
-                    //   //     "${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";
-                    //   // print('Date: ${controller.dateController.text}');
-                    //   // print('Time: ${controller.timeController.text}');
-                    // }
+           
                     final picked = await showDatePicker(
                       context: context,
                       initialDate: DateTime.now(),
@@ -200,7 +186,7 @@ class ScheduleForm extends StatelessWidget {
               ),
             ],
           ),
-          const Gap(50),
+           Gap(50.h),
           AppButton(
             onPressed: () async {
               if (controller.dateController.text.isEmpty ||
@@ -229,7 +215,7 @@ class ScheduleForm extends StatelessWidget {
             child: const Text('confirm', style: TextStyle(color: Colors.white)),
           ),
 
-          const Gap(25),
+           Gap(25.h),
         ],
       ),
     );
