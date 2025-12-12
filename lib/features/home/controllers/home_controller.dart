@@ -6,7 +6,6 @@ import 'package:Boslah/core/functions/snack_bar.dart';
 import 'package:Boslah/core/widgets/app_dialog.dart';
 import 'package:Boslah/models/filter_model.dart';
 import 'package:Boslah/models/place_model.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -160,6 +159,7 @@ class HomeController extends GetxController {
         500,
       );
 
+
       if (nearbyRequest != null) {
         print("Using cached data from request ${nearbyRequest.region_id}");
 
@@ -174,8 +174,8 @@ class HomeController extends GetxController {
       }
 
       final data = await api.getPlaces(
-        lat: position.latitude,
-        long: position.longitude,
+        lat: 24.0889,
+        long: 32.8998,
       );
       print("pppppppppppppppppppp");
 
@@ -198,7 +198,7 @@ class HomeController extends GetxController {
           allPlaces.value = await database.regionplacedao
               .selectRegionPlaces(lastReq.region_id!);
 
-          viewedPlaces.value = List.from(allPlaces.value);
+          viewedPlaces.value = List.from(allPlaces);
           return;
         }
       }
@@ -220,7 +220,7 @@ class HomeController extends GetxController {
             .toList() ??
             [];
 
-        viewedPlaces.value = List.from(allPlaces.value);
+        viewedPlaces.value = List.from(allPlaces);
         return;
       }
 

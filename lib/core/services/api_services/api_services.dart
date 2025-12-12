@@ -117,7 +117,7 @@ class ApiServices {
             "generator": "search",
             "gsrsearch": title,
             "gsrlimit": 20,
-            "prop": "pageimages|info",
+            "prop":"pageimages|info|coordinates",
             "inprop": "url",
             "piprop": "thumbnail",
             "pithumbsize": 600, // حجم الصورة

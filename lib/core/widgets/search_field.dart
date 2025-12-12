@@ -9,12 +9,17 @@ class SearchField extends StatelessWidget {
     super.key,
     required this.controller,
     required this.onPressed,
-  });
+   this.onChange});
   final TextEditingController controller;
   final void Function() onPressed;
+  final void Function(String)? onChange;
   @override
   Widget build(BuildContext context) {
     return TextField(
+      onSubmitted: (a){
+        onPressed();
+      },
+      onChanged: onChange,
       controller: controller,
       style: const TextStyle(color: AppColors.main),
       decoration: InputDecoration(
